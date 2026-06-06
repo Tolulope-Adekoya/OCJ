@@ -1,0 +1,11 @@
+I am continuing work on my OCJ Sims 4 save file project. Read all files below before responding. Confirm what you have read, then wait for my first instruction. Do not invent or assume anything not in the files.
+
+Rules doc: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/Documents/Rules.docx]
+Info doc: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/Documents/OCJ%20save%20file%20information%20documentation.docx]
+To do list: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/Documents/OCJ%20save%20file%20to%20do%20list.docx]
+Sims CSV: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/data/Sims.csv]
+Lots CSV: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/data/Lots.csv]
+Worlds CSV: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/data/Worlds.csv]
+Relationships & Lore doc: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/Documents/Relationships%20and%20Lore.docx]
+Mods CSV: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/data/Scarlet's%20Mod%20List%20-%20Your%20Mods%20as%20of%20June.csv]
+Support.csv: [https://github.com/Tolulope-Adekoya/OCJ/blob/main/data/Support.csv]
