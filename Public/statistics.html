@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statistics — OCJ Save File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">OCJ</div>
+      <p class="logo-sub">Save File</p>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Navigate</span>
+      <ul>
+        <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
+        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
+        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
+        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
+        <li><a href="statistics.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="mono-small">OCJ · 2025</span>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb">OCJ / <span>Statistics</span></div>
+      <h1 class="page-title"><em>Statistics</em></h1>
+      <p class="page-subtitle">Visual breakdowns across all sims, lots, and worlds in the save file.</p>
+      <div class="page-divider"></div>
+    </div>
+
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-card-title">Sims by Age Group</div>
+        <div class="bar-chart" id="chart-age"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-title">Sims by Gender</div>
+        <div class="bar-chart" id="chart-gender"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-title">Sims by Occult</div>
+        <div class="bar-chart" id="chart-occult"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-title">Sims by Wealth Class</div>
+        <div class="bar-chart" id="chart-wealth"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-title">Lots by Type</div>
+        <div class="bar-chart" id="chart-lot-type"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-title">Lots by Status</div>
+        <div class="bar-chart" id="chart-lot-status"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-title">Sims per World</div>
+        <div class="bar-chart" id="chart-sims-world"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-title">Lots per World</div>
+        <div class="bar-chart" id="chart-lots-world"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/statistics.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OCJ Save File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">OCJ</div>
+      <p class="logo-sub">Save File</p>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Navigate</span>
+      <ul>
+        <li><a href="index.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
+        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
+        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
+        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
+        <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="mono-small">OCJ · 2025</span>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="hero">
+      <div class="hero-tag mono-small">Sims 4 · Worldbuilding Project</div>
+      <h1 class="hero-title">The OCJ<br /><em>Save File</em></h1>
+      <p class="hero-sub">A living document of custom worlds, households, lore, and systems — built and tracked in meticulous detail.</p>
+      <div class="hero-divider"></div>
+    </section>
+
+    <section class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-number" id="stat-worlds">—</span>
+        <span class="stat-label">Worlds</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number" id="stat-sims">—</span>
+        <span class="stat-label">Sims</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number" id="stat-lots">—</span>
+        <span class="stat-label">Lots</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number">300+</span>
+        <span class="stat-label">Active Mods</span>
+      </div>
+    </section>
+
+    <section class="cards-grid">
+      <a href="worlds.html" class="card card--accent">
+        <div class="card-tag mono-small">Explore</div>
+        <h2 class="card-title">Worlds</h2>
+        <p class="card-desc">Custom and base game worlds, completion status, and world-level lore.</p>
+        <div class="card-arrow">→</div>
+      </a>
+      <a href="sims.html" class="card">
+        <div class="card-tag mono-small">Database</div>
+        <h2 class="card-title">Sims</h2>
+        <p class="card-desc">The canonical Sim database — traits, careers, occults, households, and relationships.</p>
+        <div class="card-arrow">→</div>
+      </a>
+      <a href="lots.html" class="card">
+        <div class="card-tag mono-small">Builds</div>
+        <h2 class="card-title">Lots</h2>
+        <p class="card-desc">Every lot tracked by type, status, world, and assigned household.</p>
+        <div class="card-arrow">→</div>
+      </a>
+      <a href="statistics.html" class="card">
+        <div class="card-tag mono-small">Analysis</div>
+        <h2 class="card-title">Statistics</h2>
+        <p class="card-desc">Visual breakdowns by age, gender, occult, career, and lot distribution.</p>
+        <div class="card-arrow">→</div>
+      </a>
+    </section>
+
+    <section class="about-strip">
+      <div class="about-text">
+        <h3>About This Project</h3>
+        <p>OCJ Save File is a long-term Sims 4 worldbuilding and management project. Every Sim, lot, world, and relationship is documented and tracked. This site is the living reference for that save file.</p>
+      </div>
+      <div class="about-meta mono-small">
+        Last updated<br />
+        <strong>May 2025</strong>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

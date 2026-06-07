@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lots — OCJ Save File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">OCJ</div>
+      <p class="logo-sub">Save File</p>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Navigate</span>
+      <ul>
+        <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
+        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
+        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
+        <li><a href="lots.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
+        <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="mono-small">OCJ · 2025</span>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb">OCJ / <span>Lots</span></div>
+      <h1 class="page-title"><em>Lots</em></h1>
+      <p class="page-subtitle">Every lot in the save file — type, status, world, size, and assigned residents.</p>
+      <div class="page-divider"></div>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" id="search-lots" placeholder="Search by name..." />
+      <select id="filter-world">
+        <option value="">All worlds</option>
+      </select>
+      <select id="filter-type">
+        <option value="">All types</option>
+      </select>
+      <select id="filter-status">
+        <option value="">All statuses</option>
+      </select>
+      <span class="filter-count" id="lots-count"></span>
+    </div>
+
+    <div class="table-wrap">
+      <table id="lots-table">
+        <thead>
+          <tr>
+            <th>Lot Name</th>
+            <th>World</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Beds</th>
+            <th>Baths</th>
+            <th>Resident(s)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="lots-tbody">
+          <tr><td colspan="10" class="no-results">Loading lots...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/lots.js"></script>
+</body>
+</html>
