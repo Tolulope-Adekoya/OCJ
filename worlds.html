@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Worlds — OCJ Save File</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/worlds.css" />
 </head>
 <body>
 
@@ -23,9 +24,7 @@
         <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
         <li><a href="worlds.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
         <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
-        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
         <li><a href="families.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
-        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
         <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
       </ul>
     </nav>
@@ -36,27 +35,65 @@
 
   <main class="main">
 
-    <div class="page-header">
-      <div class="breadcrumb">OCJ / <span>Worlds</span></div>
-      <h1 class="page-title"><em>Worlds</em></h1>
-      <p class="page-subtitle">All active worlds in the save file, their completion status, and descriptions.</p>
-      <div class="page-divider"></div>
+    <!-- WORLDS VIEW -->
+    <div id="view-worlds">
+      <div class="page-header">
+        <div class="breadcrumb">OCJ / <span>Worlds</span></div>
+        <h1 class="page-title"><em>Worlds</em></h1>
+        <p class="page-subtitle">All active worlds in the save file. Select a world to explore its lots.</p>
+        <div class="page-divider"></div>
+      </div>
+
+      <div class="filter-bar">
+        <input type="text" id="search-worlds" placeholder="Search worlds..." />
+        <select id="filter-status">
+          <option value="">All statuses</option>
+        </select>
+        <span class="filter-count" id="worlds-count"></span>
+      </div>
+
+      <div class="world-grid" id="worlds-grid">
+        <div class="no-results">Loading worlds...</div>
+      </div>
     </div>
 
-    <div class="filter-bar">
-      <input type="text" id="search-worlds" placeholder="Search worlds..." />
-      <select id="filter-status">
-        <option value="">All statuses</option>
-        <option value="Complete">Complete</option>
-        <option value="In Progress">In Progress</option>
-        <option value="Not Started">Not Started</option>
-      </select>
-      <span class="filter-count" id="worlds-count"></span>
-    </div>
+    <!-- WORLD DETAIL VIEW (hidden by default) -->
+    <div id="view-world-detail" style="display:none">
+      <div class="page-header">
+        <div class="breadcrumb">
+          OCJ / <a href="#" id="breadcrumb-worlds" class="breadcrumb-link">Worlds</a> / <span id="breadcrumb-world-name"></span>
+        </div>
+        <div class="world-detail-header">
+          <img id="world-detail-icon" src="" alt="" style="display:none" />
+          <div>
+            <h1 class="page-title" id="world-detail-name"><em>World</em></h1>
+            <div id="world-detail-status"></div>
+          </div>
+        </div>
+        <div class="page-divider"></div>
+      </div>
 
-    <div class="world-grid" id="worlds-grid">
-      <!-- Populated by JS -->
-      <div class="no-results">Loading worlds...</div>
+      <!-- World description + scenery -->
+      <div class="world-detail-body">
+        <div class="world-detail-desc-wrap">
+          <p class="world-detail-desc" id="world-detail-desc"></p>
+        </div>
+        <div class="world-scenery-gallery" id="world-scenery-gallery"></div>
+      </div>
+
+      <!-- Lots in this world -->
+      <div class="world-lots-header">
+        <div class="mono-small" id="world-lots-count"></div>
+        <input type="text" id="search-world-lots" placeholder="Search lots..." />
+        <select id="filter-world-lot-type">
+          <option value="">All types</option>
+        </select>
+        <select id="filter-world-lot-status">
+          <option value="">All statuses</option>
+        </select>
+      </div>
+
+      <div class="world-lots-grid" id="world-lots-grid"></div>
     </div>
 
   </main>

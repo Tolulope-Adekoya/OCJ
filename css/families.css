@@ -196,3 +196,8 @@
   height: 20px;
   background: var(--border);
 }
+.families-hint {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  font-size: 0.62rem;
+}

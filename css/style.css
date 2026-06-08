@@ -487,3 +487,49 @@ tbody td.td-name {
 .lot-name-link:hover {
   color: var(--rose);
 }
+/* --- RELATIONSHIPS ENTRY (home page) --- */
+.rel-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  border: 1px solid var(--rose-dim);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #1c1919 60%, rgba(201,135,154,0.06));
+  margin-top: 1.5rem;
+}
+
+.rel-entry-text h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.rel-entry-text p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+.rel-entry-btn {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--rose-dim);
+  border-radius: var(--radius);
+  color: var(--rose);
+  white-space: nowrap;
+  transition: all 0.2s;
+  background: var(--rose-glow);
+}
+
+.rel-entry-btn:hover {
+  background: var(--rose);
+  color: var(--bg);
+}

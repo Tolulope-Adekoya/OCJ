@@ -58,7 +58,20 @@ async function loadCSV(path) {
     return [];
   }
 }
+// Image path helpers — use these anywhere you need sim or world images
+window.OCJ = {
+  simProfile:  (name)        => `images/sims/profile/${name} Profile Picture.png`,
+  simOther:    (name, label) => `images/sims/OtherPictures/${name} ${label}.png`,
+  worldIcon:   (world)       => `images/worlds/icons/${world} Icon.png`,
+  worldMap:    (world)       => `images/worlds/map/${world} Map.jpg`,
+  worldScene:  (world, label)=> `images/worlds/scenery/${world} ${label}.png`,
+  lotImage:    (world, lot)  => `images/lots/${slugify(world)}/${slugify(lot)}/main.png`,
+  favicon:     ()            => `images/favicon/favicon.ico`,
+};
 
+function slugify(name) {
+  return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
 (async () => {
   const [sims, lots, worlds] = await Promise.all([
     loadCSV('data/Sims.csv'),
