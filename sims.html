@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sims — OCJ Save File</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/sims.css" />
 </head>
 <body>
 
@@ -22,9 +24,7 @@
         <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
         <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
         <li><a href="sims.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
-        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
         <li><a href="families.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
-        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
         <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
       </ul>
     </nav>
@@ -38,59 +38,64 @@
     <div class="page-header">
       <div class="breadcrumb">OCJ / <span>Sims</span></div>
       <h1 class="page-title"><em>Sims</em></h1>
-      <p class="page-subtitle">The canonical Sim database. Filter by world, age, occult, or playability.</p>
+      <p class="page-subtitle">The canonical Sim database. Filter, sort, and browse all sims in the save file.</p>
       <div class="page-divider"></div>
     </div>
 
-    <div class="filter-bar">
+    <!-- FILTER BAR -->
+    <div class="sims-filter-bar">
       <input type="text" id="search-sims" placeholder="Search by name..." />
-      <select id="filter-world">
-        <option value="">All worlds</option>
-      </select>
-      <select id="filter-age">
-        <option value="">All ages</option>
-        <option value="Baby">Baby</option>
-        <option value="Infant">Infant</option>
-        <option value="Toddler">Toddler</option>
-        <option value="Child">Child</option>
-        <option value="Teen">Teen</option>
-        <option value="Young Adult">Young Adult</option>
-        <option value="Adult">Adult</option>
-        <option value="Elder">Elder</option>
-      </select>
+
+      <select id="filter-world"><option value="">All worlds</option></select>
+      <select id="filter-age"><option value="">All ages</option></select>
+      <select id="filter-gender"><option value="">All genders</option></select>
+      <select id="filter-occult"><option value="">All occults</option></select>
+      <select id="filter-wealth"><option value="">All wealth classes</option></select>
       <select id="filter-playable">
-        <option value="">Playable &amp; NPC</option>
+        <option value="">Playable & NPC</option>
         <option value="Yes">Playable only</option>
         <option value="No">NPC only</option>
       </select>
-      <select id="filter-occult">
-        <option value="">All occults</option>
+      <select id="filter-status">
+        <option value="">All statuses</option>
+        <option value="Not Started">Not Started</option>
+        <option value="Ongoing">Ongoing</option>
+        <option value="Complete">Complete</option>
       </select>
+      <select id="filter-club"><option value="">All clubs</option></select>
+      <select id="filter-faith"><option value="">All faiths</option></select>
+      <select id="filter-language"><option value="">All languages</option></select>
+      <select id="filter-orientation"><option value="">All orientations</option></select>
+      <select id="filter-political"><option value="">All politics</option></select>
+
+      <select id="sort-by">
+        <option value="name-asc">Name A–Z</option>
+        <option value="name-desc">Name Z–A</option>
+        <option value="world">By World</option>
+        <option value="age">By Age</option>
+        <option value="wealth">By Wealth</option>
+      </select>
+
       <span class="filter-count" id="sims-count"></span>
     </div>
 
-    <div class="table-wrap">
-      <table id="sims-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>World</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Occult</th>
-            <th>Job</th>
-            <th>Wealth</th>
-            <th>Playable</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="sims-tbody">
-          <tr><td colspan="9" class="no-results">Loading sims...</td></tr>
-        </tbody>
-      </table>
+    <!-- SIMS GRID -->
+    <div class="sims-grid" id="sims-grid">
+      <div class="no-results">Loading sims...</div>
     </div>
 
   </main>
+
+  <!-- TOOLTIP -->
+  <div class="sim-tooltip" id="sim-tooltip">
+    <div class="sim-tooltip-name" id="tt-name"></div>
+    <div class="sim-tooltip-row"><span>Gender</span><span id="tt-gender"></span></div>
+    <div class="sim-tooltip-row"><span>Age</span><span id="tt-age"></span></div>
+    <div class="sim-tooltip-row"><span>World</span><span id="tt-world"></span></div>
+    <div class="sim-tooltip-row"><span>Job</span><span id="tt-job"></span></div>
+    <div class="sim-tooltip-row"><span>Occult</span><span id="tt-occult"></span></div>
+    <div class="sim-tooltip-row"><span>Wealth</span><span id="tt-wealth"></span></div>
+  </div>
 
   <script src="js/data.js"></script>
   <script src="js/sims.js"></script>

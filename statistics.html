@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Statistics — OCJ Save File</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/statistics.css" />
 </head>
 <body>
 
@@ -22,9 +24,7 @@
         <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
         <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
         <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
-        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
         <li><a href="families.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
-        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
         <li><a href="statistics.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
       </ul>
     </nav>
@@ -38,50 +38,142 @@
     <div class="page-header">
       <div class="breadcrumb">OCJ / <span>Statistics</span></div>
       <h1 class="page-title"><em>Statistics</em></h1>
-      <p class="page-subtitle">Visual breakdowns across all sims, lots, and worlds in the save file.</p>
+      <p class="page-subtitle">Visual breakdowns across all sims, lots, and worlds.</p>
       <div class="page-divider"></div>
     </div>
 
     <div class="stats-grid">
 
       <div class="stat-card">
-        <div class="stat-card-title">Sims by Age Group</div>
-        <div class="bar-chart" id="chart-age"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by World</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-world" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-world" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-world"></div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-card-title">Sims by Gender</div>
-        <div class="bar-chart" id="chart-gender"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Gender</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-gender" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-gender" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-gender"></div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-card-title">Sims by Occult</div>
-        <div class="bar-chart" id="chart-occult"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Age Group</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-age" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-age" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-age"></div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-card-title">Sims by Wealth Class</div>
-        <div class="bar-chart" id="chart-wealth"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Occult</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-occult" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-occult" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-occult"></div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-card-title">Lots by Type</div>
-        <div class="bar-chart" id="chart-lot-type"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Wealth Class</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-wealth" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-wealth" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-wealth"></div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-card-title">Lots by Status</div>
-        <div class="bar-chart" id="chart-lot-status"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Orientation</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-orientation" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-orientation" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-orientation"></div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-card-title">Sims per World</div>
-        <div class="bar-chart" id="chart-sims-world"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Political Alignment</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-political" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-political" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-political"></div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-card-title">Lots per World</div>
-        <div class="bar-chart" id="chart-lots-world"></div>
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Faith</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-faith" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-faith" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-faith"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Sims by Alignment</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-alignment" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-alignment" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-alignment"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Playable vs NPC</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-playable" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-playable" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-playable"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Lots by World</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-lots-world" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-lots-world" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-lots-world"></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-card-title">Lots by Type</div>
+          <div class="chart-toggle">
+            <button class="toggle-btn active" data-chart="chart-lot-type" data-type="bar">Bar</button>
+            <button class="toggle-btn" data-chart="chart-lot-type" data-type="pie">Pie</button>
+          </div>
+        </div>
+        <div id="chart-lot-type"></div>
       </div>
 
     </div>
