@@ -1,5 +1,59 @@
 // lots.js — Lots page
 
+// Map lot names to their detail page IDs
+const LOT_PAGE_MAP = {
+  "Ridley Family Home": "ridley_family_home",
+  "Jacobs Estate": "jacobs_estate",
+  "Yoh Manor": "nichole_yoh_manor",
+  "Usher Estate": "usher_estate",
+  "Bhatnagar Family Home": "bhatnagar_home",
+  "Addams Manor": "addams_manor",
+  "Kovac Apartment": "kovac_apartment",
+  "La Cosa Simstra HQ": "johnny_zest_hideout",
+  "Rollins Family Home": "rollins_home",
+  "Faircroft Estate": "faircroft_estate",
+  "Ashcroft Farm": "ashcroft_farm",
+  "Faircroft Goods": "sabrina_shop",
+  "Bhatnagar Vet Clinic": "bhatnagar_vet",
+  "Blackwood Residence": "kason_blackwood_home",
+  "Moanikea Household": "moanikea_home",
+  "Oliana's Sulani Kitchen": "oliana_restaurant",
+  "Chaudhary Home": "chaudhary_home",
+  "Mehra-Moretti Apartment": "shalini_apartment",
+  "Straud Castle": "vladislaus_castle",
+  "Simkuza Dojo": "rinka_dojo",
+  "Mochizuki Sanctum": "toya_sanctum",
+  "Darwin Research Facility": "tesla_darwin_lab",
+  "Delacroix Apartment": "delacroix_home",
+  "Peloquin Estate": "peloquin_home",
+  "Willow Creek Police Station": "willow_creek_police",
+  "Willow Creek Hospital": "willow_creek_hospital",
+  "Copperdale High School": "copperdale_high",
+  "Thornwood Boarding School": "boarding_school",
+  "Blackwoods": "blackwoods_club",
+  "Rollins Soul Kitchen": "darius_restaurant_future",
+  "Anuhewa Lair": "hinaopele_lair",
+  "Montenegro's": "montana_restaurant",
+  "Komorebi Rest": "simkuza_bar",
+  "Corrections Facility": "ink_prison",
+  "Ashcroft Jewellers": "enzo_jewellery",
+  "Winona's Cottage": "winona_cottage",
+  "Faircroft-Moretti Home": "dorian_home",
+  "Faircroft-Ashcroft Home": "chayton_fiona_home",
+  "Bhatnagar Animal Shelter": "parivita_shelter",
+  "Bhatnagar Home": "rajiv_priya_home",
+  "Addams Craft Studio": "morticia_craft_room",
+  "Strangerville Museum": "dr_darwin_museum",
+  "Magic Realm Portal": "magic_realm_portal",
+  "Simkuza Saferoom": "simkuza_saferoom",
+  "Mireshade Lair": "bellatrix_lair",
+  "Sanguine Estate": "varek_estate",
+  "Ashcroft Flower Farm": "hawthorne_flower_farm",
+  "Ashcroft Crop Farm": "saffron_farm",
+  "Parkshore": "perrin_home",
+  "Brown Family Home": "evelyn_brown_home"
+};
+
 document.addEventListener('ocj-data-ready', () => {
   setBadge('badge-worlds', window.WORLDS.length);
   setBadge('badge-sims',   window.SIMS.length);
@@ -23,6 +77,12 @@ function getStatusTag(status) {
   return `<span class="tag">${status}</span>`;
 }
 
+function getLotLink(name) {
+  const pageId = LOT_PAGE_MAP[name];
+  if (pageId) return `<a href="lots/${pageId}.html" class="lot-name-link">${name}</a>`;
+  return name;
+}
+
 function renderLots(data) {
   const tbody = document.getElementById('lots-tbody');
   const count = document.getElementById('lots-count');
@@ -34,9 +94,11 @@ function renderLots(data) {
     return;
   }
 
-  tbody.innerHTML = data.map(l => `
+  tbody.innerHTML = data.map(l => {
+    const displayName = l['LOT NEW NAME'] || l['LOT ORIGINAL NAME'] || '—';
+    return `
     <tr>
-      <td class="td-name">${l['LOT NEW NAME'] || l['LOT ORIGINAL NAME'] || '—'}</td>
+      <td class="td-name">${getLotLink(displayName)}</td>
       <td>${l['WORLD'] || '—'}</td>
       <td>${l['LOT TYPE'] || '—'}</td>
       <td>${l['LOT USE'] || '—'}</td>
@@ -47,11 +109,10 @@ function renderLots(data) {
       <td>${l['RESIDENT(S)'] || '—'}</td>
       <td>${getStatusTag(l['STATUS'])}</td>
     </tr>
-  `).join('');
+  `}).join('');
 }
 
 function populateFilters() {
-  // Worlds
   const worldSelect = document.getElementById('filter-world');
   const worlds = [...new Set(window.LOTS.map(l => l['WORLD']).filter(Boolean))].sort();
   worlds.forEach(w => {
@@ -60,7 +121,6 @@ function populateFilters() {
     worldSelect.appendChild(opt);
   });
 
-  // Lot types
   const typeSelect = document.getElementById('filter-type');
   const types = [...new Set(window.LOTS.map(l => l['LOT TYPE']).filter(Boolean))].sort();
   types.forEach(t => {
@@ -69,7 +129,6 @@ function populateFilters() {
     typeSelect.appendChild(opt);
   });
 
-  // Statuses
   const statusSelect = document.getElementById('filter-status');
   const statuses = [...new Set(window.LOTS.map(l => l['STATUS']).filter(Boolean))].sort();
   statuses.forEach(s => {
@@ -96,7 +155,6 @@ function setupFilters() {
       const lotWorld  = l['WORLD']    || '';
       const lotType   = l['LOT TYPE'] || '';
       const lotStatus = l['STATUS']   || '';
-
       return (
         (!q || name.includes(q)) &&
         (!w || lotWorld  === w) &&
@@ -104,7 +162,6 @@ function setupFilters() {
         (!s || lotStatus === s)
       );
     });
-
     renderLots(filtered);
   }
 

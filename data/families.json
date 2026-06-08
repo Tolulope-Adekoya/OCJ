@@ -1,0 +1,337 @@
+{
+  "families": [
+    {
+      "id": "jacobs",
+      "name": "The Jacobs Family",
+      "theme": "Repressed identity, toxic masculinity, cycles of neglect, infidelity",
+      "members": [
+        { "id": "david_jacobs", "name": "David Jacobs", "gender": "male", "notes": "Same-gender oriented but deeply closeted. Abusive to Elaine." },
+        { "id": "elaine_jacobs", "name": "Elaine Jacobs", "gender": "female", "notes": "Meek. Unaware of David's orientation." },
+        { "id": "nate_jacobs", "name": "Nate Jacobs", "gender": "male", "notes": "Bisexual, closeted. In love with Maggie, cheats with Cassie." },
+        { "id": "jason_jacobs", "name": "Jason Jacobs", "gender": "male", "notes": "Married Needles. Sent kids to boarding school." },
+        { "id": "needles_jacobs", "name": "Needles Jacobs", "gender": "female", "notes": "Drug user. Imprisoned." },
+        { "id": "jett_jacobs", "name": "Jett Jacobs", "gender": "other", "notes": "Child of Jason and Needles. Sent to boarding school." },
+        { "id": "joy_jacobs", "name": "Joy Jacobs", "gender": "female", "notes": "Child of Jason and Needles. Sent to boarding school." },
+        { "id": "rut_montenegro", "name": "Rut Montenegro", "gender": "male", "notes": "Terrible parent. Abandoned David as a teen." },
+        { "id": "kierston_montenegro", "name": "Kierston Montenegro", "gender": "female", "notes": "Terrible parent. Co-owns restaurant in Ciudad Enamorada." },
+        { "id": "emma_montenegro", "name": "Emma Montenegro", "gender": "female", "notes": "Became an adult actress to survive." },
+        { "id": "liam_montenegro", "name": "Liam Montenegro", "gender": "male", "notes": "Became a stripper to survive." },
+        { "id": "monica_lopez", "name": "Monica Lopez", "gender": "female", "notes": "Had secret child with Rut." },
+        { "id": "cesar_lopez", "name": "Cesar Lopez", "gender": "male", "notes": "Secret child of Rut and Monica. Does not know his father." }
+      ],
+      "relationships": [
+        { "from": "david_jacobs", "to": "elaine_jacobs", "type": "married" },
+        { "from": "david_jacobs", "to": "nate_jacobs", "type": "parent" },
+        { "from": "elaine_jacobs", "to": "nate_jacobs", "type": "parent" },
+        { "from": "david_jacobs", "to": "jason_jacobs", "type": "parent" },
+        { "from": "elaine_jacobs", "to": "jason_jacobs", "type": "parent" },
+        { "from": "jason_jacobs", "to": "needles_jacobs", "type": "married" },
+        { "from": "jason_jacobs", "to": "jett_jacobs", "type": "parent" },
+        { "from": "needles_jacobs", "to": "jett_jacobs", "type": "parent" },
+        { "from": "jason_jacobs", "to": "joy_jacobs", "type": "parent" },
+        { "from": "needles_jacobs", "to": "joy_jacobs", "type": "parent" },
+        { "from": "rut_montenegro", "to": "kierston_montenegro", "type": "married" },
+        { "from": "rut_montenegro", "to": "david_jacobs", "type": "parent" },
+        { "from": "kierston_montenegro", "to": "david_jacobs", "type": "parent" },
+        { "from": "rut_montenegro", "to": "emma_montenegro", "type": "parent" },
+        { "from": "kierston_montenegro", "to": "emma_montenegro", "type": "parent" },
+        { "from": "rut_montenegro", "to": "liam_montenegro", "type": "parent" },
+        { "from": "kierston_montenegro", "to": "liam_montenegro", "type": "parent" },
+        { "from": "rut_montenegro", "to": "cesar_lopez", "type": "parent" },
+        { "from": "monica_lopez", "to": "cesar_lopez", "type": "parent" },
+        { "from": "rut_montenegro", "to": "monica_lopez", "type": "affair" }
+      ]
+    },
+    {
+      "id": "usher",
+      "name": "The Usher Family",
+      "theme": "Hidden power, illuminati control, nepo babies, family as political apparatus",
+      "members": [
+        { "id": "annabelle_usher", "name": "Annabelle Usher", "gender": "female", "notes": "Famous ballerina. Secret Illuminati member. Controls family power." },
+        { "id": "roderick_usher", "name": "Roderick Usher", "gender": "male", "notes": "Secret agent, evil branch. Unaware his wife controls everything." },
+        { "id": "frederick_usher", "name": "Frederick Usher", "gender": "male", "notes": "Nepo baby. Suffers imposter syndrome." },
+        { "id": "morella_usher", "name": "Morella Usher", "gender": "female", "notes": "Lawyer. Has feelings for Pedro." },
+        { "id": "lenore_usher", "name": "Lenore Usher", "gender": "female", "notes": "Righteous and pure-hearted." },
+        { "id": "prospero_usher", "name": "Prospero Usher", "gender": "male", "notes": "New money. Competes with the Landgraabs." },
+        { "id": "pedro_usher", "name": "Pedro Usher", "gender": "male", "notes": "Roderick's affair child. Morella has feelings for him." }
+      ],
+      "relationships": [
+        { "from": "annabelle_usher", "to": "roderick_usher", "type": "married" },
+        { "from": "roderick_usher", "to": "frederick_usher", "type": "parent" },
+        { "from": "annabelle_usher", "to": "frederick_usher", "type": "parent" },
+        { "from": "frederick_usher", "to": "morella_usher", "type": "married" },
+        { "from": "frederick_usher", "to": "lenore_usher", "type": "parent" },
+        { "from": "morella_usher", "to": "lenore_usher", "type": "parent" },
+        { "from": "roderick_usher", "to": "pedro_usher", "type": "parent" },
+        { "from": "annabelle_usher", "to": "pedro_usher", "type": "stepparent" },
+        { "from": "morella_usher", "to": "pedro_usher", "type": "crush" }
+      ]
+    },
+    {
+      "id": "faircroft_ashcroft",
+      "name": "The Faircroft & Ashcroft Families",
+      "theme": "Inheritance betrayal, generational grudges, bigotry, found family, queer identity",
+      "members": [
+        { "id": "agustos_ashcroft", "name": "Agustos Ashcroft", "gender": "male", "notes": "Built agricultural empire with Isadora." },
+        { "id": "isadora_ashcroft", "name": "Isadora Ashcroft", "gender": "female", "notes": "Co-founder of Ashcroft agricultural empire." },
+        { "id": "beatrice_ashcroft", "name": "Beatrice Ashcroft", "gender": "female", "notes": "Heir. Died in childbirth." },
+        { "id": "edgar_ashcroft", "name": "Edgar Ashcroft", "gender": "male", "notes": "Felt cheated of inheritance." },
+        { "id": "mirelle_ashcroft", "name": "Mirelle Ashcroft", "gender": "female", "notes": "Edgar's wife." },
+        { "id": "charles_faircroft", "name": "Charles Faircroft", "gender": "male", "notes": "Cheated on Beatrice throughout marriage. Brought mistress in after her death." },
+        { "id": "velma_faircroft", "name": "Velma Faircroft", "gender": "female", "notes": "Charles' mistress turned wife." },
+        { "id": "benedict_faircroft", "name": "Benedict Faircroft", "gender": "male", "notes": "Son of Beatrice. Married Claire after her divorce from Lucien." },
+        { "id": "lucien_faircroft", "name": "Lucien Faircroft", "gender": "male", "notes": "Son of Charles and Velma. Drifter. Hates Benedict." },
+        { "id": "claire_faircroft", "name": "Claire Faircroft", "gender": "female", "notes": "Was married to Lucien. Now married to Benedict." },
+        { "id": "hazel_faircroft", "name": "Hazel Faircroft", "gender": "female", "notes": "Daughter of Lucien and Claire." },
+        { "id": "bella_faircroft", "name": "Bella Faircroft", "gender": "female", "notes": "Daughter of Benedict and Claire." },
+        { "id": "bartholomew_faircroft", "name": "Bartholomew Faircroft", "gender": "male", "notes": "Committed bigot. Homophobic and racist." },
+        { "id": "sylvia_faircroft", "name": "Sylvia Faircroft", "gender": "female", "notes": "Had affairs with Dakota. Still has feelings for him." },
+        { "id": "dakota_grayhawk", "name": "Dakota Grayhawk", "gender": "male", "notes": "Sylvia's affair partner. Father of Winona and Chayton." },
+        { "id": "shepherd_faircroft", "name": "Shepherd Faircroft", "gender": "male", "notes": "Inherited father's bigotry." },
+        { "id": "willa_faircroft", "name": "Willa Faircroft", "gender": "female", "notes": "Defers to Shepherd entirely." },
+        { "id": "dorian_faircroft", "name": "Dorian Faircroft", "gender": "male", "notes": "Gay. Estranged from parents. Married Simon." },
+        { "id": "simon_faircroft", "name": "Simon Faircroft", "gender": "male", "notes": "Dorian's husband." },
+        { "id": "sabrina_faircroft", "name": "Sabrina Faircroft", "gender": "female", "notes": "The HBIC. Entrepreneur. Connector of both families." },
+        { "id": "winona_faircroft", "name": "Winona Faircroft", "gender": "female", "notes": "One with nature. Bisexual. Polyamorous." },
+        { "id": "chayton_faircroft", "name": "Chayton Faircroft", "gender": "male", "notes": "Married Fiona Ashcroft despite opposition." },
+        { "id": "hawthorne_ashcroft", "name": "Hawthorne Ashcroft", "gender": "male", "notes": "Runs flower side of Ashcroft line." },
+        { "id": "linnet_ashcroft", "name": "Linnet Ashcroft", "gender": "female", "notes": "Permissive parent." },
+        { "id": "saffron_ashcroft", "name": "Saffron Ashcroft", "gender": "female", "notes": "Easygoing. Dislikes Faircrofts." },
+        { "id": "emmet_ashcroft", "name": "Emmet Ashcroft", "gender": "male", "notes": "Saffron's husband." },
+        { "id": "enzo_ashcroft", "name": "Enzo Ashcroft", "gender": "male", "notes": "Considerably older than Tourmaline. Runs jewellery business." },
+        { "id": "tourmaline_ashcroft", "name": "Tourmaline Ashcroft", "gender": "female", "notes": "Fairy. Genuinely loves Enzo." },
+        { "id": "fiona_ashcroft", "name": "Fiona Ashcroft", "gender": "female", "notes": "Married Chayton. Too lenient with children." }
+      ],
+      "relationships": [
+        { "from": "agustos_ashcroft", "to": "isadora_ashcroft", "type": "married" },
+        { "from": "agustos_ashcroft", "to": "beatrice_ashcroft", "type": "parent" },
+        { "from": "isadora_ashcroft", "to": "beatrice_ashcroft", "type": "parent" },
+        { "from": "agustos_ashcroft", "to": "edgar_ashcroft", "type": "parent" },
+        { "from": "isadora_ashcroft", "to": "edgar_ashcroft", "type": "parent" },
+        { "from": "edgar_ashcroft", "to": "mirelle_ashcroft", "type": "married" },
+        { "from": "beatrice_ashcroft", "to": "charles_faircroft", "type": "married" },
+        { "from": "charles_faircroft", "to": "benedict_faircroft", "type": "parent" },
+        { "from": "beatrice_ashcroft", "to": "benedict_faircroft", "type": "parent" },
+        { "from": "charles_faircroft", "to": "velma_faircroft", "type": "married" },
+        { "from": "charles_faircroft", "to": "velma_faircroft", "type": "affair" },
+        { "from": "charles_faircroft", "to": "lucien_faircroft", "type": "parent" },
+        { "from": "velma_faircroft", "to": "lucien_faircroft", "type": "parent" },
+        { "from": "lucien_faircroft", "to": "claire_faircroft", "type": "divorced" },
+        { "from": "benedict_faircroft", "to": "claire_faircroft", "type": "married" },
+        { "from": "lucien_faircroft", "to": "hazel_faircroft", "type": "parent" },
+        { "from": "claire_faircroft", "to": "hazel_faircroft", "type": "parent" },
+        { "from": "benedict_faircroft", "to": "bella_faircroft", "type": "parent" },
+        { "from": "claire_faircroft", "to": "bella_faircroft", "type": "parent" },
+        { "from": "bartholomew_faircroft", "to": "sylvia_faircroft", "type": "married" },
+        { "from": "bartholomew_faircroft", "to": "shepherd_faircroft", "type": "parent" },
+        { "from": "sylvia_faircroft", "to": "shepherd_faircroft", "type": "parent" },
+        { "from": "bartholomew_faircroft", "to": "dorian_faircroft", "type": "parent" },
+        { "from": "sylvia_faircroft", "to": "dorian_faircroft", "type": "parent" },
+        { "from": "bartholomew_faircroft", "to": "sabrina_faircroft", "type": "parent" },
+        { "from": "sylvia_faircroft", "to": "sabrina_faircroft", "type": "parent" },
+        { "from": "sylvia_faircroft", "to": "winona_faircroft", "type": "parent" },
+        { "from": "dakota_grayhawk", "to": "winona_faircroft", "type": "parent" },
+        { "from": "sylvia_faircroft", "to": "chayton_faircroft", "type": "parent" },
+        { "from": "dakota_grayhawk", "to": "chayton_faircroft", "type": "parent" },
+        { "from": "sylvia_faircroft", "to": "dakota_grayhawk", "type": "affair" },
+        { "from": "shepherd_faircroft", "to": "willa_faircroft", "type": "married" },
+        { "from": "dorian_faircroft", "to": "simon_faircroft", "type": "married" },
+        { "from": "chayton_faircroft", "to": "fiona_ashcroft", "type": "married" },
+        { "from": "edgar_ashcroft", "to": "hawthorne_ashcroft", "type": "parent" },
+        { "from": "mirelle_ashcroft", "to": "hawthorne_ashcroft", "type": "parent" },
+        { "from": "edgar_ashcroft", "to": "saffron_ashcroft", "type": "parent" },
+        { "from": "mirelle_ashcroft", "to": "saffron_ashcroft", "type": "parent" },
+        { "from": "edgar_ashcroft", "to": "enzo_ashcroft", "type": "parent" },
+        { "from": "mirelle_ashcroft", "to": "enzo_ashcroft", "type": "parent" },
+        { "from": "edgar_ashcroft", "to": "fiona_ashcroft", "type": "parent" },
+        { "from": "mirelle_ashcroft", "to": "fiona_ashcroft", "type": "parent" },
+        { "from": "hawthorne_ashcroft", "to": "linnet_ashcroft", "type": "married" },
+        { "from": "saffron_ashcroft", "to": "emmet_ashcroft", "type": "married" },
+        { "from": "enzo_ashcroft", "to": "tourmaline_ashcroft", "type": "married" }
+      ]
+    },
+    {
+      "id": "ridley",
+      "name": "The Ridley Family",
+      "theme": "Emotional incest, cycles of infidelity, motherhood under stress, teen social dynamics",
+      "members": [
+        { "id": "ethan_ridley", "name": "Ethan Ridley", "gender": "male", "notes": "Repeatedly cheats on Kamila. Deeply enmeshed with mother Ethel." },
+        { "id": "kamila_ridley", "name": "Kamila Ridley", "gender": "female", "notes": "Once had potential to be world-class chef. Stressed by abusive mother-in-law." },
+        { "id": "ethel_ridley", "name": "Ethel Ridley", "gender": "female", "notes": "Lost husband. Transferred dependence onto Ethan. Sees Kamila as a threat." },
+        { "id": "johannah_ridley", "name": "Johannah Ridley", "gender": "female", "notes": "The golden girl. The reason this save was started." },
+        { "id": "jodie_ridley", "name": "Jodie Ridley", "gender": "female", "notes": "Popular girl. Vain. Competing for Taehun with Regina." },
+        { "id": "jade_ridley", "name": "Jade Ridley", "gender": "female", "notes": "Goth rebel. Same-gender oriented. In love with Sloane Hayes." },
+        { "id": "jonathan_ridley", "name": "Jonathan Ridley", "gender": "male", "notes": "Youngest. Babied by Ethel. Wants to be an astronaut." }
+      ],
+      "relationships": [
+        { "from": "ethan_ridley", "to": "kamila_ridley", "type": "married" },
+        { "from": "ethel_ridley", "to": "ethan_ridley", "type": "parent" },
+        { "from": "ethan_ridley", "to": "johannah_ridley", "type": "parent" },
+        { "from": "kamila_ridley", "to": "johannah_ridley", "type": "parent" },
+        { "from": "ethan_ridley", "to": "jodie_ridley", "type": "parent" },
+        { "from": "kamila_ridley", "to": "jodie_ridley", "type": "parent" },
+        { "from": "ethan_ridley", "to": "jade_ridley", "type": "parent" },
+        { "from": "kamila_ridley", "to": "jade_ridley", "type": "parent" },
+        { "from": "ethan_ridley", "to": "jonathan_ridley", "type": "parent" },
+        { "from": "kamila_ridley", "to": "jonathan_ridley", "type": "parent" }
+      ]
+    },
+    {
+      "id": "yoh",
+      "name": "The Yoh Household",
+      "theme": "Celebrity isolation, unreciprocated love, class dynamics",
+      "members": [
+        { "id": "nichole_yoh", "name": "Nichole Yoh", "gender": "female", "notes": "Mega-celebrity. Conceived Taehun via test tube." },
+        { "id": "taehun_yoh", "name": "Taehun Yoh", "gender": "male", "notes": "Non-committal. Spoiled. Celebrity by association." },
+        { "id": "alfred_kvasnicka", "name": "Alfred Kvasnicka", "gender": "male", "notes": "Butler and best friend to Nichole. Father figure to Taehun." },
+        { "id": "victoria_macallister", "name": "Victoria MacAllister", "gender": "female", "notes": "Maid. Homewrecker. Ethan Ridley's affair partner." },
+        { "id": "nadia_macallister", "name": "Nadia MacAllister", "gender": "female", "notes": "Twin maid. Neglected twin. In love with Genos." },
+        { "id": "genos_carvelli", "name": "Genos Carvelli", "gender": "male", "notes": "Gardener. Loves Nichole. Nichole unsure of her feelings." }
+      ],
+      "relationships": [
+        { "from": "nichole_yoh", "to": "taehun_yoh", "type": "parent" },
+        { "from": "nichole_yoh", "to": "alfred_kvasnicka", "type": "best_friend" },
+        { "from": "nichole_yoh", "to": "genos_carvelli", "type": "situationship" },
+        { "from": "nadia_macallister", "to": "genos_carvelli", "type": "crush" }
+      ]
+    },
+    {
+      "id": "bhatnagar",
+      "name": "The Bhatnagar, Mehra & Chaudhary Families",
+      "theme": "Family loyalty, animal care, tradition vs independence, domestic abuse",
+      "members": [
+        { "id": "parivita_bhatnagar", "name": "Parivita Bhatnagar", "gender": "female", "notes": "Animal-loving. Runs vet clinic and animal shelter." },
+        { "id": "rajiv_bhatnagar", "name": "Rajiv Bhatnagar", "gender": "male", "notes": "Playful and easy-going." },
+        { "id": "priya_bhatnagar", "name": "Priya Bhatnagar", "gender": "female", "notes": "Trad wife. Disapproves of Shalini's independence." },
+        { "id": "meera_bhatnagar", "name": "Meera Bhatnagar", "gender": "female", "notes": "Looks up to Shalini. Already influenced by her." },
+        { "id": "karanveer_chaudhary", "name": "Karanveer Chaudhary", "gender": "male", "notes": "Physically abusive husband and bad father." },
+        { "id": "sajan_chaudhary", "name": "Sajan Chaudhary", "gender": "female", "notes": "Mixologist. Diminishes herself for Karanveer." },
+        { "id": "madhav_chaudhary", "name": "Madhav Chaudhary", "gender": "male", "notes": "Future comedian. Best friends with Cedric Addams." },
+        { "id": "gulab_chaudhary", "name": "Gulab Chaudhary", "gender": "other", "notes": "Child of Karanveer and Sajan." },
+        { "id": "madhuri_chaudhary", "name": "Madhuri Chaudhary", "gender": "female", "notes": "Child of Karanveer and Sajan." },
+        { "id": "kirti_chaudhary", "name": "Kirti Chaudhary", "gender": "female", "notes": "Child of Karanveer and Sajan." },
+        { "id": "shalini_mehra", "name": "Shalini Mehra", "gender": "female", "notes": "Fashion designer. Roommates with Alessia." },
+        { "id": "alessia_moretti", "name": "Alessia Moretti", "gender": "female", "notes": "Aspiring actress. Roommates with Shalini." }
+      ],
+      "relationships": [
+        { "from": "rajiv_bhatnagar", "to": "priya_bhatnagar", "type": "married" },
+        { "from": "rajiv_bhatnagar", "to": "parivita_bhatnagar", "type": "siblings" },
+        { "from": "rajiv_bhatnagar", "to": "meera_bhatnagar", "type": "parent" },
+        { "from": "priya_bhatnagar", "to": "meera_bhatnagar", "type": "parent" },
+        { "from": "priya_bhatnagar", "to": "shalini_mehra", "type": "siblings" },
+        { "from": "priya_bhatnagar", "to": "sajan_chaudhary", "type": "siblings" },
+        { "from": "karanveer_chaudhary", "to": "sajan_chaudhary", "type": "married" },
+        { "from": "karanveer_chaudhary", "to": "madhav_chaudhary", "type": "parent" },
+        { "from": "sajan_chaudhary", "to": "madhav_chaudhary", "type": "parent" },
+        { "from": "karanveer_chaudhary", "to": "gulab_chaudhary", "type": "parent" },
+        { "from": "sajan_chaudhary", "to": "gulab_chaudhary", "type": "parent" },
+        { "from": "karanveer_chaudhary", "to": "madhuri_chaudhary", "type": "parent" },
+        { "from": "sajan_chaudhary", "to": "madhuri_chaudhary", "type": "parent" },
+        { "from": "karanveer_chaudhary", "to": "kirti_chaudhary", "type": "parent" },
+        { "from": "sajan_chaudhary", "to": "kirti_chaudhary", "type": "parent" },
+        { "from": "shalini_mehra", "to": "alessia_moretti", "type": "roommates" }
+      ]
+    },
+    {
+      "id": "addams",
+      "name": "The Addams Family",
+      "theme": "Loving, strange, deeply close. All can see ghosts.",
+      "members": [
+        { "id": "gomez_addams", "name": "Gomez Addams", "gender": "male", "notes": "Patriarch." },
+        { "id": "morticia_addams", "name": "Morticia Addams", "gender": "female", "notes": "Witch." },
+        { "id": "cedric_addams", "name": "Cedric Addams", "gender": "male", "notes": "Made specifically to marry Johannah Ridley. Capable and skilled." },
+        { "id": "wednesday_addams", "name": "Wednesday Addams", "gender": "female", "notes": "As she appears in the TV show." },
+        { "id": "eudora_addams", "name": "Eudora Addams", "gender": "female", "notes": "Witch." },
+        { "id": "ophelia_frump", "name": "Ophelia Frump", "gender": "female", "notes": "Morticia's sister. Witch. Close with Aconite Foxglove." },
+        { "id": "lurch_addams", "name": "Lurch", "gender": "male", "notes": "Zombie butler. Close with all Addams family members." }
+      ],
+      "relationships": [
+        { "from": "gomez_addams", "to": "morticia_addams", "type": "married" },
+        { "from": "gomez_addams", "to": "cedric_addams", "type": "parent" },
+        { "from": "morticia_addams", "to": "cedric_addams", "type": "parent" },
+        { "from": "gomez_addams", "to": "wednesday_addams", "type": "parent" },
+        { "from": "morticia_addams", "to": "wednesday_addams", "type": "parent" },
+        { "from": "gomez_addams", "to": "eudora_addams", "type": "parent" },
+        { "from": "morticia_addams", "to": "eudora_addams", "type": "parent" },
+        { "from": "morticia_addams", "to": "ophelia_frump", "type": "siblings" },
+        { "from": "cedric_addams", "to": "johannah_ridley", "type": "dating" }
+      ]
+    },
+    {
+      "id": "kovac",
+      "name": "The Kovac Siblings",
+      "theme": "Succubus siblings. Opposition to exploitation, activism, temptation.",
+      "members": [
+        { "id": "natasha_kovac", "name": "Natasha Kovac", "gender": "female", "notes": "Eldest. Succubus and DOM. Opposes Kason's trafficking." },
+        { "id": "isolde_kovac", "name": "Isolde Kovac", "gender": "female", "notes": "Hippie activist. Falls in love with Johnny Zest." },
+        { "id": "yuri_kovac", "name": "Yuri Kovac", "gender": "male", "notes": "Youngest. Tempter of all men. Pleasant and non-committal." }
+      ],
+      "relationships": [
+        { "from": "natasha_kovac", "to": "isolde_kovac", "type": "siblings" },
+        { "from": "isolde_kovac", "to": "yuri_kovac", "type": "siblings" },
+        { "from": "natasha_kovac", "to": "yuri_kovac", "type": "siblings" },
+        { "from": "isolde_kovac", "to": "johnny_zest", "type": "in_love" }
+      ]
+    },
+    {
+      "id": "rollins_freeman",
+      "name": "The Rollins & Freeman Families",
+      "theme": "Working class ambition, gang life, family loyalty vs lifestyle",
+      "members": [
+        { "id": "darius_rollins", "name": "Darius Rollins", "gender": "male", "notes": "Soul food chef. Owes bank money. Working toward his own restaurant." },
+        { "id": "shayla_rollins", "name": "Shayla Rollins", "gender": "female", "notes": "Educated and supportive of Darius." },
+        { "id": "javante_rollins", "name": "Javante Rollins", "gender": "male", "notes": "Going astray. Drawn to gang life. Loves painting." },
+        { "id": "latoya_freeman", "name": "Latoya Freeman", "gender": "female", "notes": "In La Cosa Simstra. Has a crush on Johnny Zest." },
+        { "id": "elias_freeman", "name": "Elias Freeman", "gender": "male", "notes": "In La Cosa Simstra. On-off thing with Celeste Mugford." },
+        { "id": "deshawn_freeman", "name": "Deshawn Freeman", "gender": "male", "notes": "In La Cosa Simstra. Wants to come out to other gang members." }
+      ],
+      "relationships": [
+        { "from": "darius_rollins", "to": "shayla_rollins", "type": "married" },
+        { "from": "darius_rollins", "to": "javante_rollins", "type": "parent" },
+        { "from": "shayla_rollins", "to": "javante_rollins", "type": "parent" },
+        { "from": "shayla_rollins", "to": "latoya_freeman", "type": "siblings" },
+        { "from": "shayla_rollins", "to": "elias_freeman", "type": "siblings" },
+        { "from": "shayla_rollins", "to": "deshawn_freeman", "type": "siblings" },
+        { "from": "latoya_freeman", "to": "elias_freeman", "type": "siblings" },
+        { "from": "latoya_freeman", "to": "deshawn_freeman", "type": "siblings" },
+        { "from": "elias_freeman", "to": "deshawn_freeman", "type": "siblings" },
+        { "from": "latoya_freeman", "to": "johnny_zest", "type": "crush" }
+      ]
+    },
+    {
+      "id": "delacroix",
+      "name": "The Delacroix-Peloquin Family",
+      "theme": "Abandonment, revenge, sugar baby survival",
+      "members": [
+        { "id": "vallis_delacroix", "name": "Vallis Delacroix", "gender": "male", "notes": "Terrible partner. Abandoned by Arielle." },
+        { "id": "arielle_peloquin", "name": "Arielle Peloquin", "gender": "female", "notes": "Left Vallis. Remarried Linville. Abandoned daughter Brielle." },
+        { "id": "linville_peloquin", "name": "Linville Peloquin", "gender": "male", "notes": "Arielle's new husband. Does not know about Brielle." },
+        { "id": "brielle_delacroix", "name": "Brielle Delacroix", "gender": "female", "notes": "Abandoned by mother. Became a sugar baby to escape. Plans to seduce Linville as revenge." }
+      ],
+      "relationships": [
+        { "from": "vallis_delacroix", "to": "arielle_peloquin", "type": "divorced" },
+        { "from": "arielle_peloquin", "to": "linville_peloquin", "type": "married" },
+        { "from": "vallis_delacroix", "to": "brielle_delacroix", "type": "parent" },
+        { "from": "arielle_peloquin", "to": "brielle_delacroix", "type": "parent" }
+      ]
+    },
+    {
+      "id": "moanikea",
+      "name": "The Moanikea Household",
+      "theme": "Sulani dreams, identity, love across species",
+      "members": [
+        { "id": "oliana_moanikea", "name": "Oliana Moanikea", "gender": "female", "notes": "Mermaid. Wants to become human for Kaleo. Runs restaurant in Sulani." },
+        { "id": "moana_moanikea", "name": "Moana Moanikea", "gender": "female", "notes": "Grandmother. Provides guidance and support." },
+        { "id": "malia_nohau", "name": "Malia Nohau", "gender": "female", "notes": "Best friend. Human who wants to become mermaid for Kaiolohia." },
+        { "id": "kaleo_mistshore", "name": "Kaleo Mistshore", "gender": "male", "notes": "Oliana's crush." },
+        { "id": "kaiolohia_nalu", "name": "Kaiolohia Nalu", "gender": "male", "notes": "Malia's crush." }
+      ],
+      "relationships": [
+        { "from": "moana_moanikea", "to": "oliana_moanikea", "type": "parent" },
+        { "from": "oliana_moanikea", "to": "malia_nohau", "type": "best_friend" },
+        { "from": "oliana_moanikea", "to": "kaleo_mistshore", "type": "crush" },
+        { "from": "malia_nohau", "to": "kaiolohia_nalu", "type": "crush" }
+      ]
+    }
+  ]
+}

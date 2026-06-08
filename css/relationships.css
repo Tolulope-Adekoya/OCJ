@@ -1,0 +1,249 @@
+/* relationships.css */
+
+.main--full {
+  max-width: none;
+}
+
+.rel-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.rel-controls input[type="text"],
+.rel-controls select {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  padding: 0.55rem 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 180px;
+}
+
+.rel-controls input:focus,
+.rel-controls select:focus {
+  border-color: var(--rose-dim);
+}
+
+.btn-reset {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reset:hover {
+  border-color: var(--rose-dim);
+  color: var(--rose);
+}
+
+/* Sim info panel */
+.sim-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.3s ease both;
+}
+
+.sim-panel-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  position: relative;
+}
+
+.sim-panel-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.sim-panel-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.1rem;
+}
+
+.sim-panel-world {
+  margin-bottom: 0.5rem;
+}
+
+.sim-panel-connections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.sim-panel-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.sim-panel-close:hover {
+  color: var(--text-primary);
+}
+
+/* Graph */
+.graph-wrap {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+#rel-graph-svg {
+  width: 100%;
+  height: 680px;
+  display: block;
+  cursor: grab;
+}
+
+#rel-graph-svg:active {
+  cursor: grabbing;
+}
+
+/* Node styles */
+.rel-node circle {
+  stroke-width: 2px;
+  cursor: pointer;
+  transition: r 0.2s, opacity 0.3s;
+}
+
+.rel-node.male circle   { fill: #1a2a3a; stroke: #5a9fd4; }
+.rel-node.female circle { fill: #2a1a1f; stroke: #c9879a; }
+.rel-node.other circle  { fill: #1a1a2a; stroke: #a0a0c0; }
+
+.rel-node text {
+  font-family: var(--font-display);
+  font-size: 11px;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+.rel-node.highlighted circle { stroke-width: 3px; }
+.rel-node.dimmed circle { opacity: 0.15; }
+.rel-node.dimmed text   { opacity: 0.15; }
+
+/* Link styles */
+.rel-link {
+  fill: none;
+  stroke-width: 1.5px;
+  transition: opacity 0.3s;
+}
+
+.rel-link.dimmed { opacity: 0.05; }
+
+.rel-link.married       { stroke: #c9879a; }
+.rel-link.dating        { stroke: #c9879a; stroke-dasharray: 4 3; }
+.rel-link.situationship { stroke: #d4a76a; stroke-dasharray: 4 3; }
+.rel-link.affair        { stroke: #d4a76a; stroke-dasharray: 6 3; }
+.rel-link.in_love       { stroke: #c9879a; stroke-dasharray: 2 4; }
+.rel-link.crush         { stroke: #c9879a; stroke-dasharray: 2 4; }
+.rel-link.parent        { stroke: #5a9fd4; }
+.rel-link.siblings      { stroke: #5a9fd4; stroke-dasharray: 4 3; }
+.rel-link.best_friend   { stroke: #7ec99a; stroke-width: 2px; }
+.rel-link.friends       { stroke: #7ec99a; }
+.rel-link.roommates     { stroke: #7ec99a; stroke-dasharray: 3 3; }
+.rel-link.gang          { stroke: #b07ec9; }
+.rel-link.illuminati    { stroke: #b07ec9; stroke-width: 2px; }
+.rel-link.negative      { stroke: #c97e7e; stroke-dasharray: 4 3; }
+.rel-link.frenemy       { stroke: #c97e7e; stroke-dasharray: 2 4; }
+.rel-link.transactional { stroke: #5e5858; stroke-dasharray: 3 3; }
+.rel-link.acquaintance  { stroke: #3a3535; }
+
+/* Link label */
+.rel-link-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--text-muted);
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* Tooltip */
+.rel-tooltip {
+  position: fixed;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 200;
+  max-width: 200px;
+}
+
+.rel-tooltip.visible { opacity: 1; }
+
+/* Legend */
+.rel-legend {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+}
+
+.legend-title { margin-bottom: 0.75rem; }
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

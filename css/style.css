@@ -476,3 +476,14 @@ tbody td.td-name {
   .stats-bar { flex-wrap: wrap; gap: 1rem; }
   .stat-divider { display: none; }
 }
+
+/* --- LOT NAME LINKS --- */
+.lot-name-link {
+  color: var(--text-primary);
+  font-weight: 400;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+.lot-name-link:hover {
+  color: var(--rose);
+}

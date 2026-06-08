@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family Trees — OCJ Save File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/families.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">OCJ</div>
+      <p class="logo-sub">Save File</p>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Navigate</span>
+      <ul>
+        <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
+        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
+        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
+        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
+        <li><a href="families.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
+        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
+        <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="mono-small">OCJ · 2025</span>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb">OCJ / <span>Families</span></div>
+      <h1 class="page-title"><em>Family Trees</em></h1>
+      <p class="page-subtitle">Generational family structures, relationships, and connections across the save file.</p>
+      <div class="page-divider"></div>
+    </div>
+
+    <!-- Family selector -->
+    <div class="family-selector" id="family-selector">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Theme display -->
+    <div class="family-theme" id="family-theme"></div>
+
+    <!-- Tree canvas -->
+    <div class="tree-wrap">
+      <svg id="family-tree-svg"></svg>
+    </div>
+
+    <!-- Legend -->
+    <div class="tree-legend">
+      <div class="legend-title mono-small">Legend</div>
+      <div class="legend-items">
+        <div class="legend-item"><span class="legend-dot dot--male"></span> Male</div>
+        <div class="legend-item"><span class="legend-dot dot--female"></span> Female</div>
+        <div class="legend-item"><span class="legend-dot dot--other"></span> Other</div>
+        <div class="legend-sep"></div>
+        <div class="legend-item"><span class="legend-line line--married"></span> Married</div>
+        <div class="legend-item"><span class="legend-line line--parent"></span> Parent</div>
+        <div class="legend-item"><span class="legend-line line--siblings"></span> Siblings</div>
+        <div class="legend-item"><span class="legend-line line--affair"></span> Affair</div>
+        <div class="legend-item"><span class="legend-line line--dating"></span> Dating</div>
+        <div class="legend-item"><span class="legend-line line--divorced"></span> Divorced</div>
+        <div class="legend-item"><span class="legend-line line--other"></span> Other</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/families.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relationships — OCJ Save File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/relationships.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">OCJ</div>
+      <p class="logo-sub">Save File</p>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Navigate</span>
+      <ul>
+        <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
+        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
+        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
+        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
+        <li><a href="families.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
+        <li><a href="relationships.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
+        <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="mono-small">OCJ · 2025</span>
+    </div>
+  </aside>
+
+  <main class="main main--full">
+
+    <div class="page-header">
+      <div class="breadcrumb">OCJ / <span>Relationships</span></div>
+      <h1 class="page-title"><em>Relationships</em></h1>
+      <p class="page-subtitle">The web of connections across all sims. Click a sim to highlight their relationships.</p>
+      <div class="page-divider"></div>
+    </div>
+
+    <div class="rel-controls">
+      <input type="text" id="search-rel" placeholder="Search sim..." />
+      <select id="filter-rel-type">
+        <option value="">All relationship types</option>
+        <option value="married">Married</option>
+        <option value="dating">Dating</option>
+        <option value="situationship">Situationship</option>
+        <option value="affair">Affair</option>
+        <option value="in_love">In Love</option>
+        <option value="crush">Crush</option>
+        <option value="parent">Parent/Child</option>
+        <option value="siblings">Siblings</option>
+        <option value="best_friend">Best Friends</option>
+        <option value="friends">Friends</option>
+        <option value="gang">Gang</option>
+        <option value="negative">Negative</option>
+        <option value="acquaintance">Acquaintance</option>
+      </select>
+      <button id="btn-reset" class="btn-reset">Reset</button>
+      <span class="filter-count" id="rel-count"></span>
+    </div>
+
+    <!-- Selected sim info panel -->
+    <div class="sim-panel" id="sim-panel" style="display:none;">
+      <div class="sim-panel-inner">
+        <div class="sim-panel-avatar" id="panel-avatar"></div>
+        <div class="sim-panel-info">
+          <div class="sim-panel-name" id="panel-name"></div>
+          <div class="sim-panel-world mono-small" id="panel-world"></div>
+          <div class="sim-panel-connections" id="panel-connections"></div>
+        </div>
+        <button class="sim-panel-close" id="panel-close">×</button>
+      </div>
+    </div>
+
+    <!-- Graph canvas -->
+    <div class="graph-wrap">
+      <svg id="rel-graph-svg"></svg>
+    </div>
+
+    <!-- Legend -->
+    <div class="rel-legend">
+      <div class="legend-title mono-small">Relationship Types</div>
+      <div class="legend-items">
+        <div class="legend-item"><span class="legend-dot" style="background:#c9879a"></span> Married / Dating</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#d4a76a"></span> Affair / Situationship</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#7ec99a"></span> Friends / Close</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#8ab4d4"></span> Family</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#b07ec9"></span> Gang / Faction</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#c97e7e"></span> Negative</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#5e5858"></span> Acquaintance</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/relationships.js"></script>
+</body>
+</html>
