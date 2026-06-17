@@ -1,203 +1,344 @@
 /* families.css */
 
-.family-selector {
+/* ── Page ─────────────────────────────────────────────────────────────────── */
+.families-page {
+  max-width: 100%;
+  padding: 0 0 4rem;
+}
+
+/* ── Page header ──────────────────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--chrysolite);
+  margin-bottom: 0.5rem;
+}
+
+.page-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-family: var(--font-head);
+  color: var(--fg);
+  margin-bottom: 1rem;
+}
+
+.page-description {
+  max-width: 560px;
+  margin: 1rem auto 0;
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ── Controls ─────────────────────────────────────────────────────────────── */
+.families-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0 1.5rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.family-select {
+  padding: 0.55rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  outline: none;
+  cursor: pointer;
+  min-width: 220px;
+}
+
+.family-select:focus {
+  border-color: var(--chrysolite);
 }
 
 .family-btn {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
+  padding: 0.55rem 1.1rem;
+  background: var(--bg-muted);
   border: 1px solid var(--border);
-  background: var(--bg-surface);
-  color: var(--text-secondary);
+  border-radius: var(--radius);
+  color: var(--fg);
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  white-space: nowrap;
 }
 
 .family-btn:hover {
-  border-color: var(--rose-dim);
-  color: var(--text-primary);
-}
-
-.family-btn.active {
-  border-color: var(--rose);
-  background: var(--rose-glow);
-  color: var(--rose);
-}
-
-.family-theme {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  min-height: 1.2rem;
-}
-
-.tree-wrap {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-#family-tree-svg {
-  width: 100%;
-  height: 600px;
-  display: block;
-}
-
-/* Node styles */
-.tree-node circle {
-  stroke-width: 2px;
-  cursor: pointer;
-  transition: r 0.2s;
-}
-
-.tree-node.male circle    { fill: #1a2a3a; stroke: #5a9fd4; }
-.tree-node.female circle  { fill: #2a1a1f; stroke: #c9879a; }
-.tree-node.other circle   { fill: #1a1a2a; stroke: #a0a0c0; }
-
-.tree-node circle:hover   { stroke-width: 3px; }
-.tree-node.selected circle { stroke-width: 3px; }
-
-.tree-node image {
-  clip-path: circle();
-  cursor: pointer;
-}
-
-.tree-node text {
-  font-family: var(--font-display);
-  font-size: 11px;
-  fill: var(--text-secondary);
-  text-anchor: middle;
-  pointer-events: none;
-  user-select: none;
-}
-
-.tree-node text.name-label {
-  font-size: 12px;
-  fill: var(--text-primary);
-}
-
-/* Link styles */
-.tree-link {
-  fill: none;
-  stroke-width: 1.5px;
-}
-
-.tree-link.married   { stroke: #c9879a; stroke-dasharray: none; }
-.tree-link.parent    { stroke: #5a9fd4; stroke-dasharray: none; }
-.tree-link.siblings  { stroke: #7ec99a; stroke-dasharray: 4 3; }
-.tree-link.affair    { stroke: #d4a76a; stroke-dasharray: 6 3; }
-.tree-link.dating    { stroke: #c9879a; stroke-dasharray: 4 3; }
-.tree-link.divorced  { stroke: #c97e7e; stroke-dasharray: 6 3; }
-.tree-link.crush     { stroke: #c9879a; stroke-dasharray: 2 4; }
-.tree-link.stepparent { stroke: #5a9fd4; stroke-dasharray: 4 3; }
-.tree-link.in_love   { stroke: #c9879a; stroke-dasharray: 2 4; }
-.tree-link.roommates { stroke: #7ec99a; stroke-dasharray: 3 3; }
-.tree-link.best_friend { stroke: #7ec99a; stroke-dasharray: none; }
-
-/* Link labels */
-.link-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  fill: var(--text-muted);
-  text-anchor: middle;
-  pointer-events: none;
-}
-
-/* Tooltip */
-.tree-tooltip {
-  position: absolute;
   background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
-  padding: 0.75rem 1rem;
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  color: var(--text-primary);
-  max-width: 220px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  z-index: 10;
+  border-color: var(--chrysolite);
+  color: var(--chrysolite);
 }
 
-.tree-tooltip.visible { opacity: 1; }
-.tree-tooltip-name { font-weight: 600; margin-bottom: 0.25rem; }
-.tree-tooltip-notes { font-size: 0.8rem; color: var(--text-secondary); }
-
-/* Legend */
-.tree-legend {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem 1.5rem;
+.secret-btn.secret-active {
+  background: rgba(192, 87, 42, 0.15);
+  border-color: var(--jacinth);
+  color: var(--jacinth);
 }
 
-.legend-title {
-  margin-bottom: 0.75rem;
-}
-
-.legend-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.5rem;
-}
-
-.legend-item {
+/* ── Secret banner ────────────────────────────────────────────────────────── */
+.secret-banner {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-display);
+  padding: 0.6rem 1.5rem;
+  background: rgba(192, 87, 42, 0.12);
+  border-top: 1px solid rgba(192, 87, 42, 0.25);
+  border-bottom: 1px solid rgba(192, 87, 42, 0.25);
+  color: var(--jacinth);
   font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  flex-shrink: 0;
-}
-
-.dot--male   { border-color: #5a9fd4; background: #1a2a3a; }
-.dot--female { border-color: #c9879a; background: #2a1a1f; }
-.dot--other  { border-color: #a0a0c0; background: #1a1a2a; }
-
-.legend-line {
-  width: 28px;
-  height: 2px;
-  flex-shrink: 0;
-}
-
-.line--married  { background: #c9879a; }
-.line--parent   { background: #5a9fd4; }
-.line--siblings { background: #7ec99a; border-top: 2px dashed #7ec99a; height: 0; }
-.line--affair   { background: transparent; border-top: 2px dashed #d4a76a; height: 0; }
-.line--dating   { background: transparent; border-top: 2px dashed #c9879a; height: 0; }
-.line--divorced { background: transparent; border-top: 2px dashed #c97e7e; height: 0; }
-.line--other    { background: #5e5858; }
-
-.legend-sep {
-  width: 1px;
-  height: 20px;
-  background: var(--border);
-}
-.families-hint {
-  color: var(--text-muted);
   margin-bottom: 1rem;
-  font-size: 0.62rem;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+/* ── Trees container ──────────────────────────────────────────────────────── */
+.trees-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 0 1rem 2rem;
+}
+
+/* ── Family section ───────────────────────────────────────────────────────── */
+.family-section {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Overlay so content is always readable over background image */
+.family-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 14, 0.72);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.family-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Family header ────────────────────────────────────────────────────────── */
+.family-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid rgba(163, 185, 90, 0.2);
+  backdrop-filter: blur(8px);
+  background: rgba(10,10,14,0.45);
+}
+
+.family-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(163,185,90,0.4);
+  flex-shrink: 0;
+  background: var(--bg-muted);
+}
+
+.family-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.family-title {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  color: #fff;
+  flex: 1;
+}
+
+.family-count {
+  font-size: 0.78rem;
+  color: var(--chrysolite);
+  background: rgba(163,185,90,0.12);
+  border: 1px solid rgba(163,185,90,0.25);
+  border-radius: 20px;
+  padding: 0.2rem 0.7rem;
+  white-space: nowrap;
+}
+
+/* ── Tree SVG wrapper ─────────────────────────────────────────────────────── */
+.tree-svg-wrap {
+  overflow: auto;
+  padding: 1.5rem;
+  min-height: 300px;
+  cursor: grab;
+}
+
+.tree-svg-wrap:active {
+  cursor: grabbing;
+}
+
+.family-tree-svg {
+  display: block;
+  min-width: 100%;
+}
+
+/* ── Node cards ───────────────────────────────────────────────────────────── */
+.node-rect {
+  fill: var(--bg-card);
+  stroke: rgba(163,185,90,0.35);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  transition: stroke 0.2s;
+}
+
+.tree-node:hover .node-rect {
+  stroke: var(--chrysolite);
+  stroke-width: 2;
+}
+
+.ghost-rect {
+  fill: rgba(50,50,60,0.6);
+  stroke: rgba(120,120,140,0.3);
+  stroke-dasharray: 4,3;
+}
+
+.ghost-label {
+  fill: rgba(150,150,170,0.5);
+  font-family: var(--font-head);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.ghost-name {
+  fill: rgba(140,140,160,0.6);
+}
+
+.node-portrait {
+  /* handled via SVG image element */
+}
+
+.node-initials-bg {
+  fill: var(--bg-muted);
+}
+
+.node-initials {
+  fill: var(--chrysolite);
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.node-name {
+  fill: var(--fg);
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 500;
+  paint-order: stroke;
+  stroke: var(--bg-card);
+  stroke-width: 2px;
+}
+
+.lock-icon {
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.cross-family-badge {
+  fill: var(--chrysolite);
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: var(--bg-card);
+  stroke-width: 2px;
+}
+
+.conflict-warn {
+  pointer-events: none;
+}
+
+/* ── Pet cards ────────────────────────────────────────────────────────────── */
+.pet-rect {
+  fill: var(--bg-muted);
+  stroke: rgba(192,87,42,0.4);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+}
+
+.pet-node:hover .pet-rect {
+  stroke: var(--jacinth);
+}
+
+.pet-name {
+  fill: var(--fg-muted);
+  font-family: var(--font-body);
+  font-size: 8px;
+}
+
+/* ── Loading / footer ─────────────────────────────────────────────────────── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  color: var(--fg-muted);
+  z-index: 9999;
+  letter-spacing: 0.05em;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.footer-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  color: var(--fg);
+}
+
+.footer-sub {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  margin-top: 0.25rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .families-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .family-select {
+    width: 100%;
+  }
+
+  .tree-svg-wrap {
+    padding: 1rem;
+  }
 }

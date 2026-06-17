@@ -1,120 +1,454 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OCJ Save File</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
+<title>OCJ Save File</title>
+
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/navbar.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="logo-mark">OCJ</div>
-      <p class="logo-sub">Save File</p>
+<!-- =========================
+     NAVBAR
+========================= -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo">
+    <span class="navbar-logo-gem">♦</span>
+
+    <div class="navbar-logo-text">
+      <div class="navbar-logo-title">OCJ</div>
+      <div class="navbar-logo-sub">Save File</div>
     </div>
-    <nav class="sidebar-nav">
-      <span class="nav-label">Navigate</span>
-      <ul>
-        <li><a href="index.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
-        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
-        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
-        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
-        <li><a href="families.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
-        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
-        <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
-      </ul>
-    </nav>
-    <div class="sidebar-footer">
-      <span class="mono-small">OCJ · 2025</span>
+  </a>
+
+  <ul class="navbar-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="sims.html">Sims</a></li>
+    <li><a href="worlds.html">Worlds</a></li>
+    <li><a href="lots.html">Lots</a></li>
+    <li><a href="families.html">Families</a></li>
+    <li><a href="relations.html">Relations</a></li>
+    <li><a href="statistics.html">Statistics</a></li>
+  </ul>
+
+  <div class="navbar-right">
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">
+      ☀
+    </button>
+
+    <button
+      class="hamburger"
+      id="hamburger"
+      aria-label="Menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" class="active">Home</a>
+  <a href="sims.html">Sims</a>
+  <a href="worlds.html">Worlds</a>
+  <a href="lots.html">Lots</a>
+  <a href="families.html">Families</a>
+  <a href="relations.html">Relations</a>
+  <a href="statistics.html">Statistics</a>
+</div>
+
+<!-- =========================
+     HERO
+========================= -->
+<section class="hero">
+
+  <div class="hero-bg">
+
+    <!-- Future hero image -->
+    <div id="heroImage"></div>
+
+    <div class="hero-gradient"></div>
+    <div class="hero-gradient-sides"></div>
+
+  </div>
+
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-content fade-in">
+
+    <div class="hero-rule">
+      <div class="hero-line"></div>
+      <span class="hero-sparkle">✦</span>
+      <div class="hero-line"></div>
     </div>
-  </aside>
 
-  <main class="main">
+    <p class="hero-eyebrow">
+      Welcome to the
+    </p>
 
-    <section class="hero">
-      <div class="hero-tag mono-small">Sims 4 · Worldbuilding Project</div>
-      <h1 class="hero-title">The OCJ<br /><em>Save File</em></h1>
-      <p class="hero-sub">A living document of custom worlds, households, lore, and systems — built and tracked in meticulous detail.</p>
-      <div class="hero-divider"></div>
-    </section>
+    <h1 class="hero-title">
+      OCJ Save File
+    </h1>
 
-    <section class="stats-bar">
-      <div class="stat-item">
-        <span class="stat-number" id="stat-worlds">—</span>
-        <span class="stat-label">Worlds</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-number" id="stat-sims">—</span>
-        <span class="stat-label">Sims</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-number" id="stat-lots">—</span>
-        <span class="stat-label">Lots</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-number">300+</span>
-        <span class="stat-label">Active Mods</span>
-      </div>
-    </section>
+    <div class="hero-rule">
+      <div class="hero-line hero-line-sec"></div>
+      <span class="hero-sparkle hero-sparkle-sec">★</span>
+      <div class="hero-line hero-line-sec"></div>
+    </div>
 
-    <section class="cards-grid">
-      <a href="worlds.html" class="card card--accent">
-        <div class="card-tag mono-small">Explore</div>
-        <h2 class="card-title">Worlds</h2>
-        <p class="card-desc">Custom and base game worlds, completion status, and world-level lore.</p>
-        <div class="card-arrow">→</div>
+    <p class="hero-sub">
+      A living encyclopaedia of a simulated world.
+      Every sim has a story. Every lot has a purpose.
+      Every relationship matters.
+      Explore the people, places, bloodlines and history
+      that make up the OCJ Save File.
+    </p>
+
+  </div>
+
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-chevron">⌄</span>
+  </div>
+
+</section>
+
+<!-- =========================
+     STATS STRIP
+========================= -->
+<section class="stats-strip">
+
+  <div class="stats-inner">
+
+    <div class="stat-item">
+      <div class="stat-num" id="statSims">—</div>
+      <div class="stat-label">Sims</div>
+    </div>
+
+    <div class="stat-div"></div>
+
+    <div class="stat-item">
+      <div class="stat-num stat-num-sec" id="statWorlds">—</div>
+      <div class="stat-label">Worlds</div>
+    </div>
+
+    <div class="stat-div"></div>
+
+    <div class="stat-item">
+      <div class="stat-num" id="statLots">—</div>
+      <div class="stat-label">Lots</div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
+     ABOUT
+========================= -->
+<section class="about-section">
+
+  <div class="about-inner">
+
+    <h2 class="section-title">
+      About This Save
+    </h2>
+
+    <div
+      class="divider"
+      style="width:6rem;margin:.75rem auto 2rem"
+    ></div>
+
+    <div
+      class="about-text"
+      id="aboutText"
+    >
+
+      <p>
+        The OCJ Save File is a long-running Sims 4 worldbuilding
+        project. Every sim has a backstory, every lot has a purpose,
+        and every world has been built with intention. This site acts
+        as the canonical record of the save and its continued growth.
+      </p>
+
+      <p>
+        Relationships span generations. Secrets connect households.
+        Influence moves through families, gangs, occult societies,
+        businesses, political circles and hidden organisations.
+        Nothing exists without a reason.
+      </p>
+
+      <p>
+        Browse the database, discover stories, explore family trees,
+        trace social networks and uncover the history of the world
+        one sim at a time.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
+     NAVIGATION CARDS
+========================= -->
+<section class="nav-cards-section">
+
+  <div class="nav-cards-inner">
+
+    <h2 class="section-title">
+      Explore The Save
+    </h2>
+
+    <div
+      class="divider"
+      style="width:6rem;margin:.75rem auto 2.5rem"
+    ></div>
+
+    <div class="nav-cards-grid">
+
+      <!-- SIMS -->
+      <a
+        href="sims.html"
+        class="nav-card"
+        style="--card-color:#A3B95A"
+      >
+        <div
+          class="nav-card-icon"
+          style="background:rgba(163,185,90,.12);border-color:rgba(163,185,90,.3)"
+        >
+          👥
+        </div>
+
+        <h3 class="nav-card-title">
+          Sims
+        </h3>
+
+        <p class="nav-card-desc">
+          Browse every sim in the save file and discover their
+          stories, households and histories.
+        </p>
+
+        <div class="nav-card-meta">
+          <span id="cardSimCount">— Sims</span>
+        </div>
+
+        <span class="nav-card-arrow">
+          Explore →
+        </span>
       </a>
-      <a href="sims.html" class="card">
-        <div class="card-tag mono-small">Database</div>
-        <h2 class="card-title">Sims</h2>
-        <p class="card-desc">The canonical Sim database — traits, careers, occults, households, and relationships.</p>
-        <div class="card-arrow">→</div>
+
+      <!-- WORLDS -->
+      <a
+        href="worlds.html"
+        class="nav-card"
+        style="--card-color:#C0572A"
+      >
+        <div
+          class="nav-card-icon"
+          style="background:rgba(192,87,42,.12);border-color:rgba(192,87,42,.3)"
+        >
+          🌍
+        </div>
+
+        <h3 class="nav-card-title">
+          Worlds
+        </h3>
+
+        <p class="nav-card-desc">
+          Explore every world, its residents, landmarks and
+          connected stories.
+        </p>
+
+        <div class="nav-card-meta">
+          <span id="cardWorldCount">— Worlds</span>
+        </div>
+
+        <span class="nav-card-arrow">
+          Explore →
+        </span>
       </a>
-      <a href="lots.html" class="card">
-        <div class="card-tag mono-small">Builds</div>
-        <h2 class="card-title">Lots</h2>
-        <p class="card-desc">Every lot tracked by type, status, world, and assigned household.</p>
-        <div class="card-arrow">→</div>
+
+      <!-- PETS -->
+      <a
+        href="pets.html"
+        class="nav-card"
+        style="--card-color:#B16F4B"
+      >
+        <div
+          class="nav-card-icon"
+          style="background:rgba(177,111,75,.12);border-color:rgba(177,111,75,.3)"
+        >
+          🐾
+        </div>
+
+        <h3 class="nav-card-title">
+          Pets
+        </h3>
+
+        <p class="nav-card-desc">
+          Explore the animals in the save and find their owners.
+        </p>
+
+        <div class="nav-card-meta">
+          <span id="cardPetCount">— Pets</span>
+        </div>
+
+        <span class="nav-card-arrow">
+          Explore →
+        </span>
       </a>
-      <a href="statistics.html" class="card">
-        <div class="card-tag mono-small">Analysis</div>
-        <h2 class="card-title">Statistics</h2>
-        <p class="card-desc">Visual breakdowns by age, gender, occult, career, and lot distribution.</p>
-        <div class="card-arrow">→</div>
+
+      <!-- LOTS -->
+      <a
+        href="lots.html"
+        class="nav-card"
+        style="--card-color:#A3B95A"
+      >
+        <div
+          class="nav-card-icon"
+          style="background:rgba(163,185,90,.12);border-color:rgba(163,185,90,.3)"
+        >
+          🏡
+        </div>
+
+        <h3 class="nav-card-title">
+          Lots
+        </h3>
+
+        <p class="nav-card-desc">
+          Browse homes, businesses, community spaces and every
+          location that exists in the save.
+        </p>
+
+        <div class="nav-card-meta">
+          <span id="cardLotCount">— Lots</span>
+        </div>
+
+        <span class="nav-card-arrow">
+          Explore →
+        </span>
       </a>
-    </section>
 
-    <section class="about-strip">
-      <div class="about-text">
-        <h3>About This Project</h3>
-        <p>OCJ Save File is a long-term Sims 4 worldbuilding and management project. Every Sim, lot, world, and relationship is documented and tracked. This site is the living reference for that save file.</p>
-      </div>
-      <div class="about-meta mono-small">
-        Last updated<br />
-        <strong>May 2025</strong>
-      </div>
-    </section>
+      <!-- FAMILIES -->
+      <a
+        href="families.html"
+        class="nav-card"
+        style="--card-color:#C0572A"
+      >
+        <div
+          class="nav-card-icon"
+          style="background:rgba(192,87,42,.12);border-color:rgba(192,87,42,.3)"
+        >
+          🌿
+        </div>
 
-    <section class="rel-entry">
-      <div class="rel-entry-text">
-        <div class="mono-small" style="color:var(--rose-dim);margin-bottom:0.5rem">Explore connections</div>
-        <h3>Sim Relationships</h3>
-        <p>A web of every connection across the save file — who knows who, who loves who, who owes who. Click any sim to see their full network.</p>
-      </div>
-      <a href="relationships.html" class="rel-entry-btn">Explore relationships →</a>
-    </section>
+        <h3 class="nav-card-title">
+          Families
+        </h3>
 
-  </main>
+        <p class="nav-card-desc">
+          Follow bloodlines, marriages, heirs and generations
+          across the entire save file.
+        </p>
 
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+        <span class="nav-card-arrow">
+          Explore →
+        </span>
+      </a>
+
+      <!-- RELATIONS -->
+      <a
+        href="relations.html"
+        class="nav-card"
+        style="--card-color:#A3B95A"
+      >
+        <div
+          class="nav-card-icon"
+          style="background:rgba(163,185,90,.12);border-color:rgba(163,185,90,.3)"
+        >
+          🕸
+        </div>
+
+        <h3 class="nav-card-title">
+          Relations
+        </h3>
+
+        <p class="nav-card-desc">
+          Visualise friendships, rivalries, romances and
+          connections throughout the world.
+        </p>
+
+        <span class="nav-card-arrow">
+          Explore →
+        </span>
+      </a>
+
+      <!-- STATS -->
+      <a
+        href="statistics.html"
+        class="nav-card"
+        style="--card-color:#C0572A"
+      >
+        <div
+          class="nav-card-icon"
+          style="background:rgba(192,87,42,.12);border-color:rgba(192,87,42,.3)"
+        >
+          📊
+        </div>
+
+        <h3 class="nav-card-title">
+          Statistics
+        </h3>
+
+        <p class="nav-card-desc">
+          View demographics, distributions and visual breakdowns
+          across the save.
+        </p>
+
+        <span class="nav-card-arrow">
+          Explore →
+        </span>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
+     FOOTER
+========================= -->
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <p class="footer-title">
+      OCJ Save File
+    </p>
+
+    <p class="footer-sub">
+      Canonical Save Archive
+    </p>
+
+  </div>
+
+</footer>
+
+<script src="js/theme.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/csv.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/index.js"></script>
+
 </body>
 </html>

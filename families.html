@@ -1,85 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Family Trees — OCJ Save File</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/families.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
+<title>Families — OCJ Save File</title>
+
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/navbar.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/families.css" />
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="logo-mark">OCJ</div>
-      <p class="logo-sub">Save File</p>
+<!-- ================================
+     NAVBAR
+================================ -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo">
+    <span class="navbar-logo-gem">♦</span>
+    <div class="navbar-logo-text">
+      <div class="navbar-logo-title">OCJ</div>
+      <div class="navbar-logo-sub">Save File</div>
     </div>
-       <nav class="sidebar-nav">
-      <span class="nav-label">Navigate</span>
-      <ul>
-        <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
-        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
-        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
-        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
-        <li><a href="families.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
-        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
-        <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
-      </ul>
-    </nav>
-    <div class="sidebar-footer">
-      <span class="mono-small">OCJ · 2025</span>
-    </div>
-  </aside>
+  </a>
 
-  <main class="main">
+  <ul class="navbar-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sims.html">Sims</a></li>
+    <li><a href="worlds.html">Worlds</a></li>
+    <li><a href="lots.html">Lots</a></li>
+    <li><a href="families.html" class="active">Families</a></li>
+    <li><a href="relations.html">Relations</a></li>
+    <li><a href="statistics.html">Statistics</a></li>
+  </ul>
 
-    <div class="page-header">
-      <div class="breadcrumb">OCJ / <span>Families</span></div>
-      <h1 class="page-title"><em>Family Trees</em></h1>
-      <p class="page-subtitle">Multi-generational family trees across the save file. Select a family below to explore their tree. Connections show marriages, parentage, affairs, and more.</p>
-      <div class="page-divider"></div>
-    </div>
+  <div class="navbar-right">
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
-    <!-- Family selector -->
-    <div class="family-selector" id="family-selector">
-      <!-- Populated by JS -->
-    </div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="sims.html">Sims</a>
+  <a href="pets.html">Pets</a>
+  <a href="worlds.html">Worlds</a>
+  <a href="lots.html">Lots</a>
+  <a href="families.html" class="active">Families</a>
+  <a href="relations.html">Relations</a>
+  <a href="statistics.html">Statistics</a>
+</div>
 
-    <!-- Theme display -->
-    <div class="family-theme" id="family-theme"></div>
+<!-- ================================
+     PAGE
+================================ -->
+<div class="families-page">
 
-    <!-- Tree canvas -->
-     <p class="families-hint mono-small">Use the buttons above to switch families — the Ashcroft &amp; Faircroft tree is a good place to start. Drag nodes to rearrange. Hover for details.</p>
-    <div class="tree-wrap">
-      <svg id="family-tree-svg"></svg>
-    </div>
+  <!-- HEADER -->
+  <div class="page-header">
+    <p class="page-eyebrow">The Bloodlines</p>
+    <h1 class="page-title">Family Legacies</h1>
+    <div class="divider"></div>
+    <p class="page-description">
+      Explore the family trees that define the OCJ Save File — marriages,
+      bloodlines, secrets, and the ties that bind generations together.
+    </p>
+  </div>
 
-    <!-- Legend -->
-    <div class="tree-legend">
-      <div class="legend-title mono-small">Legend</div>
-      <div class="legend-items">
-        <div class="legend-item"><span class="legend-dot dot--male"></span> Male</div>
-        <div class="legend-item"><span class="legend-dot dot--female"></span> Female</div>
-        <div class="legend-item"><span class="legend-dot dot--other"></span> Other</div>
-        <div class="legend-sep"></div>
-        <div class="legend-item"><span class="legend-line line--married"></span> Married</div>
-        <div class="legend-item"><span class="legend-line line--parent"></span> Parent</div>
-        <div class="legend-item"><span class="legend-line line--siblings"></span> Siblings</div>
-        <div class="legend-item"><span class="legend-line line--affair"></span> Affair</div>
-        <div class="legend-item"><span class="legend-line line--dating"></span> Dating</div>
-        <div class="legend-item"><span class="legend-line line--divorced"></span> Divorced</div>
-        <div class="legend-item"><span class="legend-line line--other"></span> Other</div>
-      </div>
-    </div>
+  <!-- CONTROLS -->
+  <div class="families-controls">
 
-  </main>
+    <select id="familyDropdown" class="family-select">
+      <option value="">All Families</option>
+    </select>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/families.js"></script>
+    <button id="secretToggle" class="family-btn secret-btn">
+      🔒 Show Secrets
+    </button>
+
+  </div>
+
+  <!-- SECRET BANNER -->
+  <div id="secretBanner" class="secret-banner" style="display:none;">
+    🔓 Secret Reveal Mode Active — Hidden connections are now visible
+  </div>
+
+  <!-- TREES CONTAINER -->
+  <div id="treesContainer" class="trees-container"></div>
+
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen" class="loading-screen">
+  Building Family Trees…
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-title">OCJ Save File</p>
+    <p class="footer-sub">Canonical Save Archive</p>
+  </div>
+</footer>
+
+<!-- D3 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
+<script src="js/csv.js?v=2"></script>
+<script src="js/theme.js?v=2"></script>
+<script src="js/navbar.js?v=2"></script>
+<script src="js/utils.js?v=2"></script>
+<script src="js/normalizeFamilyData.js?v=2"></script>
+<script src="js/families.js?v=2"></script>
+
 </body>
 </html>

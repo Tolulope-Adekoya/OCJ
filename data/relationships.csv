@@ -1,0 +1,5 @@
+﻿Sim_ID A,Sim_ID B,connection of sim A to sim B,level,rlevel,Notes,Sentiments,secret
+SIM00001,SIM00002,Legal Spouse,70,70,happily married,"blissful wedding, first love",FALSE
+SIM00001,SIM00003,Parent,60,,good parent child relationship,adored,FALSE
+SIM00002,SIM00003,Parent,60,,good parent child relationship,adored,FALSE
+SIM00242,SIM00001,Friend,60,-89,meet on grindr,ex,FALSE

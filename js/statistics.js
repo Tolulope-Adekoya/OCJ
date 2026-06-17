@@ -1,151 +1,538 @@
-// statistics.js — Statistics page with bar/pie toggle
+// statistics.js
 
-const PIE_COLOURS = [
-  '#c9879a','#5a9fd4','#7ec99a','#d4a76a','#a0a0c0',
-  '#b07ec9','#7ec9c9','#c97e7e','#9fd45a','#d4c97e',
-  '#5a7ed4','#c9a07e'
-];
+const DATASETS = {
 
-document.addEventListener('ocj-data-ready', () => {
-  setBadge('badge-worlds', window.WORLDS.length);
-  setBadge('badge-sims',   window.SIMS.length);
-  setBadge('badge-lots',   window.LOTS.length);
-  buildAllCharts();
-  setupToggles();
-});
+  sims: {
+    file: 'data/sims.csv',
+    exclude: [
+      'SIM_ID',
+      'NAME',
+      'DESCRIPTION',
+      'LORE'
+    ]
+  },
 
-function setBadge(id, count) {
-  const el = document.getElementById(id);
-  if (el && count > 0) el.textContent = count;
+  lots: {
+    file: 'data/lots.csv',
+    exclude: [
+      'LOT ID',
+      'PARENT LOT ID',
+      'LOT NEW NAME',
+      'LOT ORIGINAL NAME',
+      'LOT DESCRIPTION',
+      'HOUSEHOLD DESCRIPTION',
+      'LOTS CC'
+    ]
+  },
+
+  worlds: {
+    file: 'data/worlds.csv',
+    exclude: [
+      'WORLD ID',
+      'DESCRIPTION'
+    ]
+  },
+
+  pets: {
+    file: 'data/pets.csv',
+    exclude: [
+      'SIM_ID',
+      'NAME'
+    ]
+  }
+
+};
+
+let DATA = {};
+let CURRENT_DATASET = 'sims';
+let CURRENT_ATTRIBUTE = '';
+let CHART = null;
+
+document.addEventListener('DOMContentLoaded', init);
+
+async function init() {
+
+  try {
+
+    DATA.sims =
+      await window.CSV.loadCSV(
+        DATASETS.sims.file
+      );
+
+    DATA.lots =
+      await window.CSV.loadCSV(
+        DATASETS.lots.file
+      );
+
+    DATA.worlds =
+      await window.CSV.loadCSV(
+        DATASETS.worlds.file
+      );
+
+    DATA.pets =
+      await window.CSV.loadCSV(
+        DATASETS.pets.file
+      );
+
+    setupDatasetButtons();
+
+    setupControls();
+
+    renderQuickStats();
+
+    populateAttributes();
+
+    updateStatistics();
+
+    hideLoading();
+
+  } catch (err) {
+
+    console.error(err);
+
+  }
+
 }
 
-const CHARTS = [
-  { id: 'chart-world',       key: 'WORLD',              source: 'sims' },
-  { id: 'chart-gender',      key: 'GENDER',             source: 'sims' },
-  { id: 'chart-age',         key: 'AGE GROUP',          source: 'sims' },
-  { id: 'chart-occult',      key: 'OCCULT',             source: 'sims' },
-  { id: 'chart-wealth',      key: 'WEALTH CLASS',       source: 'sims' },
-  { id: 'chart-orientation', key: 'ORIENTATION',        source: 'sims' },
-  { id: 'chart-political',   key: 'POLITICAL ALIGNMENT',source: 'sims' },
-  { id: 'chart-faith',       key: 'FAITH',              source: 'sims' },
-  { id: 'chart-alignment',   key: 'ALIGNMENT',          source: 'sims' },
-  { id: 'chart-playable',    key: 'PLAYABLE SIM',       source: 'sims' },
-  { id: 'chart-lots-world',  key: 'WORLD',              source: 'lots' },
-  { id: 'chart-lot-type',    key: 'LOT TYPE',           source: 'lots' },
-];
+/* =========================
+   DATASET BUTTONS
+========================= */
 
-function buildAllCharts() {
-  CHARTS.forEach(c => {
-    const data = c.source === 'sims' ? window.SIMS : window.LOTS;
-    const counts = countBy(data, c.key);
-    renderBar(c.id, counts);
-  });
+function setupDatasetButtons() {
+
+  document
+    .querySelectorAll('.dataset-btn')
+    .forEach(btn => {
+
+      btn.addEventListener(
+        'click',
+        () => {
+
+          document
+            .querySelectorAll('.dataset-btn')
+            .forEach(b =>
+              b.classList.remove('active')
+            );
+
+          btn.classList.add('active');
+
+          CURRENT_DATASET =
+            btn.dataset.dataset;
+
+          populateAttributes();
+
+          updateStatistics();
+          renderQuickStats();
+
+        }
+      );
+
+    });
+
 }
 
-function setupToggles() {
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const chartId = btn.dataset.chart;
-      const type    = btn.dataset.type;
+/* =========================
+   CONTROLS
+========================= */
 
-      // Update active state
-      btn.closest('.chart-toggle').querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+function setupControls() {
 
-      // Re-render
-      const chart = CHARTS.find(c => c.id === chartId);
-      if (!chart) return;
-      const data   = chart.source === 'sims' ? window.SIMS : window.LOTS;
-      const counts = countBy(data, chart.key);
-      if (type === 'pie') {
-        renderPie(chartId, counts);
-      } else {
-        renderBar(chartId, counts);
+  document
+    .getElementById('attributeSelect')
+    ?.addEventListener(
+      'change',
+      e => {
+
+        CURRENT_ATTRIBUTE =
+          e.target.value;
+
+        updateStatistics();
+
       }
-    });
-  });
+    );
+
+  document
+    .getElementById('chartType')
+    ?.addEventListener(
+      'change',
+      updateStatistics
+    );
+
+  document
+    .getElementById('topN')
+    ?.addEventListener(
+      'change',
+      updateStatistics
+    );
+
 }
 
-function renderBar(containerId, countsObj) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+/* =========================
+   ATTRIBUTES
+========================= */
 
-  const entries = sortedEntries(countsObj).filter(([k]) => k && k !== 'Unknown');
-  if (!entries.length) {
-    container.innerHTML = '<div class="no-results" style="padding:1rem 0">No data.</div>';
+function populateAttributes() {
+
+  const select =
+    document.getElementById(
+      'attributeSelect'
+    );
+
+  if (!select) return;
+
+  const rows =
+    DATA[CURRENT_DATASET] || [];
+
+  if (!rows.length) {
+
+    select.innerHTML = '';
+
     return;
+
   }
 
-  const max = entries[0][1];
+  const headers =
+    Object.keys(rows[0])
 
-  container.innerHTML = `<div class="bar-chart">${
-    entries.map(([label, count]) => {
-      const pct = Math.round((count / max) * 100);
-      return `
-        <div class="bar-row">
-          <span class="bar-label" title="${label}">${label}</span>
-          <div class="bar-track">
-            <div class="bar-fill" style="width:0%" data-target="${pct}"></div>
-          </div>
-          <span class="bar-val">${count}</span>
-        </div>
-      `;
-    }).join('')
-  }</div>`;
+      .filter(header =>
 
-  requestAnimationFrame(() => {
-    container.querySelectorAll('.bar-fill').forEach(bar => {
-      setTimeout(() => { bar.style.width = bar.dataset.target + '%'; }, 50);
-    });
-  });
+        !DATASETS[
+          CURRENT_DATASET
+        ].exclude.includes(header)
+
+      );
+
+  select.innerHTML =
+    headers.map(h => `
+      <option value="${h}">
+        ${h}
+      </option>
+    `).join('');
+
+  CURRENT_ATTRIBUTE =
+    headers[0] || '';
+
 }
 
-function renderPie(containerId, countsObj) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+/* =========================
+   MAIN UPDATE
+========================= */
 
-  const entries = sortedEntries(countsObj).filter(([k]) => k && k !== 'Unknown');
-  if (!entries.length) {
-    container.innerHTML = '<div class="no-results" style="padding:1rem 0">No data.</div>';
+function updateStatistics() {
+
+  if (!CURRENT_ATTRIBUTE)
     return;
-  }
 
-  const total = entries.reduce((s, [,v]) => s + v, 0);
-  const size  = 120;
-  const cx = size / 2, cy = size / 2, r = size / 2 - 4;
+  const counts =
+    getCounts();
 
-  let angle = -Math.PI / 2;
-  const slices = entries.map(([label, count], i) => {
-    const frac  = count / total;
-    const start = angle;
-    angle += frac * 2 * Math.PI;
-    const end = angle;
-    const x1 = cx + r * Math.cos(start);
-    const y1 = cy + r * Math.sin(start);
-    const x2 = cx + r * Math.cos(end);
-    const y2 = cy + r * Math.sin(end);
-    const large = frac > 0.5 ? 1 : 0;
-    return {
-      label, count, frac,
-      path: `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} Z`,
-      colour: PIE_COLOURS[i % PIE_COLOURS.length]
-    };
+  renderSummary(counts);
+
+  renderChart(counts);
+
+  renderTable(counts);
+
+}
+
+/* =========================
+   COUNT VALUES
+========================= */
+
+function getCounts() {
+
+  const rows =
+    DATA[CURRENT_DATASET] || [];
+
+  const map = {};
+
+  rows.forEach(row => {
+
+    let value =
+      row[CURRENT_ATTRIBUTE];
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === ''
+    ) {
+
+      value = 'Unknown';
+
+    }
+
+    map[value] =
+      (map[value] || 0) + 1;
+
   });
 
-  container.innerHTML = `
-    <div class="pie-wrap">
-      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-        ${slices.map(s => `<path d="${s.path}" fill="${s.colour}" opacity="0.9"/>`).join('')}
-      </svg>
-      <div class="pie-legend">
-        ${slices.map(s => `
-          <div class="pie-legend-item">
-            <div class="pie-legend-dot" style="background:${s.colour}"></div>
-            <span>${s.label}</span>
-            <span class="pie-legend-pct">${Math.round(s.frac * 100)}%</span>
-          </div>
-        `).join('')}
-      </div>
+  let entries =
+    Object.entries(map)
+
+      .sort(
+        (a, b) =>
+          b[1] - a[1]
+      );
+
+  const topN =
+    document
+      .getElementById('topN')
+      ?.value;
+
+  if (
+    topN &&
+    topN !== 'all'
+  ) {
+
+    entries =
+      entries.slice(
+        0,
+        Number(topN)
+      );
+
+  }
+
+  return entries;
+
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+function renderSummary(entries) {
+
+  const el =
+    document.getElementById(
+      'statsSummary'
+    );
+
+  if (!el) return;
+
+  const total =
+    entries.reduce(
+      (sum, e) =>
+        sum + e[1],
+      0
+    );
+
+  el.innerHTML = `
+
+    <div class="summary-card">
+      Dataset:
+      <strong>
+        ${CURRENT_DATASET}
+      </strong>
     </div>
+
+    <div class="summary-card">
+      Attribute:
+      <strong>
+        ${CURRENT_ATTRIBUTE}
+      </strong>
+    </div>
+
+    <div class="summary-card">
+      Categories:
+      <strong>
+        ${entries.length}
+      </strong>
+    </div>
+
+    <div class="summary-card">
+      Records:
+      <strong>
+        ${total}
+      </strong>
+    </div>
+
   `;
+
+}
+
+/* =========================
+   CHART
+========================= */
+
+function renderChart(entries) {
+
+  const ctx =
+    document
+      .getElementById('statsChart')
+      ?.getContext('2d');
+
+  if (!ctx) return;
+
+  const labels =
+    entries.map(e => e[0]);
+
+  const values =
+    entries.map(e => e[1]);
+
+  if (CHART) {
+
+    CHART.destroy();
+
+  }
+
+  const chartType =
+    document
+      .getElementById('chartType')
+      ?.value || 'bar';
+
+  CHART =
+    new Chart(ctx, {
+
+      type: chartType,
+
+      data: {
+
+        labels,
+
+        datasets: [
+
+          {
+            label:
+              CURRENT_ATTRIBUTE,
+
+            data: values
+          }
+
+        ]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio:
+          false
+
+      }
+
+    });
+
+}
+
+/* =========================
+   TABLE
+========================= */
+
+function renderTable(entries) {
+
+  const tbody =
+    document.querySelector(
+      '#statsTable tbody'
+    );
+
+  if (!tbody) return;
+
+  const total =
+    entries.reduce(
+      (sum, e) =>
+        sum + e[1],
+      0
+    );
+
+  tbody.innerHTML =
+    entries.map(([value, count]) => {
+
+      const pct =
+        total
+          ? (
+              count /
+              total *
+              100
+            ).toFixed(1)
+          : 0;
+
+      return `
+        <tr>
+
+          <td>${value}</td>
+
+          <td>${count}</td>
+
+          <td>${pct}%</td>
+
+        </tr>
+      `;
+
+    }).join('');
+
+}
+
+/* =========================
+   QUICK STATS
+========================= */
+
+function renderQuickStats() {
+
+  const grid =
+    document.getElementById(
+      'quickStatsGrid'
+    );
+
+  if (!grid) return;
+
+  const sims =
+    DATA.sims.length;
+
+  const pets =
+    DATA.pets.length;
+
+  const worlds =
+    DATA.worlds.length;
+
+  const lots =
+    DATA.lots.filter(
+      lot =>
+        !(lot['PARENT LOT ID'] || '')
+          .trim()
+    ).length;
+
+  grid.innerHTML = `
+
+    <div class="quick-stat">
+      <strong>${sims}</strong>
+      <span>Sims</span>
+    </div>
+
+    <div class="quick-stat">
+      <strong>${pets}</strong>
+      <span>Pets</span>
+    </div>
+
+    <div class="quick-stat">
+      <strong>${worlds}</strong>
+      <span>Worlds</span>
+    </div>
+
+    <div class="quick-stat">
+      <strong>${lots}</strong>
+      <span>Lots</span>
+    </div>
+
+  `;
+
+}
+
+/* =========================
+   LOADING
+========================= */
+
+function hideLoading() {
+
+  const loading =
+    document.getElementById(
+      'loadingScreen'
+    );
+
+  if (loading) {
+
+    loading.style.display =
+      'none';
+
+  }
+
 }

@@ -1,106 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Worlds — OCJ Save File</title>
-  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/worlds.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
+<title>Worlds — OCJ Save File</title>
+
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/navbar.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/worlds.css" />
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="logo-mark">OCJ</div>
-      <p class="logo-sub">Save File</p>
+<!-- =========================
+     NAVBAR
+========================= -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo">
+    <span class="navbar-logo-gem">♦</span>
+
+    <div class="navbar-logo-text">
+      <div class="navbar-logo-title">OCJ</div>
+      <div class="navbar-logo-sub">Save File</div>
     </div>
-     <nav class="sidebar-nav">
-      <span class="nav-label">Navigate</span>
-      <ul>
-        <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
-        <li><a href="worlds.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
-        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
-        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
-        <li><a href="families.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
-        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
-        <li><a href="statistics.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
-      </ul>
-    </nav>
-    <div class="sidebar-footer">
-      <span class="mono-small">OCJ · 2025</span>
-    </div>
-  </aside>
+  </a>
 
-  <main class="main">
+  <ul class="navbar-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sims.html">Sims</a></li>
+    <li><a href="worlds.html" class="active">Worlds</a></li>
+    <li><a href="lots.html">Lots</a></li>
+    <li><a href="families.html">Families</a></li>
+    <li><a href="relations.html">Relations</a></li>
+    <li><a href="statistics.html">Statistics</a></li>
+  </ul>
 
-    <!-- WORLDS VIEW -->
-    <div id="view-worlds">
-      <div class="page-header">
-        <div class="breadcrumb">OCJ / <span>Worlds</span></div>
-        <h1 class="page-title"><em>Worlds</em></h1>
-        <p class="page-subtitle">All active worlds in the save file. Select a world to explore its lots.</p>
-        <div class="page-divider"></div>
+  <div class="navbar-right">
+
+    <button
+      class="theme-btn"
+      id="themeBtn"
+      title="Toggle Theme"
+    >
+      ☀
+    </button>
+
+    <button
+      class="hamburger"
+      id="hamburger"
+      aria-label="Menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="sims.html">Sims</a>
+  <a href="worlds.html" class="active">Worlds</a>
+  <a href="lots.html">Lots</a>
+  <a href="families.html">Families</a>
+  <a href="relations.html">Relations</a>
+  <a href="statistics.html">Statistics</a>
+</div>
+
+<!-- =========================
+     PAGE
+========================= -->
+<div class="worlds-page">
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+  <div class="page-header">
+
+    <p class="page-eyebrow">
+      The Places
+    </p>
+
+    <h1 class="page-title">
+      Worlds
+    </h1>
+
+    <div class="divider"></div>
+
+    <p
+      class="page-count"
+      id="worldCount"
+    >
+      Loading...
+    </p>
+
+    <p class="page-description">
+      Explore every world currently represented
+      within the OCJ Save File.
+    </p>
+
+  </div>
+
+  <!-- =========================
+       SEARCH / FILTERS
+  ========================= -->
+  <div class="world-controls">
+
+    <input
+      id="worldSearch"
+      class="search-input"
+      type="text"
+      placeholder="Search worlds..."
+    />
+
+    <select
+      id="statusFilter"
+      class="filter-select"
+    >
+      <option value="">
+        All Statuses
+      </option>
+    </select>
+
+  </div>
+
+  <!-- =========================
+       ACTIVE FILTERS
+  ========================= -->
+  <div
+    class="active-filters"
+    id="activeFilters"
+  >
+
+    <!-- injected -->
+
+  </div>
+
+  <!-- =========================
+       WORLDS GRID
+  ========================= -->
+  <div
+    class="world-grid"
+    id="worldGrid"
+  >
+
+    <!--
+
+    Example:
+
+    <a
+      href="world.html?id=WRD00001"
+      class="world-card"
+    >
+
+      <div class="world-image">
+
+        circular thumbnail
+
       </div>
 
-      <div class="filter-bar">
-        <input type="text" id="search-worlds" placeholder="Search worlds..." />
-        <select id="filter-status">
-          <option value="">All statuses</option>
-        </select>
-        <span class="filter-count" id="worlds-count"></span>
+      <div class="world-info">
+
+        <h3>Britechester</h3>
+
+        <p>Completed</p>
+
       </div>
 
-      <div class="world-grid" id="worlds-grid">
-        <div class="no-results">Loading worlds...</div>
-      </div>
-    </div>
+    </a>
 
-    <!-- WORLD DETAIL VIEW (hidden by default) -->
-    <div id="view-world-detail" style="display:none">
-      <div class="page-header">
-        <div class="breadcrumb">
-          OCJ / <a href="#" id="breadcrumb-worlds" class="breadcrumb-link">Worlds</a> / <span id="breadcrumb-world-name"></span>
-        </div>
-        <div class="world-detail-header">
-          <img id="world-detail-icon" src="" alt="" style="display:none" />
-          <div>
-            <h1 class="page-title" id="world-detail-name"><em>World</em></h1>
-            <div id="world-detail-status"></div>
-          </div>
-        </div>
-        <div class="page-divider"></div>
-      </div>
+    -->
 
-      <!-- World description + scenery -->
-      <div class="world-detail-body">
-        <div class="world-detail-desc-wrap">
-          <p class="world-detail-desc" id="world-detail-desc"></p>
-        </div>
-        <div class="world-scenery-gallery" id="world-scenery-gallery"></div>
-      </div>
+  </div>
 
-      <!-- Lots in this world -->
-      <div class="world-lots-header">
-        <div class="mono-small" id="world-lots-count"></div>
-        <input type="text" id="search-world-lots" placeholder="Search lots..." />
-        <select id="filter-world-lot-type">
-          <option value="">All types</option>
-        </select>
-        <select id="filter-world-lot-status">
-          <option value="">All statuses</option>
-        </select>
-      </div>
+  <!-- =========================
+       EMPTY STATE
+  ========================= -->
+  <div
+    class="empty-state"
+    id="emptyState"
+    style="display:none"
+  >
 
-      <div class="world-lots-grid" id="world-lots-grid"></div>
-    </div>
+    No worlds match your search criteria.
 
-  </main>
+  </div>
 
-  <script src="js/data.js"></script>
-  <script src="js/worlds.js"></script>
+</div>
+
+<script src="js/theme.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/csv.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/worlds.js"></script>
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <p class="footer-title">
+      OCJ Save File
+    </p>
+
+    <p class="footer-sub">
+      Canonical Save Archive
+    </p>
+
+  </div>
+
+</footer>
+
 </body>
 </html>

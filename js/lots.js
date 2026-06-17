@@ -1,172 +1,345 @@
-// lots.js — Lots page
+// lots.js
 
-// Map lot names to their detail page IDs
-const LOT_PAGE_MAP = {
-  "Ridley Family Home": "ridley_family_home",
-  "Jacobs Estate": "jacobs_estate",
-  "Yoh Manor": "nichole_yoh_manor",
-  "Usher Estate": "usher_estate",
-  "Bhatnagar Family Home": "bhatnagar_home",
-  "Addams Manor": "addams_manor",
-  "Kovac Apartment": "kovac_apartment",
-  "La Cosa Simstra HQ": "johnny_zest_hideout",
-  "Rollins Family Home": "rollins_home",
-  "Faircroft Estate": "faircroft_estate",
-  "Ashcroft Farm": "ashcroft_farm",
-  "Faircroft Goods": "sabrina_shop",
-  "Bhatnagar Vet Clinic": "bhatnagar_vet",
-  "Blackwood Residence": "kason_blackwood_home",
-  "Moanikea Household": "moanikea_home",
-  "Oliana's Sulani Kitchen": "oliana_restaurant",
-  "Chaudhary Home": "chaudhary_home",
-  "Mehra-Moretti Apartment": "shalini_apartment",
-  "Straud Castle": "vladislaus_castle",
-  "Simkuza Dojo": "rinka_dojo",
-  "Mochizuki Sanctum": "toya_sanctum",
-  "Darwin Research Facility": "tesla_darwin_lab",
-  "Delacroix Apartment": "delacroix_home",
-  "Peloquin Estate": "peloquin_home",
-  "Willow Creek Police Station": "willow_creek_police",
-  "Willow Creek Hospital": "willow_creek_hospital",
-  "Copperdale High School": "copperdale_high",
-  "Thornwood Boarding School": "boarding_school",
-  "Blackwoods": "blackwoods_club",
-  "Rollins Soul Kitchen": "darius_restaurant_future",
-  "Anuhewa Lair": "hinaopele_lair",
-  "Montenegro's": "montana_restaurant",
-  "Komorebi Rest": "simkuza_bar",
-  "Corrections Facility": "ink_prison",
-  "Ashcroft Jewellers": "enzo_jewellery",
-  "Winona's Cottage": "winona_cottage",
-  "Faircroft-Moretti Home": "dorian_home",
-  "Faircroft-Ashcroft Home": "chayton_fiona_home",
-  "Bhatnagar Animal Shelter": "parivita_shelter",
-  "Bhatnagar Home": "rajiv_priya_home",
-  "Addams Craft Studio": "morticia_craft_room",
-  "Strangerville Museum": "dr_darwin_museum",
-  "Magic Realm Portal": "magic_realm_portal",
-  "Simkuza Saferoom": "simkuza_saferoom",
-  "Mireshade Lair": "bellatrix_lair",
-  "Sanguine Estate": "varek_estate",
-  "Ashcroft Flower Farm": "hawthorne_flower_farm",
-  "Ashcroft Crop Farm": "saffron_farm",
-  "Parkshore": "perrin_home",
-  "Brown Family Home": "evelyn_brown_home"
+let ALL_LOTS = [];
+let LOT_CARDS = [];
+let FILTERED_CARDS = [];
+
+const FILTER_STATE = {
+  world: '',
+  type: '',
+  status: '',
+  owner: '',
+  search: ''
 };
 
-document.addEventListener('ocj-data-ready', () => {
-  setBadge('badge-worlds', window.WORLDS.length);
-  setBadge('badge-sims',   window.SIMS.length);
-  setBadge('badge-lots',   window.LOTS.length);
-  populateFilters();
-  renderLots(window.LOTS);
-  setupFilters();
-});
+let currentSort = 'az';
 
-function setBadge(id, count) {
-  const el = document.getElementById(id);
-  if (el && count > 0) el.textContent = count;
+function getLotId(lot) {
+  return ((lot['LOT ID'] || lot['LOT_ID'] || lot['ID'] || '') || '').trim();
 }
 
-function getStatusTag(status) {
-  if (!status) return '<span class="tag tag--muted">—</span>';
-  const s = status.toLowerCase();
-  if (s.includes('complete') || s.includes('done')) return `<span class="tag tag--green">${status}</span>`;
-  if (s.includes('progress') || s.includes('wip'))  return `<span class="tag tag--amber">${status}</span>`;
-  if (s.includes('empty') || s.includes('vacant'))  return `<span class="tag tag--muted">${status}</span>`;
-  return `<span class="tag">${status}</span>`;
+function getParentLotId(lot) {
+  return ((lot['PARENT LOT ID'] || lot['PARENT_LOT_ID'] || '') || '').trim();
 }
 
-function getLotLink(name) {
-  const pageId = LOT_PAGE_MAP[name];
-  if (pageId) return `<a href="lots/${pageId}.html" class="lot-name-link">${name}</a>`;
-  return name;
+function getLotName(lot) {
+  return ((lot['LOT NEW NAME'] || lot['LOT ORIGINAL NAME'] || lot['NAME'] || '') || '').trim();
 }
 
-function renderLots(data) {
-  const tbody = document.getElementById('lots-tbody');
-  const count = document.getElementById('lots-count');
+function isLotComplex(lot) {
+  const type = ((lot['LOT TYPE'] || '') || '').toLowerCase();
+  // Only treat as a multi-unit building when explicitly marked as 'apartment' or 'residential rental'
+  return /\b(apartment|residential rental)\b/.test(type);
+}
 
-  count.textContent = `${data.length} lot${data.length !== 1 ? 's' : ''}`;
+async function initLotsPage() {
+  try {
+    const { lots } = await window.CSV.loadCSVs({ lots: 'data/lots.csv' });
+    ALL_LOTS = lots.filter(lot => getLotName(lot));
+    buildLotCards();
+    await populateFilters();
+    bindEvents();
+    applyFilters();
+  } catch (err) {
+    console.error('[lots.js]', err);
+  }
+}
 
-  if (!data.length) {
-    tbody.innerHTML = '<tr><td colspan="10" class="no-results">No lots match your filters.</td></tr>';
+const LOTS_PAGE_ROOT = document.getElementById('lotGrid');
+if (LOTS_PAGE_ROOT) {
+  document.addEventListener('DOMContentLoaded', initLotsPage);
+}
+
+function buildLotCards() {
+  const childUnits = new Map();
+  const rootLots = new Map();
+
+  ALL_LOTS.forEach(lot => {
+    const id = getLotId(lot);
+    const parentId = getParentLotId(lot);
+    if (parentId) {
+      const list = childUnits.get(parentId) || [];
+      list.push(lot);
+      childUnits.set(parentId, list);
+    } else {
+      rootLots.set(id, lot);
+    }
+  });
+
+  LOT_CARDS = [];
+
+  rootLots.forEach((rootLot, rootId) => {
+    const units = childUnits.get(rootId) || [];
+    units.sort((a, b) => getLotName(a).localeCompare(getLotName(b)));
+    LOT_CARDS.push({ rootLot, units });
+  });
+
+  childUnits.forEach((units, parentId) => {
+    if (rootLots.has(parentId)) return;
+    const rootLot = units[0];
+    units.sort((a, b) => getLotName(a).localeCompare(getLotName(b)));
+    LOT_CARDS.push({ rootLot, units });
+  });
+}
+
+function attachLotImageFallbacks() {
+  document.querySelectorAll('.lot-preview img[data-lot-id]').forEach(img => {
+    const lotId = img.dataset.lotId;
+    const primaryBase = `image/lots/${window.Utils.sanitizeFolderName(lotId)}/portrait`;
+    const defaultBase = window.Utils.defaultEntityImagePath('lots', 'profile');
+    const fallbacks = window.Utils.imageFallbackSources(primaryBase, defaultBase);
+    window.Utils.imgWithFallback(img, fallbacks);
+  });
+
+  document.querySelectorAll('.unit-thumb img[data-lot-id]').forEach(img => {
+    const lotId = img.dataset.lotId;
+    const primaryBase = `image/lots/${window.Utils.sanitizeFolderName(lotId)}/portrait`;
+    const defaultBase = window.Utils.defaultEntityImagePath('lots', 'profile');
+    const fallbacks = window.Utils.imageFallbackSources(primaryBase, defaultBase);
+    window.Utils.imgWithFallback(img, fallbacks);
+  });
+}
+
+async function populateFilters() {
+  populateSelect('worldFilter', window.Utils.uniqueSorted(ALL_LOTS, 'WORLD'));
+  populateSelect('lotTypeFilter', await loadLookup('data/lookups/dropdown/lot_types.csv'));
+  populateSelect('statusFilter', await loadLookup('data/lookups/dropdown/status.csv'));
+  populateSelect('ownerFilter', window.Utils.uniqueSorted(ALL_LOTS, 'LOT OWNER'));
+}
+
+async function loadLookup(path) {
+  const rows = await window.CSV.loadCSV(path);
+  return rows
+    .map(row => Object.values(row)[0])
+    .filter(Boolean)
+    .sort();
+}
+
+function populateSelect(id, values) {
+  const select = document.getElementById(id);
+  if (!select || !values?.length) return;
+  values.forEach(value => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+}
+
+function bindEvents() {
+  document.getElementById('lotSearch')?.addEventListener('input', applyFilters);
+  document.getElementById('worldFilter')?.addEventListener('change', event => { FILTER_STATE.world = event.target.value; applyFilters(); });
+  document.getElementById('lotTypeFilter')?.addEventListener('change', event => { FILTER_STATE.type = event.target.value; applyFilters(); });
+  document.getElementById('statusFilter')?.addEventListener('change', event => { FILTER_STATE.status = event.target.value; applyFilters(); });
+  document.getElementById('ownerFilter')?.addEventListener('change', event => { FILTER_STATE.owner = event.target.value; applyFilters(); });
+  document.getElementById('sortSelect')?.addEventListener('change', event => { currentSort = event.target.value; applyFilters(); });
+  document.getElementById('clearFilters')?.addEventListener('click', clearFilters);
+
+  const toggle = document.getElementById('filterToggle');
+  const panel = document.getElementById('filterPanel');
+  const closeBtn = document.getElementById('closeFilterPanel');
+
+  const setPanelState = (open) => {
+    if (!panel || !toggle) return;
+    panel.classList.toggle('open', open);
+    toggle.classList.toggle('active', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    panel.setAttribute('aria-hidden', String(!open));
+  };
+
+  toggle?.addEventListener('click', () => setPanelState(!panel?.classList.contains('open')));
+  if (closeBtn) closeBtn.addEventListener('click', () => setPanelState(false));
+}
+
+function clearFilters() {
+  const searchInput = document.getElementById('lotSearch');
+  if (searchInput) searchInput.value = '';
+  const worldFilter = document.getElementById('worldFilter');
+  if (worldFilter) worldFilter.value = '';
+  const typeFilter = document.getElementById('lotTypeFilter');
+  if (typeFilter) typeFilter.value = '';
+  const statusFilter = document.getElementById('statusFilter');
+  if (statusFilter) statusFilter.value = '';
+  const ownerFilter = document.getElementById('ownerFilter');
+  if (ownerFilter) ownerFilter.value = '';
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) sortSelect.value = 'az';
+
+  FILTER_STATE.world = '';
+  FILTER_STATE.type = '';
+  FILTER_STATE.status = '';
+  FILTER_STATE.owner = '';
+  FILTER_STATE.search = '';
+  currentSort = 'az';
+  applyFilters();
+}
+
+function applyFilters() {
+  FILTER_STATE.search = document.getElementById('lotSearch')?.value.trim().toLowerCase() || '';
+
+  FILTERED_CARDS = LOT_CARDS.filter(card => {
+    const lot = card.rootLot;
+    const name = getLotName(lot).toLowerCase();
+    const world = ((lot['WORLD'] || '') || '').trim();
+    const type = ((lot['LOT TYPE'] || '') || '').trim();
+    const status = ((lot['STATUS'] || '') || '').trim();
+    const owner = ((lot['LOT OWNER'] || lot['OWNER'] || '') || '').trim();
+
+    const search = FILTER_STATE.search;
+    const terms = [
+      name,
+      (lot['LOT ORIGINAL NAME'] || '').toLowerCase(),
+      world.toLowerCase(),
+      type.toLowerCase(),
+      owner.toLowerCase(),
+      ...card.units.map(unit => getLotName(unit).toLowerCase())
+    ];
+    const searchMatch = !search || terms.some(term => term.includes(search));
+    const worldMatch = !FILTER_STATE.world || world === FILTER_STATE.world;
+    const typeMatch = !FILTER_STATE.type || type === FILTER_STATE.type;
+    const statusMatch = !FILTER_STATE.status || status === FILTER_STATE.status;
+    const ownerMatch = !FILTER_STATE.owner || owner === FILTER_STATE.owner;
+
+    return searchMatch && worldMatch && typeMatch && statusMatch && ownerMatch;
+  });
+
+  sortCards();
+  renderLots();
+  attachLotImageFallbacks();
+  renderActiveFilters();
+  updateCount();
+}
+
+function renderActiveFilters() {
+  const container = document.getElementById('activeFilters');
+  if (!container) return;
+  const chips = [];
+  if (FILTER_STATE.search) chips.push({ key: 'search', label: `Search: ${FILTER_STATE.search}` });
+  if (FILTER_STATE.world) chips.push({ key: 'world', label: `World: ${FILTER_STATE.world}` });
+  if (FILTER_STATE.type) chips.push({ key: 'type', label: `Type: ${FILTER_STATE.type}` });
+  if (FILTER_STATE.owner) chips.push({ key: 'owner', label: `Owner: ${FILTER_STATE.owner}` });
+  if (FILTER_STATE.status) chips.push({ key: 'status', label: `Status: ${FILTER_STATE.status}` });
+  container.innerHTML = chips.map(chip => `
+    <span class="active-filter-chip" data-key="${window.Utils.escapeHTML(chip.key)}">
+      ${window.Utils.escapeHTML(chip.label)}
+      <button type="button" aria-label="Remove filter ${window.Utils.escapeHTML(chip.label)}">×</button>
+    </span>
+  `).join('');
+
+  container.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chip = btn.closest('.active-filter-chip');
+      if (!chip) return;
+      const key = chip.dataset.key;
+      if (key === 'search') {
+        const el = document.getElementById('lotSearch'); if (el) el.value = '';
+        FILTER_STATE.search = '';
+      } else if (key === 'world') {
+        const el = document.getElementById('worldFilter'); if (el) el.value = '';
+        FILTER_STATE.world = '';
+      } else if (key === 'type') {
+        const el = document.getElementById('lotTypeFilter'); if (el) el.value = '';
+        FILTER_STATE.type = '';
+      } else if (key === 'status') {
+        const el = document.getElementById('statusFilter'); if (el) el.value = '';
+        FILTER_STATE.status = '';
+      } else if (key === 'owner') {
+        const el = document.getElementById('ownerFilter'); if (el) el.value = '';
+        FILTER_STATE.owner = '';
+      }
+      applyFilters();
+    });
+  });
+}
+
+function sortCards() {
+  FILTERED_CARDS.sort((a, b) => {
+    const aLot = a.rootLot;
+    const bLot = b.rootLot;
+    switch (currentSort) {
+      case 'za':
+        return getLotName(bLot).localeCompare(getLotName(aLot));
+      case 'world':
+        return ((aLot['WORLD'] || '') || '').localeCompare((bLot['WORLD'] || '') || '');
+      case 'status':
+        return ((aLot['STATUS'] || '') || '').localeCompare((bLot['STATUS'] || '') || '');
+      case 'type':
+        return ((aLot['LOT TYPE'] || '') || '').localeCompare((bLot['LOT TYPE'] || '') || '');
+      default:
+        return getLotName(aLot).localeCompare(getLotName(bLot));
+    }
+  });
+}
+
+function renderLots() {
+  const grid = document.getElementById('lotGrid');
+  const empty = document.getElementById('emptyState');
+  if (!grid) return;
+
+  if (!FILTERED_CARDS.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'block';
     return;
   }
 
-  tbody.innerHTML = data.map(l => {
-    const displayName = l['LOT NEW NAME'] || l['LOT ORIGINAL NAME'] || '—';
+  if (empty) empty.style.display = 'none';
+  grid.innerHTML = FILTERED_CARDS.map(renderLotCard).join('');
+}
+
+function renderLotCard(card) {
+  const lot = card.rootLot;
+  const id = getLotId(lot);
+  const name = getLotName(lot);
+  const world = ((lot['WORLD'] || '') || '').trim();
+  const type = ((lot['LOT TYPE'] || '') || '').trim();
+  const priceRaw = (lot['PRICE'] || lot['Price'] || '').toString().trim();
+  const price = window.Utils.normalizeCurrency(priceRaw.replace(/\uFFFD/g, ''));
+  const owner = ((lot['LOT OWNER'] || lot['OWNER'] || '') || '').trim();
+  const units = card.units || [];
+  const isBuilding = isLotComplex(lot);
+  const imageSrc = window.Utils.lotImagePath(id, 0);
+
+  const allUnits = isBuilding ? [lot, ...units] : [];
+  const unitEntries = allUnits.map(unit => {
+    const unitId = getLotId(unit);
+    const unitName = getLotName(unit);
     return `
-    <tr>
-      <td class="td-name">${getLotLink(displayName)}</td>
-      <td>${l['WORLD'] || '—'}</td>
-      <td>${l['LOT TYPE'] || '—'}</td>
-      <td>${l['LOT USE'] || '—'}</td>
-      <td>${l['SIZE'] || '—'}</td>
-      <td>${l['PRICE'] || '—'}</td>
-      <td>${l['BED'] || '—'}</td>
-      <td>${l['BATH'] || '—'}</td>
-      <td>${l['RESIDENT(S)'] || '—'}</td>
-      <td>${getStatusTag(l['STATUS'])}</td>
-    </tr>
-  `}).join('');
+      <a href="lot.html?id=${encodeURIComponent(unitId)}" class="unit-link" title="${window.Utils.escapeHTML(unitName)}">
+        ${window.Utils.escapeHTML(unitName)}
+      </a>
+    `;
+  }).join('');
+
+  return `
+    <article class="lot-card ${isBuilding ? 'lot-card-building' : ''}">
+      <div class="lot-preview">
+        <a href="lot.html?id=${encodeURIComponent(id)}">
+          <img src="${window.Utils.escapeHTML(imageSrc)}" data-lot-id="${window.Utils.escapeHTML(id)}" alt="${window.Utils.escapeHTML(name)}" loading="lazy" />
+        </a>
+      </div>
+      <div class="lot-content">
+        <div class="lot-header-row">
+          <div>
+            <a class="lot-link-title" href="lot.html?id=${encodeURIComponent(id)}">
+              <div class="lot-name">${window.Utils.escapeHTML(name)}</div>
+            </a>
+            <div class="lot-meta">${window.Utils.escapeHTML(world)}</div>
+          </div>
+          ${owner ? `<div class="lot-owner">${window.Utils.escapeHTML(owner)}</div>` : ''}
+        </div>
+        <div class="lot-meta">${window.Utils.escapeHTML(type)}</div>
+        ${price ? `<div class="lot-price">${window.Utils.escapeHTML(price)}</div>` : ''}
+        ${isBuilding ? `
+          <div class="building-unit-summary">${allUnits.length} unit${allUnits.length === 1 ? '' : 's'}</div>
+          <div class="unit-list">${unitEntries}</div>
+        ` : ''}
+      </div>
+    </article>
+  `;
 }
 
-function populateFilters() {
-  const worldSelect = document.getElementById('filter-world');
-  const worlds = [...new Set(window.LOTS.map(l => l['WORLD']).filter(Boolean))].sort();
-  worlds.forEach(w => {
-    const opt = document.createElement('option');
-    opt.value = w; opt.textContent = w;
-    worldSelect.appendChild(opt);
-  });
-
-  const typeSelect = document.getElementById('filter-type');
-  const types = [...new Set(window.LOTS.map(l => l['LOT TYPE']).filter(Boolean))].sort();
-  types.forEach(t => {
-    const opt = document.createElement('option');
-    opt.value = t; opt.textContent = t;
-    typeSelect.appendChild(opt);
-  });
-
-  const statusSelect = document.getElementById('filter-status');
-  const statuses = [...new Set(window.LOTS.map(l => l['STATUS']).filter(Boolean))].sort();
-  statuses.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s; opt.textContent = s;
-    statusSelect.appendChild(opt);
-  });
-}
-
-function setupFilters() {
-  const search = document.getElementById('search-lots');
-  const world  = document.getElementById('filter-world');
-  const type   = document.getElementById('filter-type');
-  const status = document.getElementById('filter-status');
-
-  function applyFilters() {
-    const q  = search.value.toLowerCase();
-    const w  = world.value;
-    const t  = type.value;
-    const s  = status.value;
-
-    const filtered = window.LOTS.filter(l => {
-      const name      = (l['LOT NEW NAME'] || l['LOT ORIGINAL NAME'] || '').toLowerCase();
-      const lotWorld  = l['WORLD']    || '';
-      const lotType   = l['LOT TYPE'] || '';
-      const lotStatus = l['STATUS']   || '';
-      return (
-        (!q || name.includes(q)) &&
-        (!w || lotWorld  === w) &&
-        (!t || lotType   === t) &&
-        (!s || lotStatus === s)
-      );
-    });
-    renderLots(filtered);
-  }
-
-  [search, world, type, status].forEach(el => {
-    el.addEventListener('input',  applyFilters);
-    el.addEventListener('change', applyFilters);
-  });
+function updateCount() {
+  const el = document.getElementById('lotCount');
+  if (!el) return;
+  el.textContent = `${FILTERED_CARDS.length} ${FILTERED_CARDS.length === 1 ? 'Property' : 'Properties'}`;
 }

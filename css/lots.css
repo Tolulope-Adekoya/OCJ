@@ -1,0 +1,458 @@
+.lots-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem 4rem;
+  position: relative;
+}
+
+/* Controls */
+
+.lots-controls {
+  max-width: 70rem;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.lots-search {
+  flex: 1 1 360px;
+  min-width: 240px;
+  max-width: 100%;
+}
+
+.lots-controls > .filter-toggle {
+  flex: 0 0 auto;
+}
+
+.active-filters {
+  max-width: 70rem;
+  margin: 0 auto 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.active-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .7rem;
+  border-radius: 999px;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border: 1px solid rgba(163,185,90,.3);
+  font-size: .8rem;
+}
+
+.active-filter-chip button {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.filter-panel {
+  position: absolute;
+  top: 3.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 3rem);
+  max-width: 70rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: 0 20px 40px rgba(0,0,0,.35);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height .35s ease, opacity .25s ease, transform .2s ease;
+  z-index: 60;
+}
+
+.filter-panel.open {
+  max-height: 560px;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.filter-panel-inner {
+  padding: 1.5rem;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.filter-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.filter-panel-header h3 {
+  font-size: .95rem;
+}
+
+.clear-all {
+  border: none;
+  background: none;
+  color: var(--fg-muted);
+  cursor: pointer;
+  font-size: .75rem;
+  transition: color .2s;
+}
+
+.clear-all:hover {
+  color: var(--primary);
+}
+
+.close-filter {
+  border: none;
+  background: none;
+  color: var(--fg-muted);
+  font-size: 1rem;
+  padding: .25rem .5rem;
+  border-radius: .35rem;
+  cursor: pointer;
+}
+
+.close-filter:hover { color: var(--primary); }
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: .75rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.filter-group label {
+  font-size: .6rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--fg-muted);
+}
+
+.filter-group select {
+  width: 100%;
+  padding: .5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-muted);
+  color: var(--fg);
+  font-size: .875rem;
+  size: 6;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(163,185,90,.1);
+}
+
+/* Results Count */
+
+.lots-count {
+  text-align: center;
+
+  color: var(--fg-muted);
+
+  margin-bottom: 1.5rem;
+}
+
+/* Grid */
+
+.lots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.75rem;
+  align-items: start;
+}
+
+/* Card */
+
+.lot-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  padding: 0;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.lot-card:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--primary);
+
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+/* Preview */
+
+.lot-preview {
+  position: relative;
+
+  height: 220px;
+
+  overflow: hidden;
+}
+
+.lot-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* World Tag */
+
+.lot-world {
+  position: absolute;
+
+  top: .75rem;
+  left: .75rem;
+
+  padding: .25rem .6rem;
+
+  border-radius: 999px;
+
+  background: rgba(19,19,22,.8);
+
+  border: 1px solid var(--border);
+
+  font-size: .7rem;
+}
+
+/* Status */
+
+.lot-status {
+  position: absolute;
+
+  bottom: .75rem;
+  left: .75rem;
+
+  padding: .25rem .6rem;
+
+  border-radius: 999px;
+
+  background: rgba(19,19,22,.8);
+
+  border: 1px solid var(--border);
+
+  font-size: .7rem;
+}
+
+/* Content */
+
+.lot-content {
+  padding: 1.25rem;
+}
+
+.lot-name {
+  font-size: 1rem;
+  font-weight: 700;
+
+  margin-bottom: .4rem;
+}
+
+.lot-meta {
+  font-size: .8rem;
+
+  color: var(--fg-muted);
+
+  margin-bottom: .5rem;
+}
+
+.lot-price {
+  font-size: .95rem;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: .6rem;
+}
+
+.lots-controls .search-wrap {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+.lots-controls .filter-toggle,
+.lots-controls .reset-btn,
+.lots-controls .sort-select {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  padding: .5rem .75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 0 0 1.25rem 0;
+}
+
+.lots-controls .filter-toggle.active {
+  border-color: var(--primary);
+  box-shadow: 0 6px 20px rgba(163,185,90,.06);
+}
+
+.lot-description {
+  color: var(--fg-muted);
+
+  font-size: .85rem;
+
+  line-height: 1.6;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.lot-card.expanded .lot-description {
+  display: block;
+}
+
+/* Apartment Units */
+
+.unit-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: .5rem;
+
+  margin-top: .75rem;
+}
+
+.unit-thumb {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width: 5.5rem;
+  text-decoration: none;
+  color: inherit;
+  gap: .35rem;
+}
+
+.unit-thumb img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  object-position: center;
+  border-radius: .75rem;
+  border: 1px solid var(--border);
+}
+
+.unit-thumb span {
+  display: block;
+  width: 100%;
+  font-size: .72rem;
+  text-align: center;
+  color: var(--fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lot-card-building {
+  border-color: rgba(163,185,90,.5);
+  background: rgba(163,185,90,.04);
+}
+
+.lot-card-building .lot-preview {
+  border-bottom: 1px solid rgba(163,185,90,.15);
+}
+
+.building-unit-summary {
+  margin-top: .85rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.unit-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+  text-decoration: none;
+  font-size: .75rem;
+  transition: .2s;
+}
+
+.unit-link:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Actions */
+
+.lot-actions {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: .5rem;
+
+  margin-top: 1rem;
+}
+
+.lot-btn {
+  padding: .45rem .75rem;
+
+  border-radius: var(--radius-sm);
+
+  border: 1px solid var(--border);
+
+  background: var(--bg);
+
+  font-size: .75rem;
+
+  transition: .2s;
+}
+
+.lot-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Empty */
+
+.no-lots {
+  text-align: center;
+
+  padding: 4rem 1rem;
+
+  color: var(--fg-muted);
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .lots-controls {
+    flex-direction: column;
+  }
+
+  .lots-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

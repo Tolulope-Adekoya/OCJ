@@ -1,0 +1,28 @@
+﻿connection,color,line style,secret
+Legal Spouse,#FFD700,Solid,FALSE
+Dating / Engaged,#FF69B4,Solid,FALSE
+Situationship,#FF8FAB,Dashed,FALSE
+Affair Partner,#D81B60,Dotted,FALSE
+Co-Parent (Known),#FF8A65,Solid,FALSE
+Co-Parent (Secret),#FF5252,Dashed,TRUE
+Deceased Co-Parent (secret),#707070,Dashed,TRUE
+Deceased Co-Parent,#A9A9A9,Dashed,FALSE
+Divorced,#9E7B9B,Solid,FALSE
+Deceased Spouse,#A9A9A9,Solid,FALSE
+Parent,#FFAB40,Solid,FALSE
+Parent (secret),#FF6F00,Dotted,TRUE
+Deceased parent,#A07840,Solid,FALSE
+Deceased parent (secret),#A07840,Dotted,TRUE
+Adoptive Parent,#4DB6AC,Solid,FALSE
+Adoptive Parent (secret),#1A7A72,Dotted,TRUE
+Estranged,#6D4C41,Dashed,FALSE
+Best Friend,#66BB6A,Solid,FALSE
+Friend,#388E3C,Solid,FALSE
+Acquaintance,#90A4AE,Solid,FALSE
+Co-Worker,#80DEEA,Solid,FALSE
+Club Member,#B39DDB,Solid,FALSE
+Malice,#7B0000,Solid,FALSE
+Mentor / Protégé,#CE93D8,Solid,FALSE
+Sugar Daddy,#C8860A,Solid,FALSE
+Sugar Mommy,#B8750A,Solid,FALSE
+Sugar Baby,#C8860A,Dashed,FALSE

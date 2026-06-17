@@ -1,188 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Statistics — OCJ Save File</title>
-  <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/statistics.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
+<title>Statistics — OCJ Save File</title>
+
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/navbar.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/statistics.css" />
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="logo-mark">OCJ</div>
-      <p class="logo-sub">Save File</p>
+<!-- =========================
+     NAVBAR
+========================= -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo">
+    <span class="navbar-logo-gem">♦</span>
+
+    <div class="navbar-logo-text">
+      <div class="navbar-logo-title">OCJ</div>
+      <div class="navbar-logo-sub">Save File</div>
     </div>
-       <nav class="sidebar-nav">
-      <span class="nav-label">Navigate</span>
-      <ul>
-        <li><a href="index.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⌂</span> Home</span></a></li>
-        <li><a href="worlds.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◈</span> Worlds</span><span class="nav-badge" id="badge-worlds">—</span></a></li>
-        <li><a href="sims.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">◉</span> Sims</span><span class="nav-badge" id="badge-sims">—</span></a></li>
-        <li><a href="lots.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">▣</span> Lots</span><span class="nav-badge" id="badge-lots">—</span></a></li>
-        <li><a href="families.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">❧</span> Families</span></a></li>
-        <li><a href="relationships.html" class="nav-link"><span class="nav-link-left"><span class="nav-icon">⬡</span> Relationships</span></a></li>
-        <li><a href="statistics.html" class="nav-link active"><span class="nav-link-left"><span class="nav-icon">◎</span> Statistics</span></a></li>
-      </ul>
-    </nav>
-    <div class="sidebar-footer">
-      <span class="mono-small">OCJ · 2025</span>
-    </div>
-  </aside>
+  </a>
 
-  <main class="main">
+  <ul class="navbar-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sims.html">Sims</a></li>
+    <li><a href="worlds.html">Worlds</a></li>
+    <li><a href="lots.html">Lots</a></li>
+    <li><a href="families.html">Families</a></li>
+    <li><a href="relations.html">Relations</a></li>
+    <li><a href="statistics.html" class="active">Statistics</a></li>
+  </ul>
 
-    <div class="page-header">
-      <div class="breadcrumb">OCJ / <span>Statistics</span></div>
-      <h1 class="page-title"><em>Statistics</em></h1>
-      <p class="page-subtitle">Visual breakdowns across all sims, lots, and worlds.</p>
-      <div class="page-divider"></div>
-    </div>
+  <div class="navbar-right">
 
-    <div class="stats-grid">
+    <button
+      class="theme-btn"
+      id="themeBtn"
+      title="Toggle Theme"
+    >
+      ☀
+    </button>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by World</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-world" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-world" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-world"></div>
-      </div>
+    <button
+      class="hamburger"
+      id="hamburger"
+      aria-label="Menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Gender</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-gender" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-gender" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-gender"></div>
-      </div>
+  </div>
+</nav>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Age Group</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-age" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-age" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-age"></div>
-      </div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="sims.html">Sims</a>
+  <a href="pets.html">Pets</a>
+  <a href="worlds.html">Worlds</a>
+  <a href="lots.html">Lots</a>
+  <a href="families.html">Families</a>
+  <a href="relations.html">Relations</a>
+  <a href="statistics.html" class="active">Statistics</a>
+</div>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Occult</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-occult" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-occult" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-occult"></div>
-      </div>
+<!-- =========================
+     PAGE
+========================= -->
+<div class="statistics-page">
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Wealth Class</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-wealth" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-wealth" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-wealth"></div>
-      </div>
+  <!-- HEADER -->
+  <div class="page-header">
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Orientation</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-orientation" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-orientation" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-orientation"></div>
-      </div>
+    <p class="page-eyebrow">
+      The Numbers
+    </p>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Political Alignment</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-political" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-political" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-political"></div>
-      </div>
+    <h1 class="page-title">
+      Statistics
+    </h1>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Faith</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-faith" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-faith" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-faith"></div>
-      </div>
+    <div class="divider"></div>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Sims by Alignment</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-alignment" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-alignment" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-alignment"></div>
-      </div>
+    <p class="page-description">
+      Explore the demographic, geographic and property
+      distribution of the OCJ Save File through dynamic charts.
+    </p>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Playable vs NPC</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-playable" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-playable" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-playable"></div>
-      </div>
+  </div>
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Lots by World</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-lots-world" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-lots-world" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-lots-world"></div>
-      </div>
+  <!-- =========================
+       DATASET SELECTOR
+  ========================= -->
+  <section class="stats-dataset-selector">
 
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Lots by Type</div>
-          <div class="chart-toggle">
-            <button class="toggle-btn active" data-chart="chart-lot-type" data-type="bar">Bar</button>
-            <button class="toggle-btn" data-chart="chart-lot-type" data-type="pie">Pie</button>
-          </div>
-        </div>
-        <div id="chart-lot-type"></div>
-      </div>
+    <button
+      class="dataset-btn active"
+      data-dataset="sims"
+    >
+      Sims
+    </button>
+
+    <button
+      class="dataset-btn"
+      data-dataset="lots"
+    >
+      Lots
+    </button>
+
+    <button
+      class="dataset-btn"
+      data-dataset="worlds"
+    >
+      Worlds
+    </button>
+    
+    <button
+      class="dataset-btn"
+      data-dataset="pets"
+    >
+      Pets
+    </button>
+
+  </section>
+
+  <!-- =========================
+       CONTROLS
+  ========================= -->
+  <section class="stats-controls">
+
+    <!-- ATTRIBUTE -->
+    <div class="control-group">
+
+      <label for="attributeSelect">
+        Attribute
+      </label>
+
+      <select
+        id="attributeSelect"
+      >
+
+        <!--
+        Generated dynamically
+        from selected dataset
+        -->
+
+      </select>
 
     </div>
 
-  </main>
+    <!-- CHART TYPE -->
+    <div class="control-group">
 
-  <script src="js/data.js"></script>
-  <script src="js/statistics.js"></script>
+      <label for="chartType">
+        Chart Type
+      </label>
+
+      <select
+        id="chartType"
+      >
+
+        <option value="bar">
+          Bar Chart
+        </option>
+
+        <option value="pie">
+          Pie Chart
+        </option>
+
+      </select>
+
+    </div>
+
+    <!-- TOP N -->
+    <div class="control-group">
+
+      <label for="topN">
+        Display
+      </label>
+
+      <select id="topN">
+
+        <option value="all">
+          All Values
+        </option>
+
+        <option value="10">
+          Top 10
+        </option>
+
+        <option value="20">
+          Top 20
+        </option>
+
+        <option value="50">
+          Top 50
+        </option>
+
+      </select>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       SUMMARY
+  ========================= -->
+  <section
+    id="statsSummary"
+    class="stats-summary"
+  >
+
+    <!--
+
+    Dataset:
+    Sims
+
+    Attribute:
+    Gender
+
+    Categories:
+    3
+
+    Total Records:
+    1247
+
+    -->
+
+  </section>
+
+  <!-- =========================
+       CHART AREA
+  ========================= -->
+  <section class="chart-section">
+
+    <div
+      id="chartContainer"
+      class="chart-container"
+    >
+
+      <canvas
+        id="statsChart"
+      ></canvas>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       DATA TABLE
+  ========================= -->
+  <section class="table-section">
+
+    <div class="section-header">
+
+      <h2>
+        Raw Data
+      </h2>
+
+    </div>
+
+    <div class="table-wrapper">
+
+      <table
+        id="statsTable"
+        class="stats-table"
+      >
+
+        <thead>
+          <tr>
+            <th>Value</th>
+            <th>Count</th>
+            <th>Percentage</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <!-- generated -->
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       QUICK STATS
+  ========================= -->
+  <section class="quick-stats">
+
+    <div class="section-header">
+
+      <h2>
+        Quick Statistics
+      </h2>
+
+    </div>
+
+    <div
+      id="quickStatsGrid"
+      class="quick-stats-grid"
+    >
+
+      <!--
+
+      Total Sims
+
+      Total Lots
+
+      Total Worlds
+
+      Playable Sims
+
+      Occupied Lots
+
+      etc
+
+      -->
+
+    </div>
+
+  </section>
+
+</div>
+
+<!-- =========================
+     LOADING
+========================= -->
+<div
+  id="loadingScreen"
+  class="loading-screen"
+>
+  Loading Statistics...
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="js/theme.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/statistics.js"></script>
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <p class="footer-title">
+      OCJ Save File
+    </p>
+
+    <p class="footer-sub">
+      Canonical Save Archive
+    </p>
+
+  </div>
+
+</footer>
+
 </body>
 </html>

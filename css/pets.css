@@ -1,0 +1,109 @@
+.pets-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem 4rem;
+}
+
+/* Controls */
+
+.pets-controls {
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+}
+
+/* Grid */
+
+.pet-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill,minmax(180px,1fr));
+  object-fit: contain;
+  object-position: center;
+  gap: 1rem;
+}
+
+/* Pet Card */
+
+.pet-card {
+  border-radius: var(--radius);
+
+  border: 2px solid rgba(163,185,90,.35);
+
+  background: var(--bg-card);
+
+  overflow: hidden;
+
+  transition:
+    transform .2s,
+    box-shadow .2s;
+}
+
+.pet-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+
+.pet-portrait {
+  position: relative;
+
+  height: 11rem;
+
+  overflow: hidden;
+}
+
+.pet-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.pet-info {
+  padding: .75rem;
+}
+
+.pet-name {
+  font-family: var(--font-head);
+
+  font-size: .9rem;
+  font-weight: 600;
+
+  margin-bottom: .25rem;
+}
+
+.pet-owner {
+  color: var(--fg-muted);
+
+  font-size: .75rem;
+}
+
+.pet-household {
+  margin-top: .35rem;
+
+  color: var(--fg-muted);
+
+  font-size: .7rem;
+}
+
+/* Empty */
+
+.no-pets {
+  text-align: center;
+
+  padding: 4rem 1rem;
+
+  color: var(--fg-muted);
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+
+  .pet-grid {
+    grid-template-columns:
+      repeat(auto-fill,minmax(160px,1fr));
+  }
+
+}

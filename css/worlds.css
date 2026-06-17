@@ -1,243 +1,317 @@
-/* worlds.css */
-
-/* World cards */
-.world-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
+.worlds-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem 4rem;
 }
 
-.world-card {
-  background: var(--bg-card);
+/* Controls */
+
+.world-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-input,
+.filter-select {
+  padding: 0.75rem 1rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Grid */
+
+.world-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2.5rem 2rem;
+  justify-items: center;
+}
+
+/* Card */
+
+.world-card {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  align-items: center;
+  text-align: center;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
-  border-top: 2px solid transparent;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  max-width: 240px;
+  padding: 1px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(163,185,90,0.12), rgba(192,87,42,0.12));
 }
 
 .world-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-light);
-  border-top-color: var(--rose-dim);
-  transform: translateY(-2px);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
 }
 
-.world-card-header {
+.world-card > .world-card-body,
+.world-card > .world-card-img {
+  width: 100%;
+  border-radius: calc(var(--radius) - 1px);
+}
+
+.world-card-img {
+  position: relative;
+  padding: 1px;
+  border-radius: calc(var(--radius) - 1px);
+  background: rgba(163,185,90,0.08);
+  margin-bottom: 1rem;
+}
+
+.world-card-img-circle {
+  width: 100%;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: linear-gradient(180deg, rgba(31,33,37,0.95), rgba(19,19,22,0.95));
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
 }
 
-.world-card-icon {
-  width: 32px;
-  height: 32px;
+.world-card:hover .world-card-img-circle {
+  border-color: rgba(163,185,90,0.5);
+  transform: scale(1.02);
+}
+
+.world-card-img-circle img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  flex-shrink: 0;
+  object-position: center;
+}
+
+.placeholder-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-muted);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--fg-muted);
+}
+
+.world-card-status {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  transition: transform 0.3s;
+}
+
+.world-card:hover .world-card-status {
+  transform: scale(1.1);
+}
+
+.world-card-body {
+  padding: 1rem 1rem 1.25rem;
+  background: linear-gradient(180deg, rgba(19,19,22,0.95), rgba(31,33,37,0.95));
+  border-radius: 0 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px);
 }
 
 .world-card-name {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--chrysolite), var(--jacinth));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .world-card-desc {
-  font-size: 0.83rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  flex: 1;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.world-card-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 0.25rem;
+/* Empty State */
+
+.world-card-img {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
-.world-card-lot-count {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-}
-
-/* World detail view */
-.world-detail-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-#world-detail-icon {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
-
-.world-detail-body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.world-detail-desc-wrap {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-}
-
-.world-detail-desc {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-.world-scenery-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-}
-
-.world-scenery-gallery img {
+.world-card-img-circle {
   width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-}
-
-/* Lots section */
-.world-lots-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.world-lots-header input,
-.world-lots-header select {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  padding: 0.5rem 0.75rem;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.world-lots-header input:focus,
-.world-lots-header select:focus {
-  border-color: var(--rose-dim);
-}
-
-.world-lots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-}
-
-/* Lot card */
-.lot-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  height: 100%;
+  border-radius: 50%;
   overflow: hidden;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  border: 3px solid rgba(163, 185, 90, 0.3);
+  transition: border-color 0.3s, transform 0.3s;
 }
 
-.lot-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-light);
-  transform: translateY(-2px);
+.world-card:hover .world-card-img-circle {
+  border-color: var(--primary);
+  transform: scale(1.05);
 }
 
-.lot-card-img {
+.world-card-img-circle img {
   width: 100%;
-  height: 140px;
-  object-fit: cover;
-  display: block;
-  background: var(--bg-surface);
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
-.lot-card-img-placeholder {
+.placeholder-img {
   width: 100%;
-  height: 140px;
-  background: var(--bg-surface);
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  background: var(--bg-muted);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--fg-muted);
 }
 
-.lot-card-body {
-  padding: 1rem;
-}
+/* Status Indicator */
 
-.lot-card-name {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.25rem;
-}
-
-.lot-card-type {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 0.5rem;
-}
-
-.lot-card-meta {
+.world-card-status {
+  position: absolute;
+  bottom: -8px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid var(--bg);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  font-size: 0;
+  transition: transform 0.3s;
 }
 
-.lot-card-price {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--rose-dim);
+.world-card:hover .world-card-status {
+  transform: translateX(50%) scale(1.2);
 }
 
-.breadcrumb-link {
-  color: var(--rose-dim);
-  cursor: pointer;
-  transition: color 0.2s;
+/* Status colors */
+
+.status-active,
+.status-complete {
+  background: #5a9fd4;
 }
 
-.breadcrumb-link:hover {
-  color: var(--rose);
+.status-almost {
+  background: #d4a76a;
 }
 
-@media (max-width: 768px) {
-  .world-detail-body {
-    grid-template-columns: 1fr;
+.status-started {
+  background: #a3b95a;
+}
+
+.status-planned {
+  background: #c0572a;
+}
+
+.status-not-started {
+  background: #5e5858;
+}
+
+/* Card Body */
+
+.world-card-body {
+  width: 100%;
+}
+
+/* World Name */
+
+.world-card-name {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+/* Description */
+
+.world-card-desc {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empty State */
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--fg-muted);
+  grid-column: 1 / -1;
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+  .world-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 2rem 1.5rem;
+  }
+
+  .world-card-img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .world-card-name {
+    font-size: 1rem;
+  }
+
+  .world-card-desc {
+    font-size: 0.75rem;
   }
 }

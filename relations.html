@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
+<title>Relations — OCJ Save File</title>
+
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/navbar.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/relations.css" />
+</head>
+<body>
+
+<!-- ================================
+     NAVBAR
+================================ -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo">
+    <span class="navbar-logo-gem">♦</span>
+    <div class="navbar-logo-text">
+      <div class="navbar-logo-title">OCJ</div>
+      <div class="navbar-logo-sub">Save File</div>
+    </div>
+  </a>
+
+  <ul class="navbar-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sims.html">Sims</a></li>
+    <li><a href="worlds.html">Worlds</a></li>
+    <li><a href="lots.html">Lots</a></li>
+    <li><a href="families.html">Families</a></li>
+    <li><a href="relations.html" class="active">Relations</a></li>
+    <li><a href="statistics.html">Statistics</a></li>
+  </ul>
+
+  <div class="navbar-right">
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="sims.html">Sims</a>
+  <a href="pets.html">Pets</a>
+  <a href="worlds.html">Worlds</a>
+  <a href="lots.html">Lots</a>
+  <a href="families.html">Families</a>
+  <a href="relations.html" class="active">Relations</a>
+  <a href="statistics.html">Statistics</a>
+</div>
+
+<!-- ================================
+     PAGE
+================================ -->
+<div class="relations-page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <p class="page-eyebrow">The Connections</p>
+    <h1 class="page-title">Relations</h1>
+    <div class="divider"></div>
+    <p class="page-description">
+      Explore friendships, rivalries, romances, family ties and social
+      connections across the entire OCJ Save File.
+    </p>
+  </div>
+
+  <!-- INTRO -->
+  <section class="relations-intro">
+    <p>
+      This network visualises how Sims are connected. Drag nodes to reposition
+      them, zoom in to inspect local clusters, or search for a specific Sim to
+      focus on their relationships.
+    </p>
+  </section>
+
+  <!-- CONTROLS -->
+  <div class="relations-controls">
+
+    <div class="search-wrap">
+      <input
+        id="simSearch"
+        class="search-input"
+        type="text"
+        placeholder="Search Sims…"
+        autocomplete="off"
+      />
+      <div id="searchSuggestions" class="search-suggestions"></div>
+    </div>
+
+    <select id="relationshipFilter" class="relation-select">
+      <option value="">All Relationship Types</option>
+    </select>
+
+    <button id="resetGraph" class="relation-btn">Reset View</button>
+
+    <button id="secretToggle" class="relation-btn secret-btn" title="Toggle secret connections">
+      🔒 Show Secrets
+    </button>
+
+  </div>
+
+  <!-- SECRET MODE BANNER -->
+  <div id="secretBanner" class="secret-banner" style="display:none;">
+    🔓 Secret Reveal Mode Active — Hidden connections are now visible
+  </div>
+
+  <!-- NETWORK WRAPPER: popup + graph side by side -->
+  <div class="network-wrapper">
+
+    <!-- LEFT POPUP PANEL -->
+    <div id="edgePopup" class="edge-popup" style="display:none;">
+      <button id="closePopup" class="popup-close" title="Close">✕</button>
+      <div id="popupContent" class="popup-content"></div>
+    </div>
+
+    <!-- GRAPH CANVAS -->
+    <div id="networkContainer" class="network-container">
+      <svg id="relationsSvg"></svg>
+    </div>
+
+  </div>
+
+  <!-- LEGEND -->
+  <section class="relations-legend">
+    <div class="section-header">
+      <h2>Legend</h2>
+    </div>
+    <div id="legendGrid" class="legend-grid"></div>
+  </section>
+
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen" class="loading-screen">
+  Loading Relationship Network…
+</div>
+
+<!-- EMPTY STATE -->
+<div id="emptyState" class="empty-state" style="display:none;">
+  No relationships found.
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-title">OCJ Save File</p>
+    <p class="footer-sub">Canonical Save Archive</p>
+  </div>
+</footer>
+
+<!-- D3 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
+<script src="js/csv.js?v=2"></script>
+<script src="js/theme.js?v=2"></script>
+<script src="js/navbar.js?v=2"></script>
+<script src="js/utils.js?v=2"></script>
+<script src="js/relations.js?v=2"></script>
+
+</body>
+</html>
