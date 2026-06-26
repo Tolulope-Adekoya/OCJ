@@ -1,629 +1,709 @@
-// families.js
-// Layout computation and SVG rendering for OCJ family trees.
+// families.js — v7
+// Uses family-chart (github.com/donatso/family-chart) for layout.
+//
+// REQUIRED in families.html (add before this script tag):
+//   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/family-chart/dist/styles/family-chart.css" />
+//   <script src="https://cdn.jsdelivr.net/npm/family-chart/dist/family-chart.js"></script>
+//
+// HOW IT WORKS:
+//   1. Load CSVs via your existing csv.js + normalizeFamilyData.js
+//   2. Convert each family's edges into family-chart's { id, data, rels } format
+//   3. rels MUST be bidirectional:
+//        - if A.rels.spouses includes B, then B.rels.spouses must include A
+//        - if A.rels.children includes C, then C.rels.parents must include A
+//   4. Call f3.createChart('#containerId', data) → .setCardHtml(fn) → .updateTree({initial:true})
+//   5. Secret toggle: rebuild data without secret edges and call updateTree again
+
 (async function () {
-  // ── Constants ────────────────────────────────────────────────────────────────
-  const NODE_W        = 72;   // card width
-  const NODE_H        = 90;   // card height
-  const PET_W         = 26;
-  const PET_H         = 34;
-  const H_GAP         = 28;   // horizontal gap between siblings
-  const COUPLE_GAP    = 10;   // gap between couple partners
-  const GEN_H         = 180;  // vertical distance between generations
-  const SEC_OFFSET_Y  = 60;   // secondary partner Y offset below primary row
-  const PORTRAIT_PATH = id => `image/sims/${id}/portrait.png`;
-  const PET_PATH      = id => `image/pets/${id}/portrait.png`;
-  const BG_PATH       = fid => [`image/families/background/${fid}.png`, `image/families/background/${fid}.jpg`];
-  const ICON_PATH     = fid => [`image/families/icon/${fid}.png`, `image/families/icon/${fid}.jpg`];
+
+  // ── Sanity check ─────────────────────────────────────────────────────────────
+  if (typeof f3 === 'undefined') {
+    const ls = document.getElementById('loadingScreen');
+    if (ls) {
+      ls.textContent = '⚠ family-chart not loaded. Add the two CDN tags to families.html before families.js.';
+      ls.style.color = '#C0572A';
+    }
+    return;
+  }
+
   // ── DOM ──────────────────────────────────────────────────────────────────────
   const loadingScreen  = document.getElementById('loadingScreen');
   const familyDropdown = document.getElementById('familyDropdown');
   const secretToggle   = document.getElementById('secretToggle');
+  const linkToggle     = document.getElementById('linkToggle');
+  const linkBanner     = document.getElementById('linkBanner');
   const secretBanner   = document.getElementById('secretBanner');
   const treesContainer = document.getElementById('treesContainer');
-  // ── State ─────────────────────────────────────────────────────────────────────
+
   let secretMode   = false;
+  let linkMode     = false;
   let familyGraphs = [];
-  let renderedSvgs = {}; // fid → { svg el, redraw fn }
-  // ── Load CSVs (clear cache so changes always reflect) ──────────────────────
+  const redraws    = {};   // familyId → redraw function
+
+  // ── Load CSV data ─────────────────────────────────────────────────────────────
   CSV.clearCache();
-  const [simsRaw, familiesRaw, familyNamesRaw, connsRaw, petsRaw] = await Promise.all([
+  const [simsRaw, familiesRaw, familyNamesRaw, connsRaw] = await Promise.all([
     CSV.loadCSV('data/sims.csv'),
     CSV.loadCSV('data/families.csv'),
     CSV.loadCSV('data/lookups/family_names.csv'),
     CSV.loadCSV('data/lookups/connections.csv'),
-    CSV.loadCSV('data/pets.csv'),
   ]);
-  console.log('[families] Loaded sims:', simsRaw?.length);
-  console.log('[families] Loaded families:', familiesRaw?.length);
-  console.log('[families] Loaded connections:', connsRaw?.length);
-  // ── Normalize ─────────────────────────────────────────────────────────────────
-  familyGraphs = FamilyData.buildFamilyGraphs(simsRaw, familiesRaw, familyNamesRaw, connsRaw, petsRaw);
-  loadingScreen.style.display = 'none';
-  // ── Populate dropdown ─────────────────────────────────────────────────────────
+
+  familyGraphs = FamilyData.buildFamilyGraphs(simsRaw, familiesRaw, familyNamesRaw, connsRaw, []);
+  if (loadingScreen) loadingScreen.style.display = 'none';
+
+  // ── Dropdown ──────────────────────────────────────────────────────────────────
   familyDropdown.innerHTML = '<option value="">All Families</option>';
   familyGraphs.forEach(fg => {
-    const opt = document.createElement('option');
-    opt.value = fg.familyId;
-    opt.textContent = `${fg.familyName} (${fg.sims.filter(s => !s.isGhost).length} sims)`;
-    familyDropdown.appendChild(opt);
+    const o = document.createElement('option');
+    o.value       = fg.familyId;
+    o.textContent = `${fg.familyName} (${fg.sims.filter(s => !s.isGhost).length} sims)`;
+    familyDropdown.appendChild(o);
   });
+
   familyDropdown.addEventListener('change', () => {
     const fid = familyDropdown.value;
-    if (!fid) {
-      document.querySelectorAll('.family-section').forEach(s => s.style.display = '');
-    } else {
-      document.querySelectorAll('.family-section').forEach(s => {
-        s.style.display = s.dataset.fid === fid ? '' : 'none';
-      });
-      const target = document.querySelector(`.family-section[data-fid="${fid}"]`);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.family-section').forEach(s => {
+      s.style.display = (!fid || s.dataset.fid === fid) ? '' : 'none';
+    });
+    if (fid) {
+      document.querySelector(`.family-section[data-fid="${fid}"]`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+
   // ── Secret toggle ─────────────────────────────────────────────────────────────
   secretToggle.addEventListener('click', () => {
     secretMode = !secretMode;
     secretToggle.textContent = secretMode ? '🔓 Hide Secrets' : '🔒 Show Secrets';
     secretToggle.classList.toggle('secret-active', secretMode);
     secretBanner.style.display = secretMode ? 'flex' : 'none';
-    // Re-render all trees
-    Object.values(renderedSvgs).forEach(r => r.redraw());
+    // Redraw every family tree with updated secret mode
+    Object.values(redraws).forEach(fn => fn());
   });
-  // ── Render all families ───────────────────────────────────────────────────────
-  familyGraphs.forEach(fg => renderFamilySection(fg));
-  // ════════════════════════════════════════════════════════════════════════════
+
+  // ── Click-to-View toggle ────────────────────────────────────────────────────
+  // Independent of secret mode. When off (default), clicking a card just lets
+  // family-chart do its normal thing (recenter the tree on that person).
+  // When on, clicking a sim card navigates to their profile page instead.
+  linkToggle.addEventListener('click', () => {
+    linkMode = !linkMode;
+    linkToggle.textContent = linkMode ? '🔗 Profile Links: On' : '🔗 Profile Links: Off';
+    linkToggle.classList.toggle('link-active', linkMode);
+    linkBanner.style.display = linkMode ? 'flex' : 'none';
+  });
+
+  // ── Inject card CSS ───────────────────────────────────────────────────────────
+  const cardStyle = document.createElement('style');
+  cardStyle.textContent = `
+    /* Wrapper sizing */
+    .fc-wrap { width:100%; height:520px; position:relative; }
+
+    /* OCJ-themed card, matching the site's .card pattern from components.css */
+    .f3 .card-body {
+      width: 112px !important;
+      height: 124px !important;
+      padding: 0 !important;
+      background: var(--bg-card) !important;
+      border: 1.5px solid var(--border) !important;
+      border-radius: var(--radius-sm) !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+      cursor: pointer !important;
+      position: relative !important;
+      transition: transform .2s, border-color .2s, box-shadow .2s !important;
+    }
+    .f3 .card-body:hover {
+      border-color: var(--primary) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.45) !important;
+    }
+
+    /* Portrait area */
+    .f3 .card-img {
+      flex: 1 !important;
+      overflow: hidden !important;
+      background: var(--bg-muted) !important;
+      position: relative !important;
+    }
+    .f3 .card-img img {
+      width: 100% !important; height: 100% !important;
+      object-fit: cover !important; object-position: center top !important;
+      display: block !important;
+    }
+
+    /* Name strip */
+    .f3 .card-label {
+      height: 26px !important;
+      font-family: var(--font-head) !important;
+      font-size: 10px !important;
+      font-weight: 600 !important;
+      color: var(--fg) !important;
+      background: var(--bg-card) !important;
+      border-top: 1px solid var(--border) !important;
+      text-align: center !important;
+      padding: 0 4px !important;
+      line-height: 25px !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    /* Ghost */
+    .f3 .card-ghost .card-img {
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      font-family: var(--font-head) !important; font-size: 2rem !important;
+      color: var(--fg-muted) !important; background: var(--bg-muted) !important;
+      opacity: .6 !important;
+    }
+    .f3 .card-ghost {
+      border-style: dashed !important;
+      border-color: var(--border-soft, var(--border)) !important;
+      cursor: default !important;
+      box-shadow: none !important;
+    }
+    .f3 .card-ghost:hover { transform: none !important; }
+
+    /* Badges inside portrait */
+    .f3 .card-badge-lock  { position:absolute; top:3px; right:4px; font-size:11px; line-height:1; z-index:2; pointer-events:none;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+    .f3 .card-badge-cross { position:absolute; top:3px; left:3px; font-size:8px; font-weight:700;
+      color:var(--chrysolite); background:rgba(10,10,14,0.8); border-radius:4px; padding:2px 4px;
+      line-height:1.3; z-index:2; cursor:pointer; }
+
+    /* Secret-reveal pulse: signals "this person's parentage differs from public view" */
+    .f3 .card-pulse-secret {
+      border-color: var(--jacinth) !important;
+      border-width: 2px !important;
+      animation: ocj-pulse-jacinth 1.6s ease-in-out infinite;
+    }
+    @keyframes ocj-pulse-jacinth {
+      0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 0 0 rgba(192,87,42,0.6); }
+      50%      { box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 0 12px rgba(192,87,42,0); }
+    }
+
+    /* Connector lines – match OCJ palette */
+    .f3 .link          { stroke: var(--chrysolite) !important; stroke-width: 2px !important; }
+    .f3 .link-spouse   { stroke: #FFD700 !important; stroke-width: 2px !important; }
+  `;
+  document.head.appendChild(cardStyle);
+
+  // ── Build all family sections ──────────────────────────────────────────────────
+  familyGraphs.forEach(fg => buildSection(fg));
+
+  // ── Click delegation (cards are HTML inside SVG foreignObjects) ───────────────
+  // CAPTURE phase: when Click-to-View mode is on, intercept sim card clicks
+  // BEFORE family-chart's own click handler (bound directly to .card, which
+  // recenters the tree) gets a chance to fire.
+  treesContainer.addEventListener('click', e => {
+    if (!linkMode) return;
+    const card = e.target.closest('[data-sim-id]');
+    if (!card?.dataset.simId) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    window.open(`sim.html?id=${card.dataset.simId}`, '_blank');
+  }, true); // capture: true
+
+  // BUBBLE phase: everything else (cross-family badge navigation, and — when
+  // Click-to-View is off — family-chart's own recenter click passes through
+  // untouched since the capture listener above returns early).
+  treesContainer.addEventListener('click', e => {
+    // Cross-family badge click → scroll to that family
+    const cross = e.target.closest('.card-badge-cross[data-fid]');
+    if (cross) {
+      e.stopPropagation();
+      const fid = cross.dataset.fid;
+      familyDropdown.value = fid;
+      document.querySelectorAll('.family-section').forEach(s => {
+        s.style.display = s.dataset.fid === fid ? '' : 'none';
+      });
+      document.querySelector(`.family-section[data-fid="${fid}"]`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  // ── Secret-relationship tooltip (hover, secret mode only) ──────────────────
+  // A single shared tooltip element, reused for every card. Built from the
+  // raw families.csv row(s) — Sim A, Relationship of sim A to sim B, Sim B —
+  // for any sim touching a secret=TRUE row. Sims with no secret rows never
+  // get the data-secret-rels attribute at all (see cardHtml), so they're
+  // completely unaffected by any of this.
+  const secretTooltipEl = document.createElement('div');
+  secretTooltipEl.className = 'ocj-secret-tooltip';
+  secretTooltipEl.setAttribute('role', 'tooltip');
+  document.body.appendChild(secretTooltipEl);
+
+  function buildSecretTooltipHtml(rels) {
+    return rels.map(rel => `
+      <div class="ocj-secret-tooltip-rel">
+        <span class="ocj-secret-tooltip-name">${esc(rel.fromName)}</span>
+        <span class="ocj-secret-tooltip-type">${esc(rel.type)}</span>
+        <span class="ocj-secret-tooltip-name">${esc(rel.toName)}</span>
+      </div>
+    `).join('');
+  }
+
+  function positionSecretTooltip(targetEl) {
+    const rect = targetEl.getBoundingClientRect();
+    const ttRect = secretTooltipEl.getBoundingClientRect();
+    let top  = rect.top - ttRect.height - 10;
+    let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+
+    // Flip below the card if there's no room above the viewport.
+    if (top < 8) top = rect.bottom + 10;
+    // Clamp horizontally so it never runs off-screen.
+    left = Math.max(8, Math.min(left, window.innerWidth - ttRect.width - 8));
+
+    secretTooltipEl.style.top  = `${top}px`;
+    secretTooltipEl.style.left = `${left}px`;
+  }
+
+  treesContainer.addEventListener('mouseover', e => {
+    const card = e.target.closest('[data-secret-rels]');
+    if (!card) return;
+
+    let rels;
+    try {
+      rels = JSON.parse(card.dataset.secretRels);
+    } catch (err) {
+      return; // malformed data — fail silently, never break hover for other cards
+    }
+    if (!rels || !rels.length) return;
+
+    secretTooltipEl.innerHTML = buildSecretTooltipHtml(rels);
+    secretTooltipEl.classList.add('ocj-secret-tooltip-visible');
+    positionSecretTooltip(card);
+  });
+
+  treesContainer.addEventListener('mouseout', e => {
+    const card = e.target.closest('[data-secret-rels]');
+    if (!card) return;
+    // Only hide when the mouse has actually left the card (not just moved
+    // between two child elements inside it).
+    if (card.contains(e.relatedTarget)) return;
+    secretTooltipEl.classList.remove('ocj-secret-tooltip-visible');
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // SECTION BUILDER
-  // ════════════════════════════════════════════════════════════════════════════
-  function renderFamilySection(fg) {
+  // ═══════════════════════════════════════════════════════════════════════════
+  function buildSection(fg) {
+    // Outer section
     const section = document.createElement('div');
-    section.className = 'family-section';
+    section.className   = 'family-section';
     section.dataset.fid = fg.familyId;
-    // Background image (try .png then .jpg)
-    const bgPaths = BG_PATH(fg.familyId);
-    tryImageSrc(bgPaths, src => {
-      section.style.backgroundImage = `url('${src}')`;
-    });
-    // Header bar
-    const header = document.createElement('div');
-    header.className = 'family-header';
-    const iconWrap = document.createElement('div');
-    iconWrap.className = 'family-icon-wrap';
-    const iconImg = document.createElement('img');
-    iconImg.className = 'family-icon';
-    iconImg.alt = '';
-    tryImageSrc(ICON_PATH(fg.familyId), src => { iconImg.src = src; });
-    iconWrap.appendChild(iconImg);
-    const titleEl = document.createElement('h2');
-    titleEl.className = 'family-title';
-    titleEl.textContent = fg.familyName;
-    const countEl = document.createElement('span');
-    countEl.className = 'family-count';
-    countEl.textContent = `${fg.sims.filter(s => !s.isGhost).length} members`;
-    header.appendChild(iconWrap);
-    header.appendChild(titleEl);
-    header.appendChild(countEl);
+    tryImg(
+      [`image/families/background/${fg.familyId}.png`, `image/families/background/${fg.familyId}.jpg`],
+      src => { section.style.backgroundImage = `url('${src}')`; }
+    );
+
+    // Header
+    const header = document.createElement('div'); header.className = 'family-header';
+    const iw = document.createElement('div');     iw.className = 'family-icon-wrap';
+    const ii = document.createElement('img');     ii.className = 'family-icon'; ii.alt = '';
+    tryImg(
+      [`image/families/icon/${fg.familyId}.png`, `image/families/icon/${fg.familyId}.jpg`],
+      src => { ii.src = src; }
+    );
+    iw.appendChild(ii);
+    const te = document.createElement('h2');   te.className = 'family-title'; te.textContent = fg.familyName;
+    const ce = document.createElement('span'); ce.className = 'family-count';
+    ce.textContent = `${fg.sims.filter(s => !s.isGhost).length} members`;
+    header.append(iw, te, ce);
     section.appendChild(header);
-    // SVG container
-    const svgWrap = document.createElement('div');
-    svgWrap.className = 'tree-svg-wrap';
-    section.appendChild(svgWrap);
+
+    // Chart container
+    // IMPORTANT: family-chart needs class="f3" on the element AND an explicit height
+    const chartId  = `fc-${fg.familyId.replace(/[^a-z0-9]/gi, '_')}`;
+    const chartDiv = document.createElement('div');
+    chartDiv.className = 'tree-svg-wrap fc-wrap f3';
+    chartDiv.id        = chartId;
+
+    section.appendChild(chartDiv);
     treesContainer.appendChild(section);
-    // Build and store redraw function
-    const redraw = () => {
-      svgWrap.innerHTML = '';
-      const layout = computeLayout(fg, secretMode);
-      drawTree(svgWrap, fg, layout, secretMode, fg.familyId);
-    };
-    renderedSvgs[fg.familyId] = { redraw };
+
+    // ── Redraw function ─────────────────────────────────────────────────────────
+    // Called on first render and again whenever secretMode changes.
+    let chart = null;
+
+    // Root is pinned ONCE per family, not re-derived inside redraw(). Tree
+    // wiring is mode-invariant now (see csvToF3), so this would already be
+    // stable either way — but pinning it explicitly here means a future
+    // change to csvToF3 can't silently reintroduce root drift between modes.
+    let pinnedRootId = null;
+
+    function redraw() {
+      // Clear previous render
+      chartDiv.innerHTML = '';
+      chart = null;
+
+      // Convert CSV data → family-chart format
+      const data = csvToF3(fg);
+      if (!data.length) return;
+
+      if (!pinnedRootId) {
+        // Pick a root once: someone with no parents in this family.
+        const root = data.find(n => !n.rels.parents.length) || data[0];
+        pinnedRootId = root.id;
+      }
+
+      // family-chart API (verified against library source, src/core/chart.ts /
+      // src/core/cards/card-html.ts):
+      //   f3.createChart(selector, data)
+      //     .setCardHtml()                      ← takes NO args, returns a CardHtml config object
+      //       .setCardInnerHtmlCreator(fn)       ← THIS is where the custom HTML callback goes
+      //     .updateTree({ initial: true, rootId: id })
+      chart = f3.createChart(`#${chartId}`, data);
+
+      chart.setCardHtml().setCardInnerHtmlCreator(d => cardHtml(d, fg.familyId));
+
+      chart.updateTree({ initial: true, rootId: pinnedRootId });
+
+      // Fix #2: after the tree has rendered, attempt to style individual
+      // parent-child connector lines based on per-edge secrecy. Safe no-op
+      // if the library's DOM doesn't support it (see styleSecretLines below).
+      requestAnimationFrame(() => styleSecretLines(chartDiv, data));
+    }
+
+    redraws[fg.familyId] = redraw;
     redraw();
   }
-  // ════════════════════════════════════════════════════════════════════════════
-  // LAYOUT ENGINE
-  // ════════════════════════════════════════════════════════════════════════════
-  function computeLayout(fg, revealSecrets) {
-    // Active edges in current mode
-    const activeEdges = fg.edges.filter(e => revealSecrets || !e.secret);
-    // Build parent→child and child→parents maps
-    const parentsOf = {}; // childId → [parentId]
-    const childrenOf = {}; // parentId → [childId]
-    activeEdges.forEach(e => {
-      if (e.type !== 'Parent' && e.type !== 'Adoptive Parent') return;
-      if (!parentsOf[e.to])  parentsOf[e.to]  = [];
-      if (!childrenOf[e.from]) childrenOf[e.from] = [];
-      parentsOf[e.to].push(e.from);
-      childrenOf[e.from].push(e.to);
-    });
-    // Build couple pairs: primary couples
-    const primaryCoupleOf = {}; // simId → partnerId
-    activeEdges.forEach(e => {
-      if (e.type !== 'Legal Spouse' && e.type !== 'Deceased Legal Spouse') return;
-      primaryCoupleOf[e.from] = e.to;
-      primaryCoupleOf[e.to]   = e.from;
-    });
-    // Secondary couple edges (co-parent, divorced)
-    const secondaryCouples = []; // [{a, b, type, secret}]
-    const secondarySeen = new Set();
-    activeEdges.forEach(e => {
-      if (e.type !== 'Co-Parent' && e.type !== 'Divorced' && e.type !== 'Deceased Co-Parent') return;
-      const key = [e.from, e.to].sort().join('|');
-      if (secondarySeen.has(key)) return;
-      secondarySeen.add(key);
-      secondaryCouples.push({ a: e.from, b: e.to, type: e.type, secret: e.secret, color: e.color, dash: e.dash });
-    });
-    // Determine generations via BFS from roots (nodes with no parents in this family)
-    const allIds = fg.sims.map(s => s.id);
-    const genOf = {};
-    // Roots = sims with no parents listed in this family's active edges
-    const roots = allIds.filter(id => !parentsOf[id] || parentsOf[id].length === 0);
-    const queue = roots.map(id => ({ id, gen: 0 }));
-    const visited = new Set();
-    while (queue.length) {
-      const { id, gen } = queue.shift();
-      if (visited.has(id)) continue;
-      visited.add(id);
-      genOf[id] = Math.max(genOf[id] ?? 0, gen);
-      (childrenOf[id] || []).forEach(childId => {
-        queue.push({ id: childId, gen: gen + 1 });
-      });
-    }
-    // Any unvisited nodes get generation 0
-    allIds.forEach(id => { if (genOf[id] === undefined) genOf[id] = 0; });
-    // Group by generation
-    const genGroups = {};
-    allIds.forEach(id => {
-      const g = genOf[id];
-      if (!genGroups[g]) genGroups[g] = [];
-      genGroups[g].push(id);
-    });
-    const maxGen = Math.max(...Object.keys(genGroups).map(Number));
-    // ── Assign X positions ────────────────────────────────────────────────────
-    // Strategy: place couple pairs together, then space children under their parents
-    const nodeX = {};
-    const nodeY = {};
-    const processed = new Set();
-    // We'll do a recursive layout pass
-    // First, identify "couple units" at gen 0 and lay them out
-    // Then recursively place their children
-    let cursor = 0;
-    function placeCouple(simId, partnerId, gen) {
-      if (processed.has(simId)) return nodeX[simId];
-      const y = gen * GEN_H + 60;
-      if (partnerId && !processed.has(partnerId)) {
-        nodeX[simId]     = cursor;
-        nodeX[partnerId] = cursor + NODE_W + COUPLE_GAP;
-        nodeY[simId]     = y;
-        nodeY[partnerId] = y;
-        processed.add(simId);
-        processed.add(partnerId);
-        cursor += NODE_W * 2 + COUPLE_GAP + H_GAP;
-      } else if (!processed.has(simId)) {
-        nodeX[simId] = cursor;
-        nodeY[simId] = y;
-        processed.add(simId);
-        cursor += NODE_W + H_GAP;
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DATA CONVERSION: fg edges → family-chart { id, data, rels } array
+  //
+  // family-chart REQUIRES bidirectional rels:
+  //   A.rels.spouses includes B  ↔  B.rels.spouses includes A
+  //   A.rels.children includes C ↔  C.rels.parents includes A
+  // ═══════════════════════════════════════════════════════════════════════════
+  function csvToF3(fg) {
+    const PARENT_TYPES = new Set(['Parent', 'Adoptive Parent']);
+    const COUPLE_TYPES = new Set(['Legal Spouse', 'Deceased Legal Spouse', 'Divorced', 'Co-Parent', 'Deceased Co-Parent']);
+
+    // ── IMPORTANT ──────────────────────────────────────────────────────────
+    // The tree's WIRING (what's reachable/drawn at all) must NEVER change
+    // between public and secret mode — only what's FLAGGED as secret on top
+    // of that wiring should change. Previously this function fed the tree
+    // library a different parent set per mode (publicParents vs trueParents),
+    // which meant any sim whose ONLY parent edge was secret had zero parents
+    // in public mode — making them, and everything hanging off them,
+    // unreachable from the root and invisible. That's fixed below: we always
+    // wire TRUE parents/couples into the tree, and separately track which
+    // specific edges are secret so the card renderer can still flag them.
+    //
+    // parentSecrecy / coupleSecrecy let downstream code (card badges, line
+    // styling) ask "is THIS specific edge secret?" without affecting whether
+    // the tree can reach that node at all.
+    const parentIds     = {};   // childId  → Set of parentIds (ALWAYS true parents)
+    const parentSecrecy = {};   // childId  → Map(parentId → isSecret)
+    const spousePairs   = new Set();    // "minId+maxId" strings (deduplicated)
+    const coupleSecrecy = {};   // "minId+maxId" → isSecret (true if that pair's edge is secret)
+    const secretRelationsBySim = {};    // simId → [{ fromId, fromName, toId, toName, type }] —
+                                         // every secret=TRUE row in families.csv touching this sim
+                                         // (as either Sim A or Sim B), regardless of relationship
+                                         // type. Powers the hover tooltip in secret-reveal mode.
+
+    fg.sims.forEach(sim => {
+      // Always use trueParents so tree reachability is constant across modes.
+      const parents = sim.trueParents;
+      if (parents && parents.length) {
+        parentIds[sim.id] = new Set(parents.map(p => p.parentId));
+        parentSecrecy[sim.id] = new Map(parents.map(p => [p.parentId, !!p.secret]));
       }
-      return nodeX[simId];
-    }
-    // Recursive: place a sim (and spouse) and all descendants
-    function layoutSubtree(simId, gen) {
-      if (processed.has(simId)) return;
-      const partnerId = primaryCoupleOf[simId];
-      const partnerAlreadyPlaced = partnerId && processed.has(partnerId);
-      // If partner is already placed (placed from the other direction), skip
-      if (partnerAlreadyPlaced) {
-        processed.add(simId);
-        return;
-      }
-      // Get children of this couple
-      const myChildren = getSharedChildren(simId, partnerId, childrenOf, parentsOf);
-      if (myChildren.length === 0) {
-        placeCouple(simId, partnerId, gen);
-        return;
-      }
-      // First, layout all children recursively
-      const startCursor = cursor;
-      myChildren.forEach(childId => layoutSubtree(childId, gen + 1));
-      const endCursor = cursor;
-      // Place couple centred above children span
-      const firstChildX = nodeX[myChildren[0]];
-      const lastChildX  = nodeX[myChildren[myChildren.length - 1]];
-      const midX = (firstChildX + lastChildX) / 2;
-      const y = gen * GEN_H + 60;
-      if (partnerId) {
-        nodeX[simId]     = midX - (NODE_W + COUPLE_GAP) / 2;
-        nodeX[partnerId] = midX + (NODE_W + COUPLE_GAP) / 2;
-        nodeY[simId]     = y;
-        nodeY[partnerId] = y;
-        processed.add(simId);
-        processed.add(partnerId);
-      } else {
-        nodeX[simId] = midX;
-        nodeY[simId] = y;
-        processed.add(simId);
-      }
-    }
-    // Layout all roots and their subtrees
-    // Sort roots: those with more descendants first
-    const rootsSorted = [...roots].sort((a, b) => countDescendants(b, childrenOf) - countDescendants(a, childrenOf));
-    rootsSorted.forEach(rootId => {
-      if (!processed.has(rootId)) layoutSubtree(rootId, genOf[rootId] || 0);
+      secretRelationsBySim[sim.id] = [];
     });
-    // Catch any stragglers
-    allIds.forEach(id => {
-      if (!processed.has(id)) {
-        nodeX[id] = cursor;
-        nodeY[id] = (genOf[id] || 0) * GEN_H + 60;
-        processed.add(id);
-        cursor += NODE_W + H_GAP;
+
+    fg.edges.forEach(edge => {
+      if (edge.secret) {
+        const fromSim = fg.sims.find(s => s.id === edge.from);
+        const toSim   = fg.sims.find(s => s.id === edge.to);
+        const rel = {
+          fromId:   edge.from,
+          fromName: (fromSim && fromSim.name) || edge.from,
+          toId:     edge.to,
+          toName:   (toSim && toSim.name) || edge.to,
+          type:     edge.type,
+        };
+        if (secretRelationsBySim[edge.from]) secretRelationsBySim[edge.from].push(rel);
+        if (secretRelationsBySim[edge.to])   secretRelationsBySim[edge.to].push(rel);
+      }
+
+      if (PARENT_TYPES.has(edge.type)) return; // handled above via trueParents
+
+      if (COUPLE_TYPES.has(edge.type)) {
+        // Canonicalise so A < B to avoid duplicates
+        const a = edge.from < edge.to ? edge.from : edge.to;
+        const b = edge.from < edge.to ? edge.to   : edge.from;
+        const key = `${a}+${b}`;
+        spousePairs.add(key);
+        // If either direction's edge is secret, treat the pair as secret.
+        coupleSecrecy[key] = coupleSecrecy[key] || !!edge.secret;
       }
     });
-    // ── Place secondary partners ──────────────────────────────────────────────
-    const secondaryNodes = []; // { id, x, y, primarySimId, type }
-    const secEdgeLayout  = [];
-    secondaryCouples.forEach(sc => {
-      // Determine which of a/b is the "primary" sim (already has a primaryCouple or is the main one)
-      const aHasPrimary = !!primaryCoupleOf[sc.a];
-      const bHasPrimary = !!primaryCoupleOf[sc.b];
-      const primarySim  = aHasPrimary ? sc.a : sc.b;
-      const secSim      = aHasPrimary ? sc.b : sc.a;
-      // Only place if secondary sim isn't a primary-coupled node in this context
-      if (nodeX[secSim] === undefined || (!aHasPrimary && !bHasPrimary)) {
-        // Both are orphan-ish; use standard placement
-        return;
-      }
-      const px = nodeX[primarySim];
-      const py = nodeY[primarySim];
-      // Offset secondary partner to the right and below
-      const sx = px + NODE_W + H_GAP + 40;
-      const sy = py + SEC_OFFSET_Y;
-      if (nodeX[secSim] === undefined) {
-        nodeX[secSim] = sx;
-        nodeY[secSim] = sy;
-      }
-      secondaryNodes.push({ id: secSim, x: nodeX[secSim], y: nodeY[secSim], primarySimId: primarySim, type: sc.type });
-      // Children of this secondary relationship
-      const secChildren = getSharedChildren(primarySim, secSim, childrenOf, parentsOf);
-      secEdgeLayout.push({
-        primarySimId: primarySim,
-        secSimId:     secSim,
-        children:     secChildren,
-        type:         sc.type,
-        color:        sc.color,
-        dash:         sc.dash,
-        secret:       sc.secret,
+
+    // Step 2: derive childrenOf from parentIds (so parent nodes know their children)
+    const childrenOf = {};  // parentId → Set of childIds
+    fg.sims.forEach(s => { childrenOf[s.id] = new Set(); });
+
+    Object.entries(parentIds).forEach(([childId, parents]) => {
+      parents.forEach(pId => {
+        if (childrenOf[pId]) childrenOf[pId].add(childId);
       });
     });
-    // ── Build edge layout objects ─────────────────────────────────────────────
-    const edgeLayout = [];
-    // Parent→child edges
-    activeEdges.forEach(e => {
-      if (e.type !== 'Parent' && e.type !== 'Adoptive Parent') return;
-      const parentId  = e.from;
-      const childId   = e.to;
-      const partnerId = primaryCoupleOf[parentId];
-      if (nodeX[parentId] === undefined || nodeX[childId] === undefined) return;
-      // Midpoint between couple as source
-      let srcX, srcY;
-      if (partnerId && nodeX[partnerId] !== undefined) {
-        srcX = (nodeX[parentId] + NODE_W / 2 + nodeX[partnerId] + NODE_W / 2) / 2;
-        srcY = nodeY[parentId] + NODE_H;
-      } else {
-        srcX = nodeX[parentId] + NODE_W / 2;
-        srcY = nodeY[parentId] + NODE_H;
-      }
-      edgeLayout.push({
-        type:     e.type,
-        secret:   e.secret,
-        color:    e.color,
-        dash:     e.dash,
-        fromX:    srcX,
-        fromY:    srcY,
-        toX:      nodeX[childId] + NODE_W / 2,
-        toY:      nodeY[childId],
-        childId,
-        parentId,
-      });
+
+    // Step 3: derive spousesOf (bidirectional) from spousePairs
+    const spousesOf = {};   // simId → Set of spouseIds
+    fg.sims.forEach(s => { spousesOf[s.id] = new Set(); });
+
+    spousePairs.forEach(pair => {
+      const [a, b] = pair.split('+');
+      if (spousesOf[a]) spousesOf[a].add(b);
+      if (spousesOf[b]) spousesOf[b].add(a);
     });
-    // Couple edges
-    activeEdges.forEach(e => {
-      if (!isCoupleRel(e.type)) return;
-      if (nodeX[e.from] === undefined || nodeX[e.to] === undefined) return;
-      // Deduplicate (since couples appear in both directions)
-      const key = [e.from, e.to].sort().join('|') + e.type;
-      if (edgeLayout.find(el => el._coupleKey === key)) return;
-      edgeLayout.push({
-        _coupleKey: key,
-        type:   e.type,
-        secret: e.secret,
-        color:  e.color,
-        dash:   e.dash,
-        fromX:  nodeX[e.from] + NODE_W,
-        fromY:  nodeY[e.from] + NODE_H / 2,
-        toX:    nodeX[e.to],
-        toY:    nodeY[e.to] + NODE_H / 2,
-        isCouple: true,
+
+    // Step 4: build the final array
+    return fg.sims.map(sim => {
+      const mySpouseIds = [...(spousesOf[sim.id] || [])];
+
+      // Per-spouse secrecy lookup (key by spouseId, not the canonical pair key)
+      const spouseSecrecyById = {};
+      mySpouseIds.forEach(spId => {
+        const key = sim.id < spId ? `${sim.id}+${spId}` : `${spId}+${sim.id}`;
+        spouseSecrecyById[spId] = !!coupleSecrecy[key];
       });
+
+      // Per-parent secrecy + name, for tooltip text and line styling.
+      // Each entry: { id, name, secret }
+      const myParentIds = [...(parentIds[sim.id] || [])];
+      const parentEdgeInfo = myParentIds.map(pId => {
+        const parentSim = fg.sims.find(s => s.id === pId);
+        return {
+          id: pId,
+          name: (parentSim && parentSim.name) || pId,
+          secret: parentSecrecy[sim.id] ? !!parentSecrecy[sim.id].get(pId) : false,
+        };
+      });
+
+      return {
+        id: sim.id,
+
+        // family-chart uses "data" for display fields.
+        // We store custom fields here too (prefixed with _) for our card renderer.
+        data: {
+          'first name': sim.name || sim.id,   // family-chart uses this for its default display
+          'last name':  '',                   // empty string, not missing key — avoids "undefined" in default renderer
+          'gender':     genderCode(sim.gender),
+
+          // Our custom fields for the card renderer:
+          _name:        sim.name || sim.id,
+          _isGhost:     sim.isGhost     || false,
+          _parentHidden: sim.parentageHidden || false,
+          _originFamily: sim.originFamilyId  || '',
+          _familyId:    fg.familyId,
+          _avatar:      `image/sims/${sim.id}/portrait.png`,
+          _avatarFallback: `image/sims/${sim.id}/portrait.jpg`,
+
+          // Secrecy metadata (always present, regardless of mode) — used by
+          // the card renderer for tooltip text and by the post-render pass
+          // for per-line styling. This does NOT affect tree wiring above.
+          _parentEdges:    parentEdgeInfo,       // [{id, name, secret}, ...]
+          _spouseSecrecy:  spouseSecrecyById,     // { spouseId: isSecret }
+          _secretRelations: secretRelationsBySim[sim.id] || [], // [{fromId, fromName, toId, toName, type}, ...]
+        },
+
+        rels: {
+          // All three arrays required, all bidirectional
+          spouses:  mySpouseIds,
+          children: [...(childrenOf[sim.id] || [])],
+          parents:  myParentIds,
+        },
+      };
     });
-    // ── Compute SVG dimensions ────────────────────────────────────────────────
-    const allX = Object.values(nodeX);
-    const allY = Object.values(nodeY);
-    const svgW = Math.max(...allX) + NODE_W + 80;
-    const svgH = Math.max(...allY) + NODE_H + 120;
-    return {
-      nodeX, nodeY,
-      edgeLayout,
-      secEdgeLayout,
-      secondaryNodes,
-      svgW, svgH,
-      sims: fg.sims,
-    };
   }
-  function isCoupleRel(type) {
-    return ['Legal Spouse', 'Deceased Legal Spouse', 'Divorced', 'Co-Parent', 'Deceased Co-Parent'].includes(type);
+
+  function genderCode(g) {
+    if (!g) return 'M';
+    const lower = g.toLowerCase();
+    if (lower.startsWith('f') || lower === 'female') return 'F';
+    return 'M';
   }
-  function getSharedChildren(aId, bId, childrenOf, parentsOf) {
-    const aChildren = new Set(childrenOf[aId] || []);
-    if (!bId) return [...aChildren];
-    return (childrenOf[aId] || []).filter(c => (parentsOf[c] || []).includes(bId));
-  }
-  function countDescendants(id, childrenOf) {
-    let count = 0;
-    const stack = [...(childrenOf[id] || [])];
-    while (stack.length) {
-      const c = stack.pop();
-      count++;
-      (childrenOf[c] || []).forEach(gc => stack.push(gc));
-    }
-    return count;
-  }
-  // ════════════════════════════════════════════════════════════════════════════
-  // SVG RENDERER
-  // ════════════════════════════════════════════════════════════════════════════
-  function drawTree(container, fg, layout, revealSecrets, familyId) {
-    const { nodeX, nodeY, edgeLayout, svgW, svgH, sims } = layout;
-    const NS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('width',   svgW);
-    svg.setAttribute('height',  svgH);
-    svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
-    svg.setAttribute('class',   'family-tree-svg');
-    // D3 zoom
-    const svgSel = d3.select(svg);
-    const g = svgSel.append('g').attr('class', 'tree-root');
-    svgSel.call(
-      d3.zoom()
-        .scaleExtent([0.15, 2.5])
-        .on('zoom', e => g.attr('transform', e.transform))
-    );
-    const gEl = g.node();
-    // ── Draw edges ────────────────────────────────────────────────────────────
-    edgeLayout.forEach(e => {
-      // In public mode, skip secret edges entirely
-      if (!revealSecrets && e.secret) return;
-      const line = document.createElementNS(NS, 'path');
-      let d;
-      if (e.isCouple) {
-        d = `M${e.fromX},${e.fromY} L${e.toX},${e.toY}`;
-      } else {
-        // Elbow path: down then across then down
-        const midY = e.fromY + (e.toY - e.fromY) * 0.5;
-        d = `M${e.fromX},${e.fromY} L${e.fromX},${midY} L${e.toX},${midY} L${e.toX},${e.toY}`;
-      }
-      line.setAttribute('d',            d);
-      line.setAttribute('fill',         'none');
-      line.setAttribute('stroke',       e.color || '#888');
-      line.setAttribute('stroke-width', '2');
-      if (e.dash) line.setAttribute('stroke-dasharray', e.dash);
-      // Secret conflict: if this is a public parent edge but reveal mode shows a secret parent too,
-      // fade this line
-      if (revealSecrets && !e.secret && e.childId) {
-        const child = sims.find(s => s.id === e.childId);
-        if (child?.parentageHidden) {
-          line.setAttribute('stroke-opacity', '0.3');
-          // ⚠ midpoint marker
-          const midX = (e.fromX + e.toX) / 2;
-          const midY = e.fromY + (e.toY - e.fromY) * 0.5;
-          const warn = document.createElementNS(NS, 'text');
-          warn.setAttribute('x', midX);
-          warn.setAttribute('y', midY - 6);
-          warn.setAttribute('text-anchor', 'middle');
-          warn.setAttribute('font-size', '14');
-          warn.setAttribute('class', 'conflict-warn');
-          warn.textContent = '⚠️';
-          const title = document.createElementNS(NS, 'title');
-          title.textContent = 'Public belief — not biological.';
-          warn.appendChild(title);
-          gEl.appendChild(warn);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FIX #2 — ADAPTIVE SECRET-LINE STYLING
+  //
+  // family-chart's link-drawing internals aren't part of its public API, and
+  // we can't guarantee which DOM shape it uses across versions. This function
+  // is written DEFENSIVELY: it tries a few known-plausible ways to identify
+  // "the path connecting child X to parent Y", and only recolors a line if it
+  // can confidently match it to a specific (child, parent) pair. If it can't,
+  // it does nothing — the card-level badge/glow/tooltip (cardHtml below)
+  // already carries the same information, so a no-op here is safe, not
+  // broken. This function should NEVER throw or break the rendered tree.
+  // ═══════════════════════════════════════════════════════════════════════════
+  function styleSecretLines(container, data) {
+    try {
+      // Build a quick lookup: childId → [{ parentId, name, secret }, ...]
+      const childParentInfo = {};
+      data.forEach(node => {
+        const edges = (node.data && node.data._parentEdges) || [];
+        if (edges.length) childParentInfo[node.id] = edges;
+      });
+
+      // Only bother if there's at least one contested case in this family
+      // (a child with 2+ parent edges where at least one is secret).
+      const hasContested = Object.values(childParentInfo)
+        .some(edges => edges.length > 1 && edges.some(e => e.secret));
+      if (!hasContested) return;
+
+      // family-chart typically renders links as SVG <path> elements inside
+      // the chart's main <svg>. Common conventions (varies by version):
+      //   <path class="link" data-child="ID" data-parent="ID">
+      //   <path class="link" d="...">  with no data attrs at all
+      // We look for data attributes first (best case). If absent, we don't
+      // guess based on path geometry — that's too fragile and could mis-color
+      // an unrelated line — we just bail out for that family.
+      const svg = container.querySelector('svg');
+      if (!svg) return;
+
+      const paths = svg.querySelectorAll('path.link, path[class*="link"]');
+      if (!paths.length) return;
+
+      let matchedAny = false;
+
+      paths.forEach(path => {
+        // Best case: explicit data attributes identifying the relationship.
+        const childId  = path.dataset.child  || path.dataset.childId  || path.getAttribute('data-id-child');
+        const parentId = path.dataset.parent || path.dataset.parentId || path.getAttribute('data-id-parent');
+        if (!childId || !parentId) return; // can't confidently identify — skip, don't guess
+
+        const edges = childParentInfo[childId];
+        if (!edges) return;
+
+        const thisEdge = edges.find(e => e.parentId === parentId || e.id === parentId);
+        if (!thisEdge) return;
+
+        const isContested = edges.length > 1 && edges.some(e => e.secret);
+        if (!isContested) return; // ordinary edge, leave default styling alone
+
+        matchedAny = true;
+
+        if (thisEdge.secret) {
+          // True biological parent line: full opacity, slightly emphasized.
+          path.style.opacity = '1';
+          path.style.strokeWidth = '2.5px';
+          path.setAttribute('data-ocj-secret-style', 'true-parent');
+        } else {
+          // Publicly-believed-but-contradicted line: fade + dashed.
+          path.style.opacity = '0.3';
+          path.style.strokeDasharray = '4,3';
+          path.setAttribute('data-ocj-secret-style', 'public-belief');
         }
-      }
-      if (revealSecrets && e.secret && e.childId) {
-        const title = document.createElementNS(NS, 'title');
-        title.textContent = 'True biological parent.';
-        line.appendChild(title);
-      }
-      gEl.appendChild(line);
-    });
-    // ── Draw nodes ────────────────────────────────────────────────────────────
-    sims.forEach(sim => {
-      const x = nodeX[sim.id];
-      const y = nodeY[sim.id];
-      if (x === undefined || y === undefined) return;
-      // In public mode, skip rendering secret-only sims?
-      // (all sims in the layout have been placed; ghost nodes always show)
-      const g2 = document.createElementNS(NS, 'g');
-      g2.setAttribute('class',    'tree-node' + (sim.isGhost ? ' ghost-node' : ''));
-      g2.setAttribute('transform', `translate(${x},${y})`);
-      if (!sim.isGhost) {
-        g2.style.cursor = 'pointer';
-        g2.addEventListener('click', () => {
-          window.open(`sim.html?id=${sim.id}`, '_blank');
-        });
-      }
-      // Card background
-      const rect = document.createElementNS(NS, 'rect');
-      rect.setAttribute('width',  NODE_W);
-      rect.setAttribute('height', NODE_H);
-      rect.setAttribute('rx',     6);
-      rect.setAttribute('ry',     6);
-      rect.setAttribute('class',  sim.isGhost ? 'node-rect ghost-rect' : 'node-rect');
-      g2.appendChild(rect);
-      if (sim.isGhost) {
-        // Unknown label
-        const txt = document.createElementNS(NS, 'text');
-        txt.setAttribute('x',            NODE_W / 2);
-        txt.setAttribute('y',            NODE_H / 2 + 5);
-        txt.setAttribute('text-anchor', 'middle');
-        txt.setAttribute('class',       'ghost-label');
-        txt.textContent = '?';
-        g2.appendChild(txt);
-        const lbl = document.createElementNS(NS, 'text');
-        lbl.setAttribute('x',            NODE_W / 2);
-        lbl.setAttribute('y',            NODE_H - 8);
-        lbl.setAttribute('text-anchor', 'middle');
-        lbl.setAttribute('class',       'node-name ghost-name');
-        lbl.textContent = 'Unknown';
-        g2.appendChild(lbl);
-      } else {
-        // Portrait clip
-        const clipId = `clip-${sim.id}-${familyId}`;
-        const clip   = document.createElementNS(NS, 'clipPath');
-        clip.setAttribute('id', clipId);
-        const clipRect = document.createElementNS(NS, 'rect');
-        clipRect.setAttribute('width',  NODE_W);
-        clipRect.setAttribute('height', NODE_H - 22);
-        clipRect.setAttribute('rx',     4);
-        clip.appendChild(clipRect);
-        g2.appendChild(clip);
-        // Portrait image
-        const img = document.createElementNS(NS, 'image');
-        img.setAttribute('href',            PORTRAIT_PATH(sim.id));
-        img.setAttribute('width',           NODE_W);
-        img.setAttribute('height',          NODE_H - 22);
-        img.setAttribute('clip-path',       `url(#${clipId})`);
-        img.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-        img.setAttribute('class',           'node-portrait');
-        // Fallback: on error, show initials
-        img.addEventListener('error', () => {
-          img.style.display = 'none';
-          const initRect = document.createElementNS(NS, 'rect');
-          initRect.setAttribute('width',  NODE_W);
-          initRect.setAttribute('height', NODE_H - 22);
-          initRect.setAttribute('rx',     4);
-          initRect.setAttribute('class',  'node-initials-bg');
-          g2.insertBefore(initRect, img);
-          const initTxt = document.createElementNS(NS, 'text');
-          initTxt.setAttribute('x',            NODE_W / 2);
-          initTxt.setAttribute('y',            (NODE_H - 22) / 2 + 6);
-          initTxt.setAttribute('text-anchor', 'middle');
-          initTxt.setAttribute('class',       'node-initials');
-          initTxt.textContent = initials(sim.name);
-          g2.insertBefore(initTxt, img);
-        });
-        g2.appendChild(img);
-        // Name label
-        const name = document.createElementNS(NS, 'text');
-        name.setAttribute('x',            NODE_W / 2);
-        name.setAttribute('y',            NODE_H - 8);
-        name.setAttribute('text-anchor', 'middle');
-        name.setAttribute('class',       'node-name');
-        name.textContent = shortName(sim.name);
-        g2.appendChild(name);
-        // 🔒 icon if parentage hidden (public mode only)
-        if (!revealSecrets && sim.parentageHidden) {
-          const lock = document.createElementNS(NS, 'text');
-          lock.setAttribute('x',         NODE_W - 4);
-          lock.setAttribute('y',         14);
-          lock.setAttribute('font-size', '12');
-          lock.setAttribute('class',     'lock-icon');
-          lock.textContent = '🔒';
-          g2.appendChild(lock);
-        }
-        // Cross-family badge
-        if (sim.originFamilyId && sim.originFamilyId !== familyId) {
-          const badge = document.createElementNS(NS, 'text');
-          badge.setAttribute('x',         4);
-          badge.setAttribute('y',         14);
-          badge.setAttribute('font-size', '9');
-          badge.setAttribute('class',     'cross-family-badge');
-          badge.textContent = `↗ ${sim.originFamilyId}`;
-          badge.style.cursor = 'pointer';
-          badge.addEventListener('click', e => {
-            e.stopPropagation();
-            navigateToFamily(sim.originFamilyId);
-          });
-          const title = document.createElementNS(NS, 'title');
-          title.textContent = `From ${sim.originFamilyId} — click to navigate`;
-          badge.appendChild(title);
-          g2.appendChild(badge);
-        }
-        // Pet portraits
-        let petOffset = NODE_W + 4;
-        (sim.pets || []).forEach(pet => {
-          const pg = document.createElementNS(NS, 'g');
-          pg.setAttribute('class',     'pet-node');
-          pg.setAttribute('transform', `translate(${petOffset}, ${(NODE_H - PET_H) / 2})`);
-          const petRect = document.createElementNS(NS, 'rect');
-          petRect.setAttribute('width',  PET_W);
-          petRect.setAttribute('height', PET_H);
-          petRect.setAttribute('rx',     4);
-          petRect.setAttribute('class',  'pet-rect');
-          pg.appendChild(petRect);
-          const petClipId = `clip-pet-${pet.id}-${familyId}`;
-          const petClip   = document.createElementNS(NS, 'clipPath');
-          petClip.setAttribute('id', petClipId);
-          const petClipR = document.createElementNS(NS, 'rect');
-          petClipR.setAttribute('width',  PET_W);
-          petClipR.setAttribute('height', PET_H - 14);
-          petClipR.setAttribute('rx',     3);
-          petClip.appendChild(petClipR);
-          pg.appendChild(petClip);
-          const petImg = document.createElementNS(NS, 'image');
-          petImg.setAttribute('href',     PET_PATH(pet.id));
-          petImg.setAttribute('width',    PET_W);
-          petImg.setAttribute('height',   PET_H - 14);
-          petImg.setAttribute('clip-path', `url(#${petClipId})`);
-          petImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-          pg.appendChild(petImg);
-          const petName = document.createElementNS(NS, 'text');
-          petName.setAttribute('x',           PET_W / 2);
-          petName.setAttribute('y',           PET_H - 4);
-          petName.setAttribute('text-anchor', 'middle');
-          petName.setAttribute('class',       'pet-name');
-          petName.textContent = pet.name.slice(0, 6);
-          pg.appendChild(petName);
-          g2.appendChild(pg);
-          petOffset += PET_W + 4;
-        });
-      }
-      gEl.appendChild(g2);
-    });
-    container.appendChild(svg);
+      });
+
+      // If we found contested cases in the data but couldn't match a single
+      // path to them, the library's DOM doesn't expose what we need. That's
+      // fine — fail silently. The card badge/glow/tooltip already covers it.
+      if (!matchedAny) return;
+
+    } catch (err) {
+      // Never let a styling experiment break the tree render.
+      console.warn('[families.js] styleSecretLines skipped:', err.message);
+    }
   }
-  // ── Helpers ──────────────────────────────────────────────────────────────────
-  function initials(name) {
-    return name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+
+
+  // family-chart calls this for every node.
+  // Must return an HTML string. Rendered inside a <foreignObject> in the SVG.
+  // ═══════════════════════════════════════════════════════════════════════════
+  function cardHtml(treeDatum, familyId) {
+    // treeDatum.data is the original node we built in csvToF3: { id, data, rels }.
+    // treeDatum.data.data holds our actual fields (_name, _avatar, _parentHidden, etc).
+    const node = treeDatum.data || {};
+    const d    = node.data || {};
+    const id   = node.id;
+    const name = d._name || id;
+
+    // Ghost / unknown node
+    if (d._isGhost) {
+      return `
+        <div class="card-body card-ghost" style="cursor:default">
+          <div class="card-img">?</div>
+          <div class="card-label">Unknown</div>
+        </div>`;
+    }
+
+    // Every secret=TRUE families.csv row touching this sim, regardless of
+    // relationship type (Parent, Legal Spouse, Co-Parent, etc).
+    const secretRels = d._secretRelations || [];
+    const hasSecret  = secretRels.length > 0;
+
+    const showLock   = hasSecret && !secretMode;
+    const showPulse  = hasSecret && secretMode;
+    const showCross  = d._originFamily && d._originFamily !== familyId;
+
+    // Lock badge (public mode only): hints that this sim has hidden
+    // relationships WITHOUT revealing what they are. The actual content
+    // only ever appears via the custom tooltip, and only once "Show
+    // Secrets" is toggled on — never through this native title attribute.
+    const lockBadge  = showLock
+      ? `<div class="card-badge-lock" title="This sim has hidden relationships. Toggle &quot;Show Secrets&quot; to reveal them.">🔒</div>`
+      : '';
+
+    const pulseClass = showPulse ? ' card-pulse-secret' : '';
+
+    // Secret-reveal mode only: attach the raw relationship rows as a data
+    // attribute. The shared tooltip (see the treesContainer mouseover /
+    // mouseout handlers above) reads this on hover and renders it with the
+    // relationship type in red — a native title attribute can't be styled,
+    // so this is a real custom tooltip instead.
+    const secretRelsAttr = showPulse
+      ? ` data-secret-rels="${esc(JSON.stringify(secretRels))}"`
+      : '';
+
+    const crossBadge = showCross
+      ? `<div class="card-badge-cross" data-fid="${esc(d._originFamily)}" title="From ${esc(d._originFamily)}">↗ ${esc(d._originFamily)}</div>`
+      : '';
+
+    return `
+      <div class="card-body${pulseClass}" data-sim-id="${esc(id)}"${secretRelsAttr}>
+        <div class="card-img">
+          <img
+            src="${esc(d._avatar)}"
+            alt="${esc(shortName(name))}"
+            data-fallbacks="${esc(JSON.stringify([d._avatarFallback, 'image/default/sims/profile.png', 'image/default/sims/profile.webp']))}"
+            onerror="(function(i){try{var a=JSON.parse(i.dataset.fallbacks||'[]');if(a.length){i.src=a.shift();i.dataset.fallbacks=JSON.stringify(a);}else{i.style.display='none';}}catch(e){i.style.display='none';}})(this)"
+          />
+          ${lockBadge}
+          ${crossBadge}
+        </div>
+        <div class="card-label">${esc(shortName(name))}</div>
+      </div>`;
   }
-  function shortName(name) {
-    const parts = (name || '').trim().split(' ');
-    if (parts.length <= 2) return name;
-    return parts[0] + ' ' + parts[parts.length - 1];
+
+  // ── Utilities ─────────────────────────────────────────────────────────────────
+  function shortName(n) {
+    const parts = (n || '').trim().split(' ');
+    return parts.length <= 2 ? n : `${parts[0]} ${parts[parts.length - 1]}`;
   }
-  function tryImageSrc(paths, callback) {
+
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function tryImg(paths, cb) {
     let i = 0;
-    function attempt() {
+    (function next() {
       if (i >= paths.length) return;
       const img = new Image();
-      img.onload  = () => callback(paths[i]);
-      img.onerror = () => { i++; attempt(); };
+      img.onload  = () => cb(paths[i]);
+      img.onerror = () => { i++; next(); };
       img.src = paths[i];
-    }
-    attempt();
+    })();
   }
-  function navigateToFamily(fid) {
-    familyDropdown.value = fid;
-    document.querySelectorAll('.family-section').forEach(s => {
-      s.style.display = s.dataset.fid === fid ? '' : 'none';
-    });
-    const target = document.querySelector(`.family-section[data-fid="${fid}"]`);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+
 })();

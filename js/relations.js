@@ -302,7 +302,7 @@
       .append('circle')
         .attr('r', 20);
 
-    // Portrait image
+    // Portrait image with fallback chain: .png → .jpg → .webp → default.png → default.webp
     nodeSel.append('image')
       .attr('href',        d => `image/sims/${d.id}/portrait.png`)
       .attr('x',           -20)
@@ -311,18 +311,34 @@
       .attr('height',      40)
       .attr('clip-path',   d => `url(#clip-${d.id})`)
       .attr('preserveAspectRatio', 'xMidYMid slice')
+      .attr('data-fallbacks', d => JSON.stringify([
+        `image/sims/${d.id}/portrait.jpg`,
+        `image/sims/${d.id}/portrait.webp`,
+        'image/default/sims/profile.png',
+        'image/default/sims/profile.webp'
+      ]))
       .on('error', function () {
-        // Replace broken image with initials circle
-        const parent = d3.select(this.parentNode);
-        this.remove();
-        parent.append('circle')
-          .attr('r', 20)
-          .attr('class', 'node-initials-bg');
-        parent.append('text')
-          .attr('class', 'node-initials')
-          .attr('text-anchor', 'middle')
-          .attr('dominant-baseline', 'central')
-          .text(d => initials(d.name));
+        const el = d3.select(this);
+        const current = el.attr('href');
+        let fallbacks;
+        try { fallbacks = JSON.parse(el.attr('data-fallbacks') || '[]'); } catch(e) { fallbacks = []; }
+        if (!fallbacks.length) {
+          // All fallbacks exhausted — show initials
+          const parent = d3.select(this.parentNode);
+          this.remove();
+          parent.append('circle')
+            .attr('r', 20)
+            .attr('class', 'node-initials-bg');
+          parent.append('text')
+            .attr('class', 'node-initials')
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'central')
+            .text(d => initials(d.name));
+        } else {
+          const next = fallbacks.shift();
+          el.attr('data-fallbacks', JSON.stringify(fallbacks));
+          el.attr('href', next);
+        }
       });
 
     // Name label

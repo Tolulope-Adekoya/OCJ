@@ -1,9 +1,9 @@
-﻿WORLD,NAME,AGE GROUP,GENDER,SPECIES,PLAYABLE SIM,STATUS,PET_ID,SIM_ID
-Brindleton Bay,Dancer,Adult,Female,Cat,Yes,Not Started,PET0002,SIM00001
-Brindleton Bay,Prancer,Elder,Male,Dog ,Yes,Not Started,PET0003,SIM00001
-Brindleton Bay,Bates,Baby,Female,Dog ,Yes,Not Started,PET0004,SIM00001
-Brindleton Bay,Norm,Baby,Male,Iguana,Yes,Not Started,PET0005,SIM00001
-Brindleton Bay,Lia,Adult,Female,Toucan,Yes,Not Started,PET0006,SIM00001
-Chestnut Ridge,Glue,Adult,Female,Horse,No,Not Started,PET0007,SIM00035
-Chestnut Ridge,Jean,Elder,Male,Horse,No,Not Started,PET0008,SIM00035
-Chestnut Ridge,jacket,Baby,Female,Horse,No,Not Started,PET0009,SIM00035
+WORLD,NAME,AGE GROUP,GENDER,SPECIES,PLAYABLE SIM,STATUS,PET_ID,SIM_ID,TRAITS
+Brindleton Bay,Dancer,Adult,Female,Cat,Yes,Not Started,PET0002,SIM00001,
+Brindleton Bay,Prancer,Elder,Male,Dog ,Yes,Not Started,PET0003,SIM00001,
+Brindleton Bay,Bates,Baby,Female,Dog ,Yes,Not Started,PET0004,SIM00001,
+Brindleton Bay,Norm,Baby,Male,Iguana,Yes,Not Started,PET0005,SIM00001,
+Brindleton Bay,Lia,Adult,Female,Toucan,Yes,Not Started,PET0006,SIM00001,
+Chestnut Ridge,Glue,Adult,Female,Horse,No,Not Started,PET0007,SIM00035,
+Chestnut Ridge,Jean,Elder,Male,Horse,No,Not Started,PET0008,SIM00035,
+Chestnut Ridge,jacket,Baby,Female,Horse,No,Not Started,PET0009,SIM00035,

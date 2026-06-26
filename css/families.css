@@ -89,6 +89,12 @@
   color: var(--jacinth);
 }
 
+.link-btn.link-active {
+  background: rgba(163, 185, 90, 0.15);
+  border-color: var(--chrysolite);
+  color: var(--chrysolite);
+}
+
 /* ── Secret banner ────────────────────────────────────────────────────────── */
 .secret-banner {
   display: flex;
@@ -99,6 +105,21 @@
   border-top: 1px solid rgba(192, 87, 42, 0.25);
   border-bottom: 1px solid rgba(192, 87, 42, 0.25);
   color: var(--jacinth);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+/* ── Link mode banner ─────────────────────────────────────────────────────── */
+.link-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  background: rgba(163, 185, 90, 0.12);
+  border-top: 1px solid rgba(163, 185, 90, 0.25);
+  border-bottom: 1px solid rgba(163, 185, 90, 0.25);
+  color: var(--chrysolite);
   font-size: 0.85rem;
   margin-bottom: 1rem;
   animation: fadeInUp 0.3s ease forwards;
@@ -341,4 +362,65 @@
   .tree-svg-wrap {
     padding: 1rem;
   }
+}
+
+/* ── Secret-relationship hover tooltip ───────────────────────────────────── */
+/* Shown only on hover, only in secret-reveal mode, only for sims that
+   actually touch a secret=TRUE row in families.csv. Built + positioned in
+   families.js (see treesContainer mouseover/mouseout handlers). */
+.ocj-secret-tooltip {
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  background: var(--bg-card);
+  border: 1px solid var(--jacinth);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.15s, transform 0.15s;
+  max-width: 240px;
+}
+
+.ocj-secret-tooltip-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ocj-secret-tooltip-rel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.15rem;
+  padding: 0.3rem 0;
+}
+
+.ocj-secret-tooltip-rel + .ocj-secret-tooltip-rel {
+  border-top: 1px dashed rgba(192, 87, 42, 0.3);
+  margin-top: 0.3rem;
+}
+
+.ocj-secret-tooltip-name {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+/* The relationship type itself — "in red letters" per the brief. Uses the
+   site's existing Jacinth accent (its actual hex is a warm red-brown) since
+   that's already the established "this is secret" color everywhere else on
+   this page (lock badge pulse, secret banner). Swap the var(--jacinth) below
+   for a literal red (e.g. #E63946) if you want a true, unambiguous red instead. */
+.ocj-secret-tooltip-type {
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--jacinth);
 }

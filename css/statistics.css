@@ -379,3 +379,189 @@
 
   color: var(--fg-muted);
 }
+/* =========================
+   ADDED — pivot dashboard polish
+========================= */
+
+/* Bigger, stat-card style dataset buttons */
+.dataset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  padding: 1.1rem 2rem;
+  min-width: 150px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  transform: translateY(0);
+}
+
+.dataset-btn-count {
+  font-size: .7rem;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.dataset-btn:hover {
+  transform: translateY(-2px);
+}
+
+.dataset-btn.active {
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.dataset-btn.active .dataset-btn-count {
+  color: var(--primary);
+  opacity: .85;
+}
+
+/* KPI row above the dashboard */
+.stats-kpis {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+}
+
+/* Chart type buttons */
+.chart-btn:disabled,
+.chart-btn.chart-btn-disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.chart-btn:disabled:hover,
+.chart-btn.chart-btn-disabled:hover {
+  border-color: var(--border);
+  color: var(--fg-muted);
+}
+
+/* Cross-tab grid */
+.stats-table.cross-tab th,
+.stats-table.cross-tab td {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.stats-table.cross-tab thead th:first-child,
+.stats-table.cross-tab .row-head {
+  text-align: left;
+}
+
+.row-head {
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.row-total,
+.col-total,
+.grand-total {
+  font-weight: 700;
+  color: var(--fg-muted);
+}
+
+/* Clickable chart/table -> drill-down affordance */
+.clickable-row,
+.clickable-cell {
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.clickable-row:hover,
+.clickable-cell:hover {
+  background: var(--primary-bg);
+}
+
+/* Drill-down side panel */
+.stats-empty-hint {
+  color: var(--fg-muted);
+  font-size: .85rem;
+  line-height: 1.6;
+}
+
+.drilldown-meta {
+  font-size: .8rem;
+  color: var(--fg-muted);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.drilldown-meta strong {
+  color: var(--fg);
+}
+
+.drilldown-list {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.drilldown-record {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  padding: .6rem .25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: .85rem;
+}
+
+.drilldown-record:last-child {
+  border-bottom: none;
+}
+
+.drilldown-record a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.drilldown-record a:hover {
+  text-decoration: underline;
+}
+
+.drilldown-record-sub {
+  color: var(--fg-muted);
+  font-size: .78rem;
+}
+
+/* =========================
+   ADDED — style the Rows / Columns / Display selects
+   (native <select> renders unstyled white-on-white otherwise)
+========================= */
+
+.stats-controls select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  padding: .65rem 2.25rem .65rem .9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1L5 5L9 1' stroke='%23999999' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right .85rem center;
+  color: var(--fg);
+  font-size: .9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+
+.stats-controls select:hover {
+  border-color: var(--primary);
+}
+
+.stats-controls select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-bg);
+}
+
+.stats-controls select option {
+  background: var(--bg-card);
+  color: var(--fg);
+}

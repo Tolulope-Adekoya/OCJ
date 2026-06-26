@@ -104,28 +104,32 @@
       class="dataset-btn active"
       data-dataset="sims"
     >
-      Sims
+      <span class="dataset-btn-label">Sims</span>
+      <span class="dataset-btn-count" id="countSims">—</span>
     </button>
 
     <button
       class="dataset-btn"
       data-dataset="lots"
     >
-      Lots
+      <span class="dataset-btn-label">Lots</span>
+      <span class="dataset-btn-count" id="countLots">—</span>
     </button>
 
     <button
       class="dataset-btn"
       data-dataset="worlds"
     >
-      Worlds
+      <span class="dataset-btn-label">Worlds</span>
+      <span class="dataset-btn-count" id="countWorlds">—</span>
     </button>
     
     <button
       class="dataset-btn"
       data-dataset="pets"
     >
-      Pets
+      <span class="dataset-btn-label">Pets</span>
+      <span class="dataset-btn-count" id="countPets">—</span>
     </button>
 
   </section>
@@ -135,46 +139,47 @@
   ========================= -->
   <section class="stats-controls">
 
-    <!-- ATTRIBUTE -->
+    <!-- ROWS -->
     <div class="control-group">
 
-      <label for="attributeSelect">
-        Attribute
+      <label for="rowsSelect">
+        Rows
       </label>
 
-      <select
-        id="attributeSelect"
-      >
+      <div class="stats-select-wrap">
+        <select id="rowsSelect">
+          <!-- Generated dynamically from selected dataset -->
+        </select>
+      </div>
 
-        <!--
-        Generated dynamically
-        from selected dataset
-        -->
+    </div>
 
-      </select>
+    <!-- COLUMNS -->
+    <div class="control-group">
+
+      <label for="columnsSelect">
+        Columns
+      </label>
+
+      <div class="stats-select-wrap">
+        <select id="columnsSelect">
+          <!-- Generated dynamically; first option is always "— None —" -->
+        </select>
+      </div>
 
     </div>
 
     <!-- CHART TYPE -->
     <div class="control-group">
 
-      <label for="chartType">
+      <label>
         Chart Type
       </label>
 
-      <select
-        id="chartType"
-      >
-
-        <option value="bar">
-          Bar Chart
-        </option>
-
-        <option value="pie">
-          Pie Chart
-        </option>
-
-      </select>
+      <div class="chart-type-group">
+        <button class="chart-btn active" type="button" data-chart-type="bar">Bar</button>
+        <button class="chart-btn" type="button" data-chart-type="pie" title="Disabled while a Columns field is set — pie charts only show one series.">Pie</button>
+      </div>
 
     </div>
 
@@ -210,84 +215,76 @@
   </section>
 
   <!-- =========================
-       SUMMARY
+       KPI SUMMARY
   ========================= -->
   <section
-    id="statsSummary"
-    class="stats-summary"
+    id="statsKpis"
+    class="stats-kpis"
   >
-
-    <!--
-
-    Dataset:
-    Sims
-
-    Attribute:
-    Gender
-
-    Categories:
-    3
-
-    Total Records:
-    1247
-
-    -->
-
+    <!-- kpi-grid injected here -->
   </section>
 
   <!-- =========================
-       CHART AREA
+       CHART + DRILL-DOWN
   ========================= -->
   <section class="chart-section">
 
-    <div
-      id="chartContainer"
-      class="chart-container"
-    >
+    <div class="stats-dashboard">
 
-      <canvas
-        id="statsChart"
-      ></canvas>
+      <div class="chart-panel">
+
+        <div class="chart-title">
+          Distribution
+        </div>
+
+        <div
+          id="chartContainer"
+          class="chart-container"
+        >
+
+          <canvas
+            id="statsChart"
+          ></canvas>
+
+        </div>
+
+      </div>
+
+      <div class="stats-summary" id="drilldownPanel">
+
+        <div class="summary-title">
+          Drill-Down
+        </div>
+
+        <div id="drilldownContent">
+          <p class="stats-empty-hint">
+            Click a bar, slice, or table cell to see the matching records.
+          </p>
+        </div>
+
+      </div>
 
     </div>
 
   </section>
 
   <!-- =========================
-       DATA TABLE
+       PIVOT / DATA TABLE
   ========================= -->
   <section class="table-section">
 
-    <div class="section-header">
+    <div class="pivot-panel">
 
-      <h2>
-        Raw Data
-      </h2>
+      <div class="pivot-title">
+        Cross-Tab
+      </div>
 
-    </div>
-
-    <div class="table-wrapper">
-
-      <table
-        id="statsTable"
-        class="stats-table"
+      <div
+        id="statsTableWrap"
+        class="stats-table-wrap"
       >
-
-        <thead>
-          <tr>
-            <th>Value</th>
-            <th>Count</th>
-            <th>Percentage</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-          <!-- generated -->
-
-        </tbody>
-
-      </table>
+        <!-- flat table or cross-tab grid, generated dynamically -->
+      </div>
 
     </div>
 
@@ -347,7 +344,10 @@
 
 <script src="js/theme.js"></script>
 <script src="js/navbar.js"></script>
+<script src="js/csv.js"></script>
 <script src="js/utils.js"></script>
+<script src="js/pivot-classifier.js"></script>
+<script src="js/pivot-engine.js"></script>
 <script src="js/statistics.js"></script>
 
 <footer class="site-footer">
