@@ -1,102 +1,263 @@
+/* ============================================================
+   NAVBAR — OCJ Save File
+   Refined: scroll-aware bg, consistent links, polished mobile
+   ============================================================ */
+
+/* ── Base ───────────────────────────────────────────────────── */
 .navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
   height: 4rem;
-  display: flex; align-items: center;
+  display: flex;
+  align-items: center;
   padding: 0 1.5rem;
   justify-content: space-between;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(19,19,22,.78);
+  /* Starts fully transparent at top of page; JS adds .scrolled */
+  background: rgba(19,19,22,0);
+  border-bottom: 1px solid rgba(163,185,90,0);
+  transition: background 0.3s ease, border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+/* Scrolled state — applied by navbar.js when page scrolls > 20px */
+.navbar.scrolled {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(19,19,22,.82);
+  border-bottom: 1px solid rgba(163,185,90,.15);
+  box-shadow: 0 2px 20px rgba(0,0,0,.3);
+}
+
+/* Always opaque on non-hero pages (any page whose body has .page-body) */
+.page-body .navbar,
+.navbar.opaque {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(19,19,22,.82);
   border-bottom: 1px solid rgba(163,185,90,.15);
 }
-html.light .navbar {
-  background: rgba(245,240,230,.88);
+
+html.light .navbar.scrolled,
+html.light .page-body .navbar,
+html.light .navbar.opaque {
+  background: rgba(245,240,230,.92);
   border-bottom: 1px solid rgba(163,185,90,.22);
+  box-shadow: 0 2px 16px rgba(0,0,0,.08);
 }
 
+/* ── Logo ───────────────────────────────────────────────────── */
 .navbar-logo {
-  display: flex; align-items: center; gap: .6rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  text-decoration: none;
+  flex-shrink: 0;
 }
+
 .navbar-logo-gem {
-  font-size: 1.4rem; line-height: 1;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--primary);
+  transition: transform 0.25s ease;
 }
+
+.navbar-logo:hover .navbar-logo-gem {
+  transform: rotate(45deg) scale(1.1);
+}
+
 .navbar-logo-text { line-height: 1; }
+
 .navbar-logo-title {
   font-family: var(--font-head);
-  font-size: 1.1rem; font-weight: 700;
-  color: var(--primary); line-height: 1;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
 }
+
 .navbar-logo-sub {
-  font-size: .6rem; letter-spacing: .2em;
+  font-size: .58rem;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--fg-muted);
+  margin-top: .1rem;
 }
 
+/* ── Desktop links ──────────────────────────────────────────── */
 .navbar-links {
-  display: flex; align-items: center; gap: .25rem;
+  display: flex;
+  align-items: center;
+  gap: .15rem;
   list-style: none;
+  margin: 0 1rem;
 }
+
 .navbar-links a {
-  padding: .45rem .85rem;
+  display: block;
+  padding: .45rem .8rem;
   border-radius: var(--radius-sm);
-  font-size: .875rem; font-weight: 500;
+  font-size: .82rem;
+  font-weight: 500;
   color: var(--fg-muted);
-  transition: color .2s, background .2s;
+  text-decoration: none;
+  transition: color .2s ease, background .2s ease;
+  white-space: nowrap;
 }
-.navbar-links a:hover { color: var(--fg); background: var(--bg-muted); }
-.navbar-links a.active { color: var(--primary); background: var(--primary-bg); font-weight: 600; }
 
-.navbar-right { display: flex; align-items: center; gap: .5rem; }
+.navbar-links a:hover {
+  color: var(--fg);
+  background: var(--bg-muted);
+}
 
+.navbar-links a.active {
+  color: var(--primary);
+  background: var(--primary-bg);
+  font-weight: 600;
+}
+
+/* Subtle underline accent on active item */
+.navbar-links a.active::after {
+  content: '';
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--primary);
+  margin-top: 1px;
+  opacity: .7;
+}
+
+/* ── Right controls ─────────────────────────────────────────── */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-shrink: 0;
+}
+
+/* Theme toggle */
 .theme-btn {
-  width: 2.25rem; height: 2.25rem;
+  width: 2.1rem;
+  height: 2.1rem;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--fg-muted);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  transition: border-color .2s, color .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  transition: border-color .2s, color .2s, background .2s;
+  cursor: pointer;
 }
-.theme-btn:hover { border-color: var(--primary); color: var(--primary); }
 
+.theme-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-bg);
+}
+
+/* Hamburger */
 .hamburger {
   display: none;
-  flex-direction: column; gap: 4px;
-  background: none; border: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
   padding: .4rem;
-}
-.hamburger span {
-  display: block; width: 1.2rem; height: 2px;
-  background: var(--fg-muted); border-radius: 2px;
-  transition: .25s;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background .2s;
 }
 
+.hamburger:hover { background: var(--bg-muted); }
+
+.hamburger span {
+  display: block;
+  width: 1.25rem;
+  height: 2px;
+  background: var(--fg-muted);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+/* Hamburger → X animation when mobile menu is open */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ── Mobile menu ────────────────────────────────────────────── */
 .mobile-menu {
   display: none;
   position: fixed;
   top: 4rem; left: 0; right: 0;
-  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(19,19,22,.96);
   border-bottom: 1px solid var(--border);
-  padding: .75rem 1.5rem;
+  padding: .5rem 1rem .75rem;
   z-index: 99;
-  flex-direction: column; gap: .25rem;
+  flex-direction: column;
+  gap: .15rem;
+  /* Slide in from top */
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: transform .22s ease, opacity .2s ease;
 }
-.mobile-menu.open { display: flex; }
+
+html.light .mobile-menu {
+  background: rgba(245,240,230,.97);
+}
+
+.mobile-menu.open {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+}
+
 .mobile-menu a {
-  padding: .7rem 1rem;
+  padding: .65rem 1rem;
   border-radius: var(--radius-sm);
-  font-size: .9rem; font-weight: 500;
+  font-size: .88rem;
+  font-weight: 500;
   color: var(--fg-muted);
-  border-bottom: 1px solid var(--border);
-  transition: color .2s;
+  text-decoration: none;
+  transition: color .2s, background .2s;
 }
-.mobile-menu a:hover, .mobile-menu a.active { color: var(--primary); }
-.mobile-menu a:last-child { border-bottom: none; }
+
+.mobile-menu a:hover { color: var(--fg); background: var(--bg-muted); }
+.mobile-menu a.active { color: var(--primary); background: var(--primary-bg); }
+
+/* Mobile theme row — theme button inside mobile menu */
+.mobile-menu-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: .5rem .25rem 0;
+  margin-top: .25rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Responsive breakpoints ─────────────────────────────────── */
+@media (max-width: 900px) {
+  .navbar-links a {
+    font-size: .78rem;
+    padding: .4rem .65rem;
+  }
+}
 
 @media (max-width: 768px) {
   .navbar-links { display: none; }
   .hamburger { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .navbar { padding: 0 1rem; }
+  .navbar-logo-title { font-size: .95rem; }
 }

@@ -16,10 +16,9 @@
 <!-- =========================
      NAVBAR
 ========================= -->
-<nav class="navbar">
+<nav class="navbar" id="mainNav">
   <a href="index.html" class="navbar-logo">
     <span class="navbar-logo-gem">♦</span>
-
     <div class="navbar-logo-text">
       <div class="navbar-logo-title">OCJ</div>
       <div class="navbar-logo-sub">Save File</div>
@@ -31,21 +30,15 @@
     <li><a href="sims.html">Sims</a></li>
     <li><a href="worlds.html">Worlds</a></li>
     <li><a href="lots.html">Lots</a></li>
+    <li><a href="pets.html">Pets</a></li>
     <li><a href="families.html">Families</a></li>
     <li><a href="relations.html">Relations</a></li>
     <li><a href="statistics.html">Statistics</a></li>
   </ul>
 
   <div class="navbar-right">
-    <button class="theme-btn" id="themeBtn" title="Toggle Theme">
-      ☀
-    </button>
-
-    <button
-      class="hamburger"
-      id="hamburger"
-      aria-label="Menu"
-    >
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -53,11 +46,12 @@
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <a href="index.html" class="active">Home</a>
   <a href="sims.html">Sims</a>
   <a href="worlds.html">Worlds</a>
   <a href="lots.html">Lots</a>
+  <a href="pets.html">Pets</a>
   <a href="families.html">Families</a>
   <a href="relations.html">Relations</a>
   <a href="statistics.html">Statistics</a>
@@ -69,13 +63,9 @@
 <section class="hero">
 
   <div class="hero-bg">
-
-    <!-- Future hero image -->
     <div id="heroImage"></div>
-
     <div class="hero-gradient"></div>
     <div class="hero-gradient-sides"></div>
-
   </div>
 
   <div class="hero-orb hero-orb-1"></div>
@@ -89,13 +79,9 @@
       <div class="hero-line"></div>
     </div>
 
-    <p class="hero-eyebrow">
-      Welcome to the
-    </p>
+    <p class="hero-eyebrow">Welcome to the</p>
 
-    <h1 class="hero-title">
-      OCJ Save File
-    </h1>
+    <h1 class="hero-title">OCJ Save File</h1>
 
     <div class="hero-rule">
       <div class="hero-line hero-line-sec"></div>
@@ -104,16 +90,14 @@
     </div>
 
     <p class="hero-sub">
-      A living encyclopaedia of a simulated world.
-      Every sim has a story. Every lot has a purpose.
-      Every relationship matters.
-      Explore the people, places, bloodlines and history
-      that make up the OCJ Save File.
+      A living encyclopaedia of a simulated world. Every sim has a story.
+      Every lot has a purpose. Every relationship matters. Explore the people,
+      places, bloodlines and history that make up the OCJ Save File.
     </p>
 
   </div>
 
-  <div class="hero-scroll-indicator">
+  <div class="hero-scroll-indicator" aria-hidden="true">
     <div class="scroll-line"></div>
     <span class="scroll-chevron">⌄</span>
   </div>
@@ -124,7 +108,6 @@
      STATS STRIP
 ========================= -->
 <section class="stats-strip">
-
   <div class="stats-inner">
 
     <div class="stat-item">
@@ -132,316 +115,164 @@
       <div class="stat-label">Sims</div>
     </div>
 
-    <div class="stat-div"></div>
+    <div class="stat-div" aria-hidden="true"></div>
 
     <div class="stat-item">
       <div class="stat-num stat-num-sec" id="statWorlds">—</div>
       <div class="stat-label">Worlds</div>
     </div>
 
-    <div class="stat-div"></div>
+    <div class="stat-div" aria-hidden="true"></div>
 
     <div class="stat-item">
       <div class="stat-num" id="statLots">—</div>
       <div class="stat-label">Lots</div>
     </div>
 
-  </div>
+    <div class="stat-div" aria-hidden="true"></div>
 
+    <div class="stat-item">
+      <div class="stat-num stat-num-ter" id="statPets">—</div>
+      <div class="stat-label">Pets</div>
+    </div>
+
+  </div>
 </section>
 
 <!-- =========================
      ABOUT
 ========================= -->
 <section class="about-section">
-
   <div class="about-inner">
 
-    <h2 class="section-title">
-      About This Save
-    </h2>
+    <h2 class="section-title">About This Save</h2>
+    <div class="divider" style="width:6rem;margin:.75rem auto 2rem"></div>
 
-    <div
-      class="divider"
-      style="width:6rem;margin:.75rem auto 2rem"
-    ></div>
-
-    <div
-      class="about-text"
-      id="aboutText"
-    >
-
+    <div class="about-text" id="aboutText">
       <p>
-        The OCJ Save File is a long-running Sims 4 worldbuilding
-        project. Every sim has a backstory, every lot has a purpose,
-        and every world has been built with intention. This site acts
-        as the canonical record of the save and its continued growth.
+        The OCJ Save File is a long-running Sims 4 worldbuilding project.
+        Every sim has a backstory, every lot has a purpose, and every world
+        has been built with intention. This site acts as the canonical record
+        of the save and its continued growth.
       </p>
-
       <p>
-        Relationships span generations. Secrets connect households.
-        Influence moves through families, gangs, occult societies,
-        businesses, political circles and hidden organisations.
-        Nothing exists without a reason.
+        Relationships span generations. Secrets connect households. Influence
+        moves through families, gangs, occult societies, businesses, political
+        circles and hidden organisations. Nothing exists without a reason.
       </p>
-
       <p>
-        Browse the database, discover stories, explore family trees,
-        trace social networks and uncover the history of the world
-        one sim at a time.
+        Browse the database, discover stories, explore family trees, trace
+        social networks and uncover the history of the world one sim at a time.
       </p>
-
     </div>
 
   </div>
-
 </section>
 
 <!-- =========================
      NAVIGATION CARDS
 ========================= -->
 <section class="nav-cards-section">
-
   <div class="nav-cards-inner">
 
-    <h2 class="section-title">
-      Explore The Save
-    </h2>
-
-    <div
-      class="divider"
-      style="width:6rem;margin:.75rem auto 2.5rem"
-    ></div>
+    <h2 class="section-title">Explore The Save</h2>
+    <div class="divider" style="width:6rem;margin:.75rem auto 0"></div>
 
     <div class="nav-cards-grid">
 
-      <!-- SIMS -->
-      <a
-        href="sims.html"
-        class="nav-card"
-        style="--card-color:#A3B95A"
-      >
-        <div
-          class="nav-card-icon"
-          style="background:rgba(163,185,90,.12);border-color:rgba(163,185,90,.3)"
-        >
+      <!-- SIMS — olive green -->
+      <a href="sims.html" class="nav-card" style="--card-color:#A3B95A">
+        <div class="nav-card-icon"
+          style="background:rgba(163,185,90,.1);border-color:rgba(163,185,90,.3)">
           👥
         </div>
-
-        <h3 class="nav-card-title">
-          Sims
-        </h3>
-
-        <p class="nav-card-desc">
-          Browse every sim in the save file and discover their
-          stories, households and histories.
-        </p>
-
-        <div class="nav-card-meta">
-          <span id="cardSimCount">— Sims</span>
-        </div>
-
-        <span class="nav-card-arrow">
-          Explore →
-        </span>
+        <h3 class="nav-card-title">Sims</h3>
+        <p class="nav-card-desc">Browse every sim in the save file and discover their stories, households and histories.</p>
+        <div class="nav-card-meta"><span id="cardSimCount">—</span></div>
+        <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- WORLDS -->
-      <a
-        href="worlds.html"
-        class="nav-card"
-        style="--card-color:#C0572A"
-      >
-        <div
-          class="nav-card-icon"
-          style="background:rgba(192,87,42,.12);border-color:rgba(192,87,42,.3)"
-        >
+      <!-- WORLDS — rust -->
+      <a href="worlds.html" class="nav-card" style="--card-color:#C0572A">
+        <div class="nav-card-icon"
+          style="background:rgba(192,87,42,.1);border-color:rgba(192,87,42,.3)">
           🌍
         </div>
-
-        <h3 class="nav-card-title">
-          Worlds
-        </h3>
-
-        <p class="nav-card-desc">
-          Explore every world, its residents, landmarks and
-          connected stories.
-        </p>
-
-        <div class="nav-card-meta">
-          <span id="cardWorldCount">— Worlds</span>
-        </div>
-
-        <span class="nav-card-arrow">
-          Explore →
-        </span>
+        <h3 class="nav-card-title">Worlds</h3>
+        <p class="nav-card-desc">Explore every world, its residents, landmarks and connected stories.</p>
+        <div class="nav-card-meta"><span id="cardWorldCount">—</span></div>
+        <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- PETS -->
-      <a
-        href="pets.html"
-        class="nav-card"
-        style="--card-color:#B16F4B"
-      >
-        <div
-          class="nav-card-icon"
-          style="background:rgba(177,111,75,.12);border-color:rgba(177,111,75,.3)"
-        >
-          🐾
-        </div>
-
-        <h3 class="nav-card-title">
-          Pets
-        </h3>
-
-        <p class="nav-card-desc">
-          Explore the animals in the save and find their owners.
-        </p>
-
-        <div class="nav-card-meta">
-          <span id="cardPetCount">— Pets</span>
-        </div>
-
-        <span class="nav-card-arrow">
-          Explore →
-        </span>
-      </a>
-
-      <!-- LOTS -->
-      <a
-        href="lots.html"
-        class="nav-card"
-        style="--card-color:#A3B95A"
-      >
-        <div
-          class="nav-card-icon"
-          style="background:rgba(163,185,90,.12);border-color:rgba(163,185,90,.3)"
-        >
+      <!-- LOTS — muted teal -->
+      <a href="lots.html" class="nav-card" style="--card-color:#5A9FB9">
+        <div class="nav-card-icon"
+          style="background:rgba(90,159,185,.1);border-color:rgba(90,159,185,.3)">
           🏡
         </div>
-
-        <h3 class="nav-card-title">
-          Lots
-        </h3>
-
-        <p class="nav-card-desc">
-          Browse homes, businesses, community spaces and every
-          location that exists in the save.
-        </p>
-
-        <div class="nav-card-meta">
-          <span id="cardLotCount">— Lots</span>
-        </div>
-
-        <span class="nav-card-arrow">
-          Explore →
-        </span>
+        <h3 class="nav-card-title">Lots</h3>
+        <p class="nav-card-desc">Browse homes, businesses, community spaces and every location that exists in the save.</p>
+        <div class="nav-card-meta"><span id="cardLotCount">—</span></div>
+        <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- FAMILIES -->
-      <a
-        href="families.html"
-        class="nav-card"
-        style="--card-color:#C0572A"
-      >
-        <div
-          class="nav-card-icon"
-          style="background:rgba(192,87,42,.12);border-color:rgba(192,87,42,.3)"
-        >
+      <!-- PETS — warm amber -->
+      <a href="pets.html" class="nav-card" style="--card-color:#B16F4B">
+        <div class="nav-card-icon"
+          style="background:rgba(177,111,75,.1);border-color:rgba(177,111,75,.3)">
+          🐾
+        </div>
+        <h3 class="nav-card-title">Pets</h3>
+        <p class="nav-card-desc">Explore the animals in the save and find their owners.</p>
+        <div class="nav-card-meta"><span id="cardPetCount">—</span></div>
+        <span class="nav-card-arrow">Explore →</span>
+      </a>
+
+      <!-- FAMILIES — sage -->
+      <a href="families.html" class="nav-card" style="--card-color:#7BAF5E">
+        <div class="nav-card-icon"
+          style="background:rgba(123,175,94,.1);border-color:rgba(123,175,94,.3)">
           🌿
         </div>
-
-        <h3 class="nav-card-title">
-          Families
-        </h3>
-
-        <p class="nav-card-desc">
-          Follow bloodlines, marriages, heirs and generations
-          across the entire save file.
-        </p>
-
-        <span class="nav-card-arrow">
-          Explore →
-        </span>
+        <h3 class="nav-card-title">Families</h3>
+        <p class="nav-card-desc">Follow bloodlines, marriages, heirs and generations across the entire save file.</p>
+        <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- RELATIONS -->
-      <a
-        href="relations.html"
-        class="nav-card"
-        style="--card-color:#A3B95A"
-      >
-        <div
-          class="nav-card-icon"
-          style="background:rgba(163,185,90,.12);border-color:rgba(163,185,90,.3)"
-        >
+      <!-- RELATIONS — lavender -->
+      <a href="relations.html" class="nav-card" style="--card-color:#8B79C7">
+        <div class="nav-card-icon"
+          style="background:rgba(139,121,199,.1);border-color:rgba(139,121,199,.3)">
           🕸
         </div>
-
-        <h3 class="nav-card-title">
-          Relations
-        </h3>
-
-        <p class="nav-card-desc">
-          Visualise friendships, rivalries, romances and
-          connections throughout the world.
-        </p>
-
-        <span class="nav-card-arrow">
-          Explore →
-        </span>
+        <h3 class="nav-card-title">Relations</h3>
+        <p class="nav-card-desc">Visualise friendships, rivalries, romances and connections throughout the world.</p>
+        <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- STATS -->
-      <a
-        href="statistics.html"
-        class="nav-card"
-        style="--card-color:#C0572A"
-      >
-        <div
-          class="nav-card-icon"
-          style="background:rgba(192,87,42,.12);border-color:rgba(192,87,42,.3)"
-        >
+      <!-- STATISTICS — gold -->
+      <a href="statistics.html" class="nav-card" style="--card-color:#C4993A">
+        <div class="nav-card-icon"
+          style="background:rgba(196,153,58,.1);border-color:rgba(196,153,58,.3)">
           📊
         </div>
-
-        <h3 class="nav-card-title">
-          Statistics
-        </h3>
-
-        <p class="nav-card-desc">
-          View demographics, distributions and visual breakdowns
-          across the save.
-        </p>
-
-        <span class="nav-card-arrow">
-          Explore →
-        </span>
+        <h3 class="nav-card-title">Statistics</h3>
+        <p class="nav-card-desc">View demographics, distributions and visual breakdowns across the save.</p>
+        <span class="nav-card-arrow">Explore →</span>
       </a>
 
     </div>
-
   </div>
-
 </section>
 
 <!-- =========================
      FOOTER
 ========================= -->
 <footer class="site-footer">
-
   <div class="footer-inner">
-
-    <p class="footer-title">
-      OCJ Save File
-    </p>
-
-    <p class="footer-sub">
-      Canonical Save Archive
-    </p>
-
+    <p class="footer-title">OCJ Save File</p>
+    <p class="footer-sub">Canonical Save Archive</p>
   </div>
-
 </footer>
 
 <script src="js/theme.js"></script>
@@ -449,6 +280,57 @@
 <script src="js/csv.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/index.js"></script>
+
+<!-- Scroll-aware navbar: adds .scrolled class + hamburger animation -->
+<script>
+(function () {
+  const nav = document.getElementById('mainNav');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  // Scroll-aware background
+  function onScroll() {
+    if (window.scrollY > 20) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // run once on load
+
+  // Hamburger toggle — also animates spans and updates aria
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function () {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+      mobileMenu.setAttribute('aria-hidden', !isOpen);
+    });
+
+    // Close mobile menu on outside click
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        hamburger.focus();
+      }
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
