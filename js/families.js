@@ -59,10 +59,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const familyNamesRaw = csvData.familyNames;
     const connectionsRaw = csvData.connections;
 
-    // Normalise data (existing normalizeFamilyData.js)
-    const { families, connections } = window.normalizeFamilyData(
+    // Normalise data — normalizeFamilyData.js exports window.FamilyData.buildFamilyGraphs
+    const graphs = window.FamilyData.buildFamilyGraphs(
       simsRaw, familiesRaw, familyNamesRaw, connectionsRaw
     );
+    const families    = graphs;   // array of family graph objects
+    const connections = {};       // connStyles are resolved internally by buildFamilyGraphs
 
     // Build sim-name index for search
     buildSimNameIndex(families);
@@ -87,12 +89,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 function buildSimNameIndex(families) {
   simNameIndex = {};
   families.forEach(family => {
-    (family.members || []).forEach(sim => {
-      const name = (sim.name || sim.NAME || '').trim();
+    (family.sims || []).forEach(sim => {
+      const name = (sim.name || '').trim();
       if (!name) return;
       const key = normaliseName(name);
       if (!simNameIndex[key]) simNameIndex[key] = new Set();
-      simNameIndex[key].add(family.id);
+      simNameIndex[key].add(family.familyId);
     });
   });
 }
@@ -108,11 +110,11 @@ function populateDropdown(families) {
 
   families
     .slice()
-    .sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+    .sort((a, b) => (a.familyName || '').localeCompare(b.familyName || ''))
     .forEach(family => {
       const opt = document.createElement('option');
-      opt.value = family.id;
-      opt.textContent = family.name || family.id;
+      opt.value = family.familyId;
+      opt.textContent = family.familyName || family.familyId;
       select.appendChild(opt);
     });
 }
@@ -129,19 +131,14 @@ async function renderFamilies(families, connections) {
     const section = await buildFamilySection(family, connections);
     container.appendChild(section);
     allFamilies.push({
-      id:      family.id,
-      name:    family.name || family.id,
-      members: family.members || [],
+      id:      family.familyId,
+      name:    family.familyName || family.familyId,
+      members: family.sims || [],
       el:      section,
+      chartMounted: false,
+      chartData:    family,
     });
   }
-
-  // Initialise all charts (deferred — only rendered when expanded)
-  // Charts are mounted lazily on first expand (see toggleExpand)
-  allFamilies.forEach(f => {
-    f.chartMounted = false;
-    f.chartData    = families.find(x => x.id === f.id);
-  });
 }
 
 // ── Build a single family section ────────────────────────────────
@@ -149,7 +146,7 @@ async function buildFamilySection(family, connections) {
 
   const section = document.createElement('div');
   section.className = 'family-section';
-  section.dataset.familyId = family.id;
+  section.dataset.familyId = family.familyId;
 
   // ── Header ───────────────────────────────────────────────────
   const header = document.createElement('div');
@@ -157,15 +154,15 @@ async function buildFamilySection(family, connections) {
   header.setAttribute('role', 'button');
   header.setAttribute('tabindex', '0');
   header.setAttribute('aria-expanded', 'false');
-  header.setAttribute('aria-controls', `tree-body-${family.id}`);
+  header.setAttribute('aria-controls', `tree-body-${family.familyId}`);
 
-  // Background image — probe primary then default
-  setHeaderBackground(header, family.id);
+  // Background image
+  setHeaderBackground(header, family.familyId);
 
   // Family icon
   const iconWrap = document.createElement('div');
   iconWrap.className = 'family-icon-wrap';
-  setFamilyIcon(iconWrap, family.id, family.name);
+  setFamilyIcon(iconWrap, family.familyId, family.familyName);
 
   // Text block
   const textBlock = document.createElement('div');
@@ -173,7 +170,7 @@ async function buildFamilySection(family, connections) {
 
   const nameEl = document.createElement('div');
   nameEl.className = 'family-name';
-  nameEl.textContent = family.name || family.id;
+  nameEl.textContent = family.familyName || family.familyId;
 
   const metaEl = document.createElement('div');
   metaEl.className = 'family-meta';
@@ -185,7 +182,7 @@ async function buildFamilySection(family, connections) {
   // Member badge
   const badge = document.createElement('span');
   badge.className = 'member-badge';
-  const memberCount = (family.members || []).length;
+  const memberCount = (family.sims || []).length;
   badge.textContent = `${memberCount} member${memberCount === 1 ? '' : 's'}`;
 
   // Chevron
@@ -202,17 +199,17 @@ async function buildFamilySection(family, connections) {
   // ── Tree body (hidden by default) ────────────────────────────
   const body = document.createElement('div');
   body.className = 'family-tree-body';
-  body.id = `tree-body-${family.id}`;
+  body.id = `tree-body-${family.familyId}`;
 
   const treeWrap = document.createElement('div');
   treeWrap.className = 'tree-svg-wrap';
-  treeWrap.id = `tree-wrap-${family.id}`;
+  treeWrap.id = `tree-wrap-${family.familyId}`;
 
   body.appendChild(treeWrap);
   section.appendChild(header);
   section.appendChild(body);
 
-  // ── Expand/collapse on click and keyboard ────────────────────
+  // ── Expand/collapse ──────────────────────────────────────────
   header.addEventListener('click', () => toggleExpand(section, family, connections));
   header.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -310,7 +307,7 @@ function toggleExpand(section, family, connections) {
     header.setAttribute('aria-expanded', 'true');
 
     // Mount chart on first expand
-    const record = allFamilies.find(f => f.id === family.id);
+    const record = allFamilies.find(f => f.id === family.familyId);
     if (record && !record.chartMounted) {
       mountChart(family, connections, section);
       record.chartMounted = true;
@@ -330,23 +327,20 @@ function toggleExpand(section, family, connections) {
 
 // ── Mount family-chart ────────────────────────────────────────────
 function mountChart(family, connections, section) {
-  const wrapEl = section.querySelector(`#tree-wrap-${family.id}`);
+  const wrapEl = section.querySelector(`#tree-wrap-${family.familyId}`);
   if (!wrapEl) return;
 
   try {
-    const chartData = buildChartData(family, connections);
+    const chartData = buildChartData(family);
 
     const chart = window.f3.createChart('#' + wrapEl.id, chartData);
     chart.updateTree({ initial: true });
 
-    // Apply link mode and secret mode classes to nodes after mount
     applyNodeModes(section);
 
-    // Store chart reference for later mode updates
-    const record = allFamilies.find(f => f.id === family.id);
+    const record = allFamilies.find(f => f.id === family.familyId);
     if (record) record.chart = chart;
 
-    // Recalculate body height now that chart has rendered
     const body = section.querySelector('.family-tree-body');
     if (body) {
       setTimeout(() => {
@@ -355,33 +349,67 @@ function mountChart(family, connections, section) {
     }
 
   } catch (err) {
-    console.error(`[families.js] Chart error for family ${family.id}:`, err);
+    console.error(`[families.js] Chart error for family ${family.familyId}:`, err);
     wrapEl.innerHTML = `<p style="padding:1.5rem;color:var(--fg-muted);font-size:.85rem">
-      Could not render tree for ${family.name || family.id}.
+      Could not render tree for ${family.familyName || family.familyId}.
     </p>`;
   }
 }
 
-// ── Build chart data from normalised family ───────────────────────
-// Converts the normalizeFamilyData output into the format expected by family-chart
-function buildChartData(family, connections) {
-  return (family.nodes || []).map(node => {
-    const sim = node.sim || {};
-    const imgSrc = getSimImageSrc(sim);
+// Build chart data from the graph object returned by buildFamilyGraphs.
+// family.sims → nodes, family.edges → relationships
+function buildChartData(family) {
+  const sims  = family.sims  || [];
+  const edges = family.edges || [];
 
+  // Build a spouses/partners map per sim from edges
+  const spousesOf  = {};
+  const childrenOf = {};
+  const parentsOf  = {};
+
+  edges.forEach(e => {
+    if (isCoupleRelType(e.type)) {
+      if (!spousesOf[e.from]) spousesOf[e.from] = [];
+      if (!spousesOf[e.to])   spousesOf[e.to]   = [];
+      if (!spousesOf[e.from].includes(e.to))   spousesOf[e.from].push(e.to);
+      if (!spousesOf[e.to].includes(e.from))   spousesOf[e.to].push(e.from);
+    }
+    if (isParentRelType(e.type)) {
+      // e.from is parent, e.to is child
+      if (!childrenOf[e.from]) childrenOf[e.from] = [];
+      if (!childrenOf[e.from].includes(e.to)) childrenOf[e.from].push(e.to);
+      if (!parentsOf[e.to])  parentsOf[e.to]  = [];
+      if (!parentsOf[e.to].includes(e.from))  parentsOf[e.to].push(e.from);
+    }
+  });
+
+  return sims.map(sim => {
+    const imgSrc = getSimImageSrc(sim);
     return {
-      id:   node.id,
+      id:   sim.id,
       data: {
-        'first name':    getFirstName(sim.name || sim.NAME || ''),
-        'last name':     getLastName(sim.name || sim.NAME || ''),
-        gender:          mapGender(sim.gender || sim.GENDER || ''),
-        img:             imgSrc,
-        'data-sim-id':   sim.SIM_ID || sim.id || '',
-        secret:          node.secret || false,
+        'first name':  getFirstName(sim.name || ''),
+        'last name':   getLastName(sim.name  || ''),
+        gender:        mapGender(sim.gender  || ''),
+        img:           imgSrc,
+        'data-sim-id': sim.id || '',
+        secret:        false,
       },
-      rels: node.rels || {},
+      rels: {
+        spouses:  spousesOf[sim.id]  || [],
+        children: childrenOf[sim.id] || [],
+        parents:  parentsOf[sim.id]  || [],
+      },
     };
   });
+}
+
+function isCoupleRelType(type) {
+  return ['Legal Spouse','Deceased Legal Spouse','Divorced','Co-Parent','Deceased Co-Parent'].includes(type);
+}
+
+function isParentRelType(type) {
+  return type === 'Parent' || type === 'Adoptive Parent';
 }
 
 function getSimImageSrc(sim) {
