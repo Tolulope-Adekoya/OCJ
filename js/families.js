@@ -44,15 +44,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loading = document.getElementById('loadingScreen');
 
   try {
-    // Load CSVs
-    const [simsRaw, familiesRaw, familyNamesRaw, connectionsRaw] =
-      await Promise.all([
-        window.CSV.load('data/sims.csv'),
-        window.CSV.load('data/families.csv'),
-        window.CSV.load('data/lookups/family_names.csv'),
-        window.CSV.load('data/lookups/connections.csv'),
-      ]);
-      
+    // Load CSVs using the project's actual CSV API (csv.js → window.CSV.loadCSVs)
+    // If the next line throws "loadCSVs is not a function", open csv.js,
+    // find its exported method name, and update this call to match.
+    const csvData = await window.CSV.loadCSVs({
+      sims:        'data/sims.csv',
+      families:    'data/families.csv',
+      familyNames: 'data/lookups/family_names.csv',
+      connections: 'data/lookups/connections.csv',
+    });
+
+    const simsRaw        = csvData.sims;
+    const familiesRaw    = csvData.families;
+    const familyNamesRaw = csvData.familyNames;
+    const connectionsRaw = csvData.connections;
 
     // Normalise data (existing normalizeFamilyData.js)
     const { families, connections } = window.normalizeFamilyData(
