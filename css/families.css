@@ -1,426 +1,450 @@
-/* families.css */
+/* ============================================================
+   FAMILIES.CSS — OCJ Save File
+   Phase 4: ancestor search highlight
+   Phase 5: collapsed headers by default, expand on click,
+            background image, family icon
+   ============================================================ */
 
-/* ── Page ─────────────────────────────────────────────────────────────────── */
+/* ── Page layout ─────────────────────────────────────────────── */
 .families-page {
-  max-width: 100%;
-  padding: 0 0 4rem;
+  padding-top: 4rem; /* clears fixed navbar */
 }
 
-/* ── Page header ──────────────────────────────────────────────────────────── */
+/* ── Page header ─────────────────────────────────────────────── */
 .page-header {
   text-align: center;
-  padding: 3rem 1.5rem 2rem;
-  max-width: 1200px;
+  padding: 3.5rem 1.5rem 2.5rem;
+  max-width: 48rem;
   margin: 0 auto;
 }
 
-.page-eyebrow {
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--chrysolite);
-  margin-bottom: 0.5rem;
-}
-
-.page-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-family: var(--font-head);
-  color: var(--fg);
-  margin-bottom: 1rem;
-}
-
-.page-description {
-  max-width: 560px;
-  margin: 1rem auto 0;
-  color: var(--fg-muted);
-  font-size: 0.95rem;
-  line-height: 1.7;
-}
-
-/* ── Controls ─────────────────────────────────────────────────────────────── */
+/* ── Controls bar ────────────────────────────────────────────── */
 .families-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
   align-items: center;
-  padding: 0 1.5rem 1rem;
+  flex-wrap: wrap;
+  gap: .75rem;
+  padding: 0 1.5rem 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.family-select {
-  padding: 0.55rem 1rem;
+/* Search input — phase 4 */
+.families-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 340px;
+}
+
+.families-search-wrap .search-icon {
+  position: absolute;
+  left: .75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: var(--fg-muted);
+  pointer-events: none;
+}
+
+#familySimSearch {
+  width: 100%;
+  padding: .55rem .9rem .55rem 2.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--fg);
+  font-size: .875rem;
+  font-family: var(--font-body);
+  transition: border-color .2s;
+}
+
+#familySimSearch:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+#familySimSearch::placeholder { color: var(--fg-subtle); }
+
+/* Search result count pill */
+.search-result-count {
+  font-size: .75rem;
+  color: var(--fg-muted);
+  padding: .25rem .65rem;
+  border-radius: 999px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  white-space: nowrap;
+  display: none; /* shown by JS when search is active */
+}
+
+.search-result-count.visible { display: inline-block; }
+
+/* Family dropdown */
+.family-select {
+  padding: .55rem .9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
   color: var(--fg);
+  font-size: .875rem;
   font-family: var(--font-body);
-  font-size: 0.875rem;
-  outline: none;
   cursor: pointer;
-  min-width: 220px;
+  transition: border-color .2s;
 }
 
 .family-select:focus {
-  border-color: var(--chrysolite);
+  outline: none;
+  border-color: var(--primary);
 }
 
+/* Buttons */
 .family-btn {
-  padding: 0.55rem 1.1rem;
-  background: var(--bg-muted);
+  padding: .55rem 1rem;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--fg);
-  font-size: 0.875rem;
+  background: var(--bg-card);
+  color: var(--fg-muted);
+  font-size: .8rem;
+  font-family: var(--font-body);
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transition: border-color .2s, color .2s, background .2s;
   white-space: nowrap;
 }
 
 .family-btn:hover {
-  background: var(--bg-card);
-  border-color: var(--chrysolite);
-  color: var(--chrysolite);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
-.secret-btn.secret-active {
-  background: rgba(192, 87, 42, 0.15);
-  border-color: var(--jacinth);
-  color: var(--jacinth);
+.family-btn.active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-bg);
 }
 
-.link-btn.link-active {
-  background: rgba(163, 185, 90, 0.15);
-  border-color: var(--chrysolite);
-  color: var(--chrysolite);
-}
-
-/* ── Secret banner ────────────────────────────────────────────────────────── */
+/* ── Banners ──────────────────────────────────────────────────── */
+.link-banner,
 .secret-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.5rem;
-  background: rgba(192, 87, 42, 0.12);
-  border-top: 1px solid rgba(192, 87, 42, 0.25);
-  border-bottom: 1px solid rgba(192, 87, 42, 0.25);
-  color: var(--jacinth);
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-  animation: fadeInUp 0.3s ease forwards;
+  margin: 0 1.5rem .75rem;
+  padding: .6rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: .82rem;
+  border: 1px solid;
 }
 
-/* ── Link mode banner ─────────────────────────────────────────────────────── */
 .link-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.5rem;
-  background: rgba(163, 185, 90, 0.12);
-  border-top: 1px solid rgba(163, 185, 90, 0.25);
-  border-bottom: 1px solid rgba(163, 185, 90, 0.25);
+  background: rgba(163,185,90,.08);
+  border-color: rgba(163,185,90,.3);
   color: var(--chrysolite);
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-  animation: fadeInUp 0.3s ease forwards;
 }
 
-/* ── Trees container ──────────────────────────────────────────────────────── */
+.secret-banner {
+  background: rgba(192,87,42,.08);
+  border-color: rgba(192,87,42,.3);
+  color: var(--jacinth);
+}
+
+/* ── Trees container ─────────────────────────────────────────── */
 .trees-container {
+  padding: 0 1.5rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
-  padding: 0 1rem 2rem;
+  gap: 1rem;
 }
 
-/* ── Family section ───────────────────────────────────────────────────────── */
+/* ── Family section ──────────────────────────────────────────── */
 .family-section {
-  border-radius: 12px;
-  overflow: hidden;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
-  background-color: var(--bg-card);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
+  background: var(--bg-card);
+  overflow: hidden;
+  transition: border-color .25s ease;
 }
 
-/* Overlay so content is always readable over background image */
-.family-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 10, 14, 0.72);
-  pointer-events: none;
-  z-index: 0;
+.family-section:hover {
+  border-color: rgba(163,185,90,.3);
 }
 
-.family-section > * {
-  position: relative;
-  z-index: 1;
+/* Hidden by search — phase 4 */
+.family-section.search-hidden {
+  display: none;
 }
 
-/* ── Family header ────────────────────────────────────────────────────────── */
+/* ── Family header (the collapsed default view) ──────────────── */
 .family-header {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.2rem 1.5rem;
-  border-bottom: 1px solid rgba(163, 185, 90, 0.2);
-  backdrop-filter: blur(8px);
-  background: rgba(10,10,14,0.45);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  /* Background image support — set via inline style by JS */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 5rem;
+  transition: background-color .2s;
 }
 
-.family-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid rgba(163,185,90,0.4);
-  flex-shrink: 0;
-  background: var(--bg-muted);
-}
-
-.family-icon {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.family-title {
-  font-family: var(--font-head);
-  font-size: 1.4rem;
-  color: #fff;
-  flex: 1;
-}
-
-.family-count {
-  font-size: 0.78rem;
-  color: var(--chrysolite);
-  background: rgba(163,185,90,0.12);
-  border: 1px solid rgba(163,185,90,0.25);
-  border-radius: 20px;
-  padding: 0.2rem 0.7rem;
-  white-space: nowrap;
-}
-
-/* ── Tree SVG wrapper ─────────────────────────────────────────────────────── */
-.tree-svg-wrap {
-  overflow: auto;
-  padding: 1.5rem;
-  min-height: 300px;
-  cursor: grab;
-}
-
-.tree-svg-wrap:active {
-  cursor: grabbing;
-}
-
-.family-tree-svg {
-  display: block;
-  min-width: 100%;
-}
-
-/* ── Node cards ───────────────────────────────────────────────────────────── */
-.node-rect {
-  fill: var(--bg-card);
-  stroke: rgba(163,185,90,0.35);
-  stroke-width: 1.5;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
-  transition: stroke 0.2s;
-}
-
-.tree-node:hover .node-rect {
-  stroke: var(--chrysolite);
-  stroke-width: 2;
-}
-
-.ghost-rect {
-  fill: rgba(50,50,60,0.6);
-  stroke: rgba(120,120,140,0.3);
-  stroke-dasharray: 4,3;
-}
-
-.ghost-label {
-  fill: rgba(150,150,170,0.5);
-  font-family: var(--font-head);
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.ghost-name {
-  fill: rgba(140,140,160,0.6);
-}
-
-.node-portrait {
-  /* handled via SVG image element */
-}
-
-.node-initials-bg {
-  fill: var(--bg-muted);
-}
-
-.node-initials {
-  fill: var(--chrysolite);
-  font-family: var(--font-head);
-  font-size: 14px;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-.node-name {
-  fill: var(--fg);
-  font-family: var(--font-body);
-  font-size: 9px;
-  font-weight: 500;
-  paint-order: stroke;
-  stroke: var(--bg-card);
-  stroke-width: 2px;
-}
-
-.lock-icon {
-  font-size: 10px;
-  pointer-events: none;
-}
-
-.cross-family-badge {
-  fill: var(--chrysolite);
-  font-family: var(--font-body);
-  font-size: 9px;
-  font-weight: 600;
-  paint-order: stroke;
-  stroke: var(--bg-card);
-  stroke-width: 2px;
-}
-
-.conflict-warn {
-  pointer-events: none;
-}
-
-/* ── Pet cards ────────────────────────────────────────────────────────────── */
-.pet-rect {
-  fill: var(--bg-muted);
-  stroke: rgba(192,87,42,0.4);
-  stroke-width: 1.5;
-  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
-}
-
-.pet-node:hover .pet-rect {
-  stroke: var(--jacinth);
-}
-
-.pet-name {
-  fill: var(--fg-muted);
-  font-family: var(--font-body);
-  font-size: 8px;
-}
-
-/* ── Loading / footer ─────────────────────────────────────────────────────── */
-.loading-screen {
-  position: fixed;
+/* Dark overlay so text is always legible over background image */
+.family-header::before {
+  content: '';
+  position: absolute;
   inset: 0;
-  background: var(--bg);
+  background: linear-gradient(
+    to right,
+    rgba(15,15,17,.85) 0%,
+    rgba(15,15,17,.6) 60%,
+    rgba(15,15,17,.3) 100%
+  );
+  z-index: 0;
+  transition: opacity .25s ease;
+}
+
+.family-section.expanded .family-header::before {
+  opacity: .9;
+}
+
+/* ── Family icon ─────────────────────────────────────────────── */
+.family-icon-wrap {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid rgba(163,185,90,.4);
+  overflow: hidden;
+  background: var(--bg-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-head);
-  font-size: 1.1rem;
-  color: var(--fg-muted);
-  z-index: 9999;
-  letter-spacing: 0.05em;
 }
 
-.site-footer {
-  border-top: 1px solid var(--border);
-  padding: 2rem 1.5rem;
-  text-align: center;
+.family-icon-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.footer-title {
+/* Initials fallback shown when image fails */
+.family-icon-initials {
   font-family: var(--font-head);
-  font-size: 1rem;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: .05em;
+}
+
+/* ── Header text ─────────────────────────────────────────────── */
+.family-header-text {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+}
+
+.family-name {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.footer-sub {
-  font-size: 0.8rem;
+.family-meta {
+  font-size: .75rem;
   color: var(--fg-muted);
-  margin-top: 0.25rem;
+  margin-top: .2rem;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .families-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .family-select {
-    width: 100%;
-  }
-
-  .tree-svg-wrap {
-    padding: 1rem;
-  }
+/* Member count badge */
+.member-badge {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  padding: .25rem .75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(163,185,90,.35);
+  background: rgba(163,185,90,.1);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--chrysolite);
+  letter-spacing: .04em;
+  white-space: nowrap;
 }
 
-/* ── Secret-relationship hover tooltip ───────────────────────────────────── */
-/* Shown only on hover, only in secret-reveal mode, only for sims that
-   actually touch a secret=TRUE row in families.csv. Built + positioned in
-   families.js (see treesContainer mouseover/mouseout handlers). */
-.ocj-secret-tooltip {
+/* Expand chevron */
+.family-chevron {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  font-size: .9rem;
+  color: var(--fg-muted);
+  transition: transform .3s ease, color .2s;
+  line-height: 1;
+}
+
+.family-section.expanded .family-chevron {
+  transform: rotate(90deg);
+  color: var(--primary);
+}
+
+/* ── Tree body (collapsed by default) ───────────────────────── */
+.family-tree-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s ease;
+}
+
+.family-section.expanded .family-tree-body {
+  /* JS sets an explicit px height after measuring; this is the fallback */
+  max-height: 4000px;
+}
+
+/* ── Tree canvas wrapper ─────────────────────────────────────── */
+.tree-svg-wrap {
+  width: 100%;
+  min-height: 300px;
+  position: relative;
+}
+
+/* ── family-chart library overrides ─────────────────────────── */
+.f3-chart-svg { display: block; }
+
+/* Node cards */
+.f3-node-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color .2s, box-shadow .2s;
+  cursor: default;
+}
+
+.f3-node-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(163,185,90,.15);
+}
+
+/* Link mode — clickable nodes */
+.link-mode .f3-node-card {
+  cursor: pointer;
+}
+
+.link-mode .f3-node-card:hover {
+  border-color: var(--chrysolite);
+  box-shadow: 0 0 0 3px rgba(163,185,90,.2);
+}
+
+/* ── Phase 4: Search highlight ───────────────────────────────── */
+/* Applied to node card wrappers whose sim matches the search */
+.f3-node-card.search-match {
+  border-color: var(--chrysolite) !important;
+  box-shadow: 0 0 0 3px rgba(163,185,90,.35) !important;
+  background: rgba(163,185,90,.07) !important;
+}
+
+/* Dim non-matching nodes when search is active */
+.search-active .f3-node-card:not(.search-match) {
+  opacity: .35;
+}
+
+/* ── Secret nodes ────────────────────────────────────────────── */
+.f3-node-card.secret-node {
+  border-style: dashed;
+  border-color: rgba(192,87,42,.5);
+}
+
+.secret-mode .f3-node-card.secret-node {
+  border-color: var(--jacinth);
+  box-shadow: 0 0 0 2px rgba(192,87,42,.2);
+}
+
+/* Secret tooltip */
+.secret-tooltip {
   position: fixed;
-  z-index: 10000;
-  pointer-events: none;
+  z-index: 200;
   background: var(--bg-card);
   border: 1px solid var(--jacinth);
   border-radius: var(--radius-sm);
-  padding: 0.65rem 0.85rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(4px);
-  transition: opacity 0.15s, transform 0.15s;
-  max-width: 240px;
-}
-
-.ocj-secret-tooltip-visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.ocj-secret-tooltip-rel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.15rem;
-  padding: 0.3rem 0;
-}
-
-.ocj-secret-tooltip-rel + .ocj-secret-tooltip-rel {
-  border-top: 1px dashed rgba(192, 87, 42, 0.3);
-  margin-top: 0.3rem;
-}
-
-.ocj-secret-tooltip-name {
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 600;
+  padding: .6rem .9rem;
+  font-size: .8rem;
   color: var(--fg);
+  max-width: 240px;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
 }
 
-/* The relationship type itself — "in red letters" per the brief. Uses the
-   site's existing Jacinth accent (its actual hex is a warm red-brown) since
-   that's already the established "this is secret" color everywhere else on
-   this page (lock badge pulse, secret banner). Swap the var(--jacinth) below
-   for a literal red (e.g. #E63946) if you want a true, unambiguous red instead. */
-.ocj-secret-tooltip-type {
-  font-family: var(--font-head);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--jacinth);
+/* ── Edges / connectors ──────────────────────────────────────── */
+.f3-link {
+  stroke: var(--border);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+/* ── Loading screen ──────────────────────────────────────────── */
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  font-size: .95rem;
+  color: var(--fg-muted);
+  letter-spacing: .08em;
+}
+
+/* ── Empty / no results state ────────────────────────────────── */
+.families-empty {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  color: var(--fg-muted);
+  font-size: .95rem;
+  display: none;
+}
+
+.families-empty.visible { display: block; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .families-controls {
+    padding: 0 1rem 1rem;
+    gap: .5rem;
+  }
+
+  .families-search-wrap {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .trees-container {
+    padding: 0 1rem 3rem;
+  }
+
+  .family-header {
+    padding: .85rem 1rem;
+  }
+
+  .family-name {
+    font-size: .95rem;
+  }
+
+  .member-badge {
+    display: none; /* too cramped on small screens */
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .family-tree-body,
+  .family-chevron,
+  .family-section,
+  .f3-node-card { transition: none; }
 }

@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
   <a href="index.html" class="navbar-logo">
     <span class="navbar-logo-gem">♦</span>
@@ -56,28 +57,54 @@
   <!-- CONTROLS -->
   <div class="families-controls">
 
-    <select id="familyDropdown" class="family-select">
+    <!-- Phase 4: Ancestor search -->
+    <div class="families-search-wrap" role="search">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input
+        id="familySimSearch"
+        type="text"
+        placeholder="Search ancestors…"
+        aria-label="Search ancestors by name"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Result count pill (shown when search is active) -->
+    <span class="search-result-count" id="searchResultCount" aria-live="polite"></span>
+
+    <!-- Family dropdown -->
+    <select id="familyDropdown" class="family-select" aria-label="Filter by family">
       <option value="">All Families</option>
     </select>
 
-    <button id="secretToggle" class="family-btn secret-btn">
+    <button id="secretToggle" class="family-btn secret-btn" aria-pressed="false">
       🔒 Show Secrets
     </button>
 
-    <button id="linkToggle" class="family-btn link-btn" title="When on, clicking a sim card opens their profile page">
+    <button id="linkToggle" class="family-btn link-btn" aria-pressed="false"
+            title="When on, clicking a sim card opens their profile page">
       🔗 Profile Links: Off
     </button>
 
   </div>
 
   <!-- LINK MODE BANNER -->
-  <div id="linkBanner" class="link-banner" style="display:none;">
+  <div id="linkBanner" class="link-banner" style="display:none;" role="status">
     🔗 Profile Link Mode Active — Clicking a sim now opens their profile page
   </div>
 
   <!-- SECRET BANNER -->
-  <div id="secretBanner" class="secret-banner" style="display:none;">
+  <div id="secretBanner" class="secret-banner" style="display:none;" role="status">
     🔓 Secret Reveal Mode Active — Hidden connections are now visible
+  </div>
+
+  <!-- No-results state for search -->
+  <div class="families-empty" id="familiesEmpty" aria-live="polite">
+    No families contain a sim matching that name.
   </div>
 
   <!-- TREES CONTAINER -->
@@ -86,7 +113,7 @@
 </div>
 
 <!-- LOADING -->
-<div id="loadingScreen" class="loading-screen">
+<div id="loadingScreen" class="loading-screen" role="status" aria-live="polite">
   Building Family Trees…
 </div>
 
@@ -98,17 +125,14 @@
   </div>
 </footer>
 
-<!-- D3 (not used by families.js but kept for consistency with other pages) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-
-<script src="js/csv.js?v=2"></script>
-<script src="js/theme.js?v=2"></script>
-<script src="js/navbar.js?v=2"></script>
-<script src="js/utils.js?v=2"></script>
-<script src="js/normalizeFamilyData.js?v=2"></script>
+<script src="js/csv.js?v=3"></script>
+<script src="js/theme.js?v=3"></script>
+<script src="js/navbar.js?v=3"></script>
+<script src="js/utils.js?v=3"></script>
+<script src="js/normalizeFamilyData.js?v=3"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/family-chart/dist/styles/family-chart.css" />
 <script src="https://cdn.jsdelivr.net/npm/family-chart/dist/family-chart.js"></script>
-<script src="js/families.js?v=2"></script>
+<script src="js/families.js?v=3"></script>
 
 </body>
 </html>
