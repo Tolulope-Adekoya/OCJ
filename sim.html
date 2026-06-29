@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
 <title>Sim — OCJ Save File</title>
-
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/navbar.css" />
 <link rel="stylesheet" href="css/components.css" />
@@ -21,36 +20,23 @@
       <div class="navbar-logo-sub">Save File</div>
     </div>
   </a>
-
   <ul class="navbar-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="sims.html">Sims</a></li>
     <li><a href="worlds.html">Worlds</a></li>
-    <li><a href="lots.html">Lots</a></li>
-    <li><a href="families.html">Families</a></li>
-    <li><a href="relations.html">Relations</a></li>
-    <li><a href="statistics.html">Statistics</a></li>
-    <li><a href="pets.html">Pets</a></li>
   </ul>
-
   <div class="navbar-right">
     <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <a href="index.html">Home</a>
   <a href="sims.html">Sims</a>
   <a href="worlds.html">Worlds</a>
-  <a href="lots.html">Lots</a>
-  <a href="families.html">Families</a>
-  <a href="relations.html">Relations</a>
-  <a href="statistics.html">Statistics</a>
 </div>
 
 <div class="detail-page">
@@ -80,7 +66,6 @@
         <h2>Attributes</h2>
         <div id="simAttributes" class="detail-attributes"></div>
       </div>
-
       <div class="detail-panel" id="petsSection">
         <h2>Pets</h2>
         <div class="pets-grid" id="petsGrid"></div>

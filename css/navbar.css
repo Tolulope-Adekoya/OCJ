@@ -1,6 +1,7 @@
 /* ============================================================
    NAVBAR — OCJ Save File
-   Refined: scroll-aware bg, consistent links, polished mobile
+   3 links: Home | Sims | Worlds
+   Scroll-aware background, hamburger X animation, aria support
    ============================================================ */
 
 /* ── Base ───────────────────────────────────────────────────── */
@@ -13,14 +14,16 @@
   align-items: center;
   padding: 0 1.5rem;
   justify-content: space-between;
-  /* Starts fully transparent at top of page; JS adds .scrolled */
+  /* Transparent at top of hero pages; JS adds .scrolled */
   background: rgba(19,19,22,0);
   border-bottom: 1px solid rgba(163,185,90,0);
-  transition: background 0.3s ease, border-color 0.3s ease,
-              box-shadow 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* Scrolled state — applied by navbar.js when page scrolls > 20px */
+/* Scrolled state — added by navbar.js when scrollY > 20 */
 .navbar.scrolled {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -29,8 +32,8 @@
   box-shadow: 0 2px 20px rgba(0,0,0,.3);
 }
 
-/* Always opaque on non-hero pages (any page whose body has .page-body) */
-.page-body .navbar,
+/* Inner pages (no hero) always opaque — add .opaque via JS or
+   use the .page-body body class set on non-index pages */
 .navbar.opaque {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -39,7 +42,6 @@
 }
 
 html.light .navbar.scrolled,
-html.light .page-body .navbar,
 html.light .navbar.opaque {
   background: rgba(245,240,230,.92);
   border-bottom: 1px solid rgba(163,185,90,.22);
@@ -60,6 +62,7 @@ html.light .navbar.opaque {
   line-height: 1;
   color: var(--primary);
   transition: transform 0.25s ease;
+  display: inline-block;
 }
 
 .navbar-logo:hover .navbar-logo-gem {
@@ -84,20 +87,20 @@ html.light .navbar.opaque {
   margin-top: .1rem;
 }
 
-/* ── Desktop links ──────────────────────────────────────────── */
+/* ── Desktop links (3 only) ─────────────────────────────────── */
 .navbar-links {
   display: flex;
   align-items: center;
   gap: .15rem;
   list-style: none;
-  margin: 0 1rem;
+  margin: 0 auto;
 }
 
 .navbar-links a {
   display: block;
-  padding: .45rem .8rem;
+  padding: .45rem .9rem;
   border-radius: var(--radius-sm);
-  font-size: .82rem;
+  font-size: .85rem;
   font-weight: 500;
   color: var(--fg-muted);
   text-decoration: none;
@@ -114,17 +117,6 @@ html.light .navbar.opaque {
   color: var(--primary);
   background: var(--primary-bg);
   font-weight: 600;
-}
-
-/* Subtle underline accent on active item */
-.navbar-links a.active::after {
-  content: '';
-  display: block;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--primary);
-  margin-top: 1px;
-  opacity: .7;
 }
 
 /* ── Right controls ─────────────────────────────────────────── */
@@ -161,7 +153,7 @@ html.light .navbar.opaque {
 .hamburger {
   display: none;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   background: none;
   border: none;
   padding: .4rem;
@@ -178,18 +170,18 @@ html.light .navbar.opaque {
   height: 2px;
   background: var(--fg-muted);
   border-radius: 2px;
-  transition: transform .25s ease, opacity .25s ease;
+  transition: transform .25s ease, opacity .2s ease, background .2s;
 }
 
-/* Hamburger → X animation when mobile menu is open */
+/* Hamburger → X when open */
 .hamburger.open span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg);
 }
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.open span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ── Mobile menu ────────────────────────────────────────────── */
@@ -199,27 +191,19 @@ html.light .navbar.opaque {
   top: 4rem; left: 0; right: 0;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  background: rgba(19,19,22,.96);
+  background: rgba(19,19,22,.97);
   border-bottom: 1px solid var(--border);
-  padding: .5rem 1rem .75rem;
+  padding: .4rem 1rem .65rem;
   z-index: 99;
   flex-direction: column;
-  gap: .15rem;
-  /* Slide in from top */
-  transform: translateY(-8px);
-  opacity: 0;
-  transition: transform .22s ease, opacity .2s ease;
+  gap: .1rem;
 }
 
 html.light .mobile-menu {
   background: rgba(245,240,230,.97);
 }
 
-.mobile-menu.open {
-  display: flex;
-  transform: translateY(0);
-  opacity: 1;
-}
+.mobile-menu.open { display: flex; }
 
 .mobile-menu a {
   padding: .65rem 1rem;
@@ -231,33 +215,23 @@ html.light .mobile-menu {
   transition: color .2s, background .2s;
 }
 
-.mobile-menu a:hover { color: var(--fg); background: var(--bg-muted); }
+.mobile-menu a:hover  { color: var(--fg); background: var(--bg-muted); }
 .mobile-menu a.active { color: var(--primary); background: var(--primary-bg); }
 
-/* Mobile theme row — theme button inside mobile menu */
-.mobile-menu-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: .5rem .25rem 0;
-  margin-top: .25rem;
-  border-top: 1px solid var(--border);
-}
-
-/* ── Responsive breakpoints ─────────────────────────────────── */
-@media (max-width: 900px) {
-  .navbar-links a {
-    font-size: .78rem;
-    padding: .4rem .65rem;
-  }
-}
-
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .navbar-links { display: none; }
-  .hamburger { display: flex; }
+  .hamburger    { display: flex; }
 }
 
 @media (max-width: 480px) {
   .navbar { padding: 0 1rem; }
   .navbar-logo-title { font-size: .95rem; }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .navbar-logo-gem,
+  .hamburger span { transition: none; }
 }

@@ -26,19 +26,14 @@
   </a>
 
   <ul class="navbar-links">
-    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="index.html">Home</a></li>
     <li><a href="sims.html">Sims</a></li>
     <li><a href="worlds.html">Worlds</a></li>
-    <li><a href="lots.html">Lots</a></li>
-    <li><a href="pets.html">Pets</a></li>
-    <li><a href="families.html">Families</a></li>
-    <li><a href="relations.html">Relations</a></li>
-    <li><a href="statistics.html">Statistics</a></li>
   </ul>
 
   <div class="navbar-right">
     <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
-    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -47,21 +42,15 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <a href="index.html" class="active">Home</a>
+  <a href="index.html">Home</a>
   <a href="sims.html">Sims</a>
   <a href="worlds.html">Worlds</a>
-  <a href="lots.html">Lots</a>
-  <a href="pets.html">Pets</a>
-  <a href="families.html">Families</a>
-  <a href="relations.html">Relations</a>
-  <a href="statistics.html">Statistics</a>
 </div>
 
 <!-- =========================
      HERO
 ========================= -->
 <section class="hero">
-
   <div class="hero-bg">
     <div id="heroImage"></div>
     <div class="hero-gradient"></div>
@@ -101,7 +90,6 @@
     <div class="scroll-line"></div>
     <span class="scroll-chevron">⌄</span>
   </div>
-
 </section>
 
 <!-- =========================
@@ -132,7 +120,7 @@
     <div class="stat-div" aria-hidden="true"></div>
 
     <div class="stat-item">
-      <div class="stat-num stat-num-ter" id="statPets">—</div>
+      <div class="stat-num stat-num-sec" id="statPets">—</div>
       <div class="stat-label">Pets</div>
     </div>
 
@@ -180,82 +168,68 @@
 
     <div class="nav-cards-grid">
 
-      <!-- SIMS — olive green -->
+      <!-- SIMS -->
       <a href="sims.html" class="nav-card" style="--card-color:#A3B95A">
         <div class="nav-card-icon"
-          style="background:rgba(163,185,90,.1);border-color:rgba(163,185,90,.3)">
-          👥
-        </div>
+          style="background:rgba(163,185,90,.1);border-color:rgba(163,185,90,.3)">👥</div>
         <h3 class="nav-card-title">Sims</h3>
         <p class="nav-card-desc">Browse every sim in the save file and discover their stories, households and histories.</p>
         <div class="nav-card-meta"><span id="cardSimCount">—</span></div>
         <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- WORLDS — rust -->
+      <!-- WORLDS -->
       <a href="worlds.html" class="nav-card" style="--card-color:#C0572A">
         <div class="nav-card-icon"
-          style="background:rgba(192,87,42,.1);border-color:rgba(192,87,42,.3)">
-          🌍
-        </div>
+          style="background:rgba(192,87,42,.1);border-color:rgba(192,87,42,.3)">🌍</div>
         <h3 class="nav-card-title">Worlds</h3>
         <p class="nav-card-desc">Explore every world, its residents, landmarks and connected stories.</p>
         <div class="nav-card-meta"><span id="cardWorldCount">—</span></div>
         <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- LOTS — muted teal -->
+      <!-- LOTS -->
       <a href="lots.html" class="nav-card" style="--card-color:#5A9FB9">
         <div class="nav-card-icon"
-          style="background:rgba(90,159,185,.1);border-color:rgba(90,159,185,.3)">
-          🏡
-        </div>
+          style="background:rgba(90,159,185,.1);border-color:rgba(90,159,185,.3)">🏡</div>
         <h3 class="nav-card-title">Lots</h3>
-        <p class="nav-card-desc">Browse homes, businesses, community spaces and every location that exists in the save.</p>
+        <p class="nav-card-desc">Browse homes, businesses, community spaces and every location in the save.</p>
         <div class="nav-card-meta"><span id="cardLotCount">—</span></div>
         <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- PETS — warm amber -->
+      <!-- PETS -->
       <a href="pets.html" class="nav-card" style="--card-color:#B16F4B">
         <div class="nav-card-icon"
-          style="background:rgba(177,111,75,.1);border-color:rgba(177,111,75,.3)">
-          🐾
-        </div>
+          style="background:rgba(177,111,75,.1);border-color:rgba(177,111,75,.3)">🐾</div>
         <h3 class="nav-card-title">Pets</h3>
         <p class="nav-card-desc">Explore the animals in the save and find their owners.</p>
         <div class="nav-card-meta"><span id="cardPetCount">—</span></div>
         <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- FAMILIES — sage -->
+      <!-- FAMILIES -->
       <a href="families.html" class="nav-card" style="--card-color:#7BAF5E">
         <div class="nav-card-icon"
-          style="background:rgba(123,175,94,.1);border-color:rgba(123,175,94,.3)">
-          🌿
-        </div>
+          style="background:rgba(123,175,94,.1);border-color:rgba(123,175,94,.3)">🌿</div>
         <h3 class="nav-card-title">Families</h3>
         <p class="nav-card-desc">Follow bloodlines, marriages, heirs and generations across the entire save file.</p>
         <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- RELATIONS — lavender -->
+      <!-- RELATIONS -->
       <a href="relations.html" class="nav-card" style="--card-color:#8B79C7">
         <div class="nav-card-icon"
-          style="background:rgba(139,121,199,.1);border-color:rgba(139,121,199,.3)">
-          🕸
-        </div>
+          style="background:rgba(139,121,199,.1);border-color:rgba(139,121,199,.3)">🕸</div>
         <h3 class="nav-card-title">Relations</h3>
         <p class="nav-card-desc">Visualise friendships, rivalries, romances and connections throughout the world.</p>
         <span class="nav-card-arrow">Explore →</span>
       </a>
 
-      <!-- STATISTICS — gold -->
+      <!-- STATISTICS -->
       <a href="statistics.html" class="nav-card" style="--card-color:#C4993A">
         <div class="nav-card-icon"
-          style="background:rgba(196,153,58,.1);border-color:rgba(196,153,58,.3)">
-          📊
-        </div>
+          style="background:rgba(196,153,58,.1);border-color:rgba(196,153,58,.3)">📊</div>
         <h3 class="nav-card-title">Statistics</h3>
         <p class="nav-card-desc">View demographics, distributions and visual breakdowns across the save.</p>
         <span class="nav-card-arrow">Explore →</span>
@@ -280,57 +254,6 @@
 <script src="js/csv.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/index.js"></script>
-
-<!-- Scroll-aware navbar: adds .scrolled class + hamburger animation -->
-<script>
-(function () {
-  const nav = document.getElementById('mainNav');
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-
-  // Scroll-aware background
-  function onScroll() {
-    if (window.scrollY > 20) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); // run once on load
-
-  // Hamburger toggle — also animates spans and updates aria
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', function () {
-      const isOpen = mobileMenu.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', isOpen);
-      mobileMenu.setAttribute('aria-hidden', !isOpen);
-    });
-
-    // Close mobile menu on outside click
-    document.addEventListener('click', function (e) {
-      if (!nav.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileMenu.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-      }
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
-        mobileMenu.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        hamburger.focus();
-      }
-    });
-  }
-})();
-</script>
 
 </body>
 </html>
