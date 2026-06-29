@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.CSV.load('data/lookups/family_names.csv'),
         window.CSV.load('data/lookups/connections.csv'),
       ]);
+      
 
     // Normalise data (existing normalizeFamilyData.js)
     const { families, connections } = window.normalizeFamilyData(

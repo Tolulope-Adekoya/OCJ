@@ -257,3 +257,4 @@ function buildFamilyGraphs(simsRaw, familiesRaw, familyNamesRaw, connsRaw, petsR
 }
 
 window.FamilyData = { buildFamilyGraphs };
+window.normalizeFamilyData = normalizeFamilyData;
