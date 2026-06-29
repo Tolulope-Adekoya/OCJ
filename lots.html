@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
 <title>Lots — OCJ Save File</title>
-
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/navbar.css" />
 <link rel="stylesheet" href="css/components.css" />
@@ -13,338 +12,93 @@
 </head>
 <body>
 
-<!-- =========================
-     NAVBAR
-========================= -->
 <nav class="navbar">
   <a href="index.html" class="navbar-logo">
     <span class="navbar-logo-gem">♦</span>
-
     <div class="navbar-logo-text">
       <div class="navbar-logo-title">OCJ</div>
       <div class="navbar-logo-sub">Save File</div>
     </div>
   </a>
-
   <ul class="navbar-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="sims.html">Sims</a></li>
     <li><a href="worlds.html">Worlds</a></li>
-    <li><a href="lots.html" class="active">Lots</a></li>
-    <li><a href="families.html">Families</a></li>
-    <li><a href="relations.html">Relations</a></li>
-    <li><a href="statistics.html">Statistics</a></li>
   </ul>
-
   <div class="navbar-right">
-
-    <button
-      class="theme-btn"
-      id="themeBtn"
-      title="Toggle Theme"
-    >
-      ☀
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
     </button>
-
-    <button
-      class="hamburger"
-      id="hamburger"
-      aria-label="Menu"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <a href="index.html">Home</a>
   <a href="sims.html">Sims</a>
   <a href="worlds.html">Worlds</a>
-  <a href="lots.html" class="active">Lots</a>
-  <a href="families.html">Families</a>
-  <a href="relations.html">Relations</a>
-  <a href="statistics.html">Statistics</a>
 </div>
 
-<!-- =========================
-     PAGE
-========================= -->
 <div class="lots-page">
 
-  <!-- =========================
-       HEADER
-  ========================= -->
   <div class="page-header">
-
-    <p class="page-eyebrow">
-      The Properties
-    </p>
-
-    <h1 class="page-title">
-      Lots
-    </h1>
-
+    <p class="page-eyebrow">The Properties</p>
+    <h1 class="page-title">Lots</h1>
     <div class="divider"></div>
-
-    <p
-      class="page-count"
-      id="lotCount"
-    >
-      Loading...
-    </p>
-
-    <p class="page-description">
-      Browse every residential, commercial,
-      community and special-use lot in the
-      OCJ Save File.
-    </p>
-
+    <p class="page-count" id="lotCount">Loading...</p>
+    <p class="page-description">Browse every residential, commercial, community and special-use lot in the OCJ Save File.</p>
   </div>
 
-  <!-- =========================
-       SEARCH
-  ========================= -->
   <div class="lots-controls">
-
     <div class="search-wrap">
-
-      <input
-        id="lotSearch"
-        class="search-input"
-        type="text"
-        placeholder="Search Lots..."
-      />
-
+      <input id="lotSearch" class="search-input" type="text" placeholder="Search Lots..." />
     </div>
-
-    <button
-      class="filter-toggle"
-      id="filterToggle"
-      aria-expanded="false"
-      aria-controls="filterPanel"
-    >
-      Filters
-    </button>
-
+    <button class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterPanel">Filters</button>
   </div>
 
-  <!-- =========================
-       ACTIVE FILTERS
-  ========================= -->
-  <div
-    class="active-filters"
-    id="activeFilters"
-  >
+  <div class="active-filters" id="activeFilters"></div>
 
-    <!-- generated -->
-
-  </div>
-
-  <!-- =========================
-       FILTER PANEL
-  ========================= -->
-  <div
-    class="filter-panel"
-    id="filterPanel"
-    aria-hidden="true"
-  >
-
+  <div class="filter-panel" id="filterPanel" aria-hidden="true">
     <div class="filter-panel-inner">
-
       <div class="filter-panel-header">
-
-        <h3>
-          Filters
-        </h3>
-
-        <button
-          class="clear-all"
-          id="clearFilters"
-        >
-          Clear All
-        </button>
-
+        <h3>Filters</h3>
+        <button class="clear-all" id="clearFilters">Clear All</button>
         <button class="close-filter" id="closeFilterPanel" aria-label="Close filters">✕</button>
       </div>
-
       <div class="filter-grid">
-
-        <!-- WORLD -->
         <div class="filter-group">
-
-          <label>
-            World
-          </label>
-
-          <select id="worldFilter" size="6">
-            <option value="">
-              All Worlds
-            </option>
-          </select>
-
+          <label>World</label>
+          <select id="worldFilter" size="6"><option value="">All Worlds</option></select>
         </div>
-
-        <!-- LOT TYPE -->
         <div class="filter-group">
-
-          <label>
-            Lot Type
-          </label>
-
-          <select id="lotTypeFilter" size="6">
-            <option value="">
-              All Types
-            </option>
-          </select>
-
+          <label>Lot Type</label>
+          <select id="lotTypeFilter" size="6"><option value="">All Types</option></select>
         </div>
-
-        <!-- STATUS -->
         <div class="filter-group">
-
-          <label>
-            Status
-          </label>
-
-          <select id="statusFilter" size="6">
-            <option value="">
-              All Statuses
-            </option>
-          </select>
-
+          <label>Status</label>
+          <select id="statusFilter" size="6"><option value="">All Statuses</option></select>
         </div>
-
-        <!-- LOT OWNER -->
         <div class="filter-group">
-
-          <label>
-            Lot Owner
-          </label>
-
-          <select id="ownerFilter" size="6">
-            <option value="">
-              All Owners
-            </option>
-          </select>
-
+          <label>Lot Owner</label>
+          <select id="ownerFilter" size="6"><option value="">All Owners</option></select>
         </div>
-
       </div>
-
     </div>
-
   </div>
 
-  <!-- =========================
-       SORT
-  ========================= -->
   <div class="sort-bar">
-
-    <label for="sortSelect">
-      Sort By
-    </label>
-
-    <select
-      id="sortSelect"
-      class="sort-select"
-    >
-
-      <option value="az">
-        A–Z
-      </option>
-
-      <option value="za">
-        Z–A
-      </option>
-
-      <option value="world">
-        World
-      </option>
-
-      <option value="status">
-        Status
-      </option>
-
-      <option value="type">
-        Lot Type
-      </option>
-
+    <label for="sortSelect">Sort By</label>
+    <select id="sortSelect" class="sort-select">
+      <option value="az">A–Z</option>
+      <option value="za">Z–A</option>
+      <option value="world">World</option>
+      <option value="type">Type</option>
     </select>
-
   </div>
 
-  <!-- =========================
-       LOT GRID
-  ========================= -->
-  <div
-    class="lots-grid"
-    id="lotGrid"
-  >
+  <div class="lot-grid" id="lotGrid"></div>
 
-    <!--
-
-    STANDARD LOT
-
-    <a
-      href="lot.html?id=LOT00001"
-      class="lot-card"
-    >
-
-      image
-
-      Lot Name
-
-      World
-
-      Status
-
-    </a>
-
-    -->
-
-    <!--
-
-    APARTMENT / RENTAL
-
-    <article class="lot-card lot-card-building">
-      <div class="lot-preview">
-        image
-      </div>
-      <div class="lot-content">
-        <div class="lot-name">Slipshod Mesquite</div>
-        <div class="lot-meta">Residential Rental · Brindleton Bay</div>
-        <div class="building-unit-summary">4 Units</div>
-        <div class="unit-list">
-          <a href="lot.html?id=LOT00001" class="unit-link">Slipshod Mesquite</a>
-          <a href="lot.html?id=LOT00002" class="unit-link">Unit 1</a>
-          <a href="lot.html?id=LOT00003" class="unit-link">Unit 2</a>
-        </div>
-      </div>
-    </article>
-
-      Expand
-
-    </div>
-
-    -->
-
-  </div>
-
-  <!-- =========================
-       EMPTY STATE
-  ========================= -->
-  <div
-    class="empty-state"
-    id="emptyState"
-    style="display:none"
-  >
-
-    No lots match your search criteria.
-
-  </div>
+  <div class="empty-state" id="emptyState" style="display:none">No lots match your search criteria.</div>
 
 </div>
 
@@ -352,22 +106,14 @@
 <script src="js/navbar.js"></script>
 <script src="js/csv.js"></script>
 <script src="js/utils.js"></script>
+<script src="js/details.js"></script>
 <script src="js/lots.js"></script>
 
 <footer class="site-footer">
-
   <div class="footer-inner">
-
-    <p class="footer-title">
-      OCJ Save File
-    </p>
-
-    <p class="footer-sub">
-      Canonical Save Archive
-    </p>
-
+    <p class="footer-title">OCJ Save File</p>
+    <p class="footer-sub">Canonical Save Archive</p>
   </div>
-
 </footer>
 
 </body>

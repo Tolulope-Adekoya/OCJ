@@ -13,13 +13,10 @@
 </head>
 <body>
 
-<!-- =========================
-     NAVBAR
-========================= -->
+<!-- NAVBAR -->
 <nav class="navbar">
   <a href="index.html" class="navbar-logo">
     <span class="navbar-logo-gem">♦</span>
-
     <div class="navbar-logo-text">
       <div class="navbar-logo-title">OCJ</div>
       <div class="navbar-logo-sub">Save File</div>
@@ -28,43 +25,22 @@
 
   <ul class="navbar-links">
     <li><a href="index.html">Home</a></li>
-    <li><a href="sims.html" class="active">Sims</a></li>
+    <li><a href="sims.html">Sims</a></li>
     <li><a href="worlds.html">Worlds</a></li>
-    <li><a href="lots.html">Lots</a></li>
-    <li><a href="families.html">Families</a></li>
-    <li><a href="relations.html">Relations</a></li>
-    <li><a href="statistics.html">Statistics</a></li>
   </ul>
 
   <div class="navbar-right">
-    <button
-      class="theme-btn"
-      id="themeBtn"
-      title="Toggle Theme"
-    >
-      ☀
-    </button>
-
-    <button
-      class="hamburger"
-      id="hamburger"
-      aria-label="Menu"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <a href="index.html">Home</a>
-  <a href="sims.html" class="active">Sims</a>
+  <a href="sims.html">Sims</a>
   <a href="worlds.html">Worlds</a>
-  <a href="lots.html">Lots</a>
-  <a href="families.html">Families</a>
-  <a href="relations.html">Relations</a>
-  <a href="statistics.html">Statistics</a>
 </div>
 
 <!-- =========================
@@ -74,209 +50,64 @@
 
   <!-- HEADER -->
   <div class="page-header">
-
-    <p class="page-eyebrow">
-      The People
-    </p>
-
-    <h1 class="page-title">
-      Sims
-    </h1>
-
-    <div
-      class="divider"
-      style="width:6rem;margin:.75rem auto"
-    ></div>
-
-    <p
-      class="page-count"
-      id="countLabel"
-    >
-      Loading...
-    </p>
-
-    <p class="page-description">
-      Browse every sim currently recorded in the
-      OCJ Save File.
-    </p>
-
+    <p class="page-eyebrow">The People</p>
+    <h1 class="page-title">Sims</h1>
+    <div class="divider" style="width:6rem;margin:.75rem auto"></div>
+    <p class="page-count" id="countLabel">Loading...</p>
+    <p class="page-description">Browse every sim currently recorded in the OCJ Save File.</p>
   </div>
 
   <!-- SEARCH -->
   <div class="sims-controls">
 
     <div class="search-wrap">
-
-      <svg
-        class="search-icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"/>
         <path d="m21 21-4.35-4.35"/>
       </svg>
-
-      <input
-        class="search-input"
-        id="searchInput"
-        type="text"
-        placeholder="Search Sims..."
-      />
-
+      <input class="search-input" id="searchInput" type="text" placeholder="Search Sims..." />
     </div>
 
-    <button
-      class="filter-toggle"
-      id="filterToggle"
-      aria-expanded="false"
-      aria-controls="filterPanel"
-    >
-
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
+    <button class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
       </svg>
-
       Filters
-
-      <span
-        class="filter-count-badge"
-        id="filterBadge"
-        style="display:none"
-      >
-        0
-      </span>
-
+      <span class="filter-count-badge" id="filterBadge" style="display:none">0</span>
     </button>
 
-    <button
-      class="reset-btn"
-      id="resetFilters"
-      title="Clear all filters"
-    >
-      Reset
-    </button>
+    <button class="reset-btn" id="resetFilters" title="Clear all filters">Reset</button>
 
   </div>
 
   <!-- ACTIVE FILTERS -->
-  <div
-    class="active-filters"
-    id="activeFilters"
-  >
-    <!-- chips injected by JS -->
-  </div>
+  <div class="active-filters" id="activeFilters"></div>
 
   <!-- SORT -->
   <div class="sort-bar">
-
-    <label
-      class="sort-label"
-      for="sortSelect"
-    >
-      Sort By
-    </label>
-
-    <select
-      id="sortSelect"
-      class="sort-select"
-    >
+    <label class="sort-label" for="sortSelect">Sort By</label>
+    <select id="sortSelect" class="sort-select">
       <option value="az">A–Z</option>
       <option value="za">Z–A</option>
       <option value="age">Age</option>
       <option value="world">World</option>
     </select>
-
   </div>
 
   <!-- FILTER PANEL -->
-  <div
-    class="filter-panel"
-    id="filterPanel"
-    aria-hidden="true"
-  >
-
+  <div class="filter-panel" id="filterPanel" aria-hidden="true">
     <div class="filter-panel-inner">
-
       <div class="filter-panel-header">
-
-        <h3>
-          Filters
-        </h3>
-
-        <button
-          class="clear-all"
-          id="clearFilters"
-          type="button"
-        >
-          Clear All
-        </button>
-
+        <h3>Filters</h3>
+        <button class="clear-all" id="clearFilters" type="button">Clear All</button>
         <button class="close-filter" id="closeFilterPanel" aria-label="Close filters">✕</button>
       </div>
-
-      <div
-        class="filter-grid"
-        id="filterGrid"
-      >
-        <!-- generated from lookup csvs -->
-      </div>
-
+      <div class="filter-grid" id="filterGrid"></div>
     </div>
-
   </div>
 
   <!-- SIM GRID -->
-  <div
-    class="sim-grid"
-    id="simGrid"
-  >
-
-    <!--
-
-    JS structure example:
-
-    <div class="sim-entry">
-
-        <a href="sim.html?id=SIM00001"
-           class="sim-card">
-
-            portrait
-
-            Bella Goth
-            Female
-            Adult
-
-        </a>
-
-        <a href="pet.html?id=PET00001"
-           class="pet-card">
-
-            pet portrait
-            Whiskers
-
-        </a>
-
-    </div>
-
-    -->
-
-  </div>
-
-  <!-- EMPTY STATE -->
-  <div
-    class="empty-state"
-    id="emptyState"
-    style="display:none"
-  >
-    No sims match your search criteria.
-  </div>
+  <div class="sim-grid" id="simGrid"></div>
 
 </div>
 
@@ -284,22 +115,13 @@
 <script src="js/navbar.js"></script>
 <script src="js/csv.js"></script>
 <script src="js/utils.js"></script>
-<script src="js/sims.js?v=2"></script>
+<script src="js/sims.js"></script>
 
 <footer class="site-footer">
-
   <div class="footer-inner">
-
-    <p class="footer-title">
-      OCJ Save File
-    </p>
-
-    <p class="footer-sub">
-      Canonical Save Archive
-    </p>
-
+    <p class="footer-title">OCJ Save File</p>
+    <p class="footer-sub">Canonical Save Archive</p>
   </div>
-
 </footer>
 
 </body>

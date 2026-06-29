@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
 <title>World — OCJ Save File</title>
-
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/navbar.css" />
 <link rel="stylesheet" href="css/components.css" />
 <link rel="stylesheet" href="css/details.css" />
-<link rel="stylesheet" href="css/lots.css" />
 </head>
 <body>
 
@@ -22,58 +20,55 @@
       <div class="navbar-logo-sub">Save File</div>
     </div>
   </a>
-
   <ul class="navbar-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="sims.html">Sims</a></li>
     <li><a href="worlds.html">Worlds</a></li>
-    <li><a href="lots.html">Lots</a></li>
-    <li><a href="families.html">Families</a></li>
-    <li><a href="relations.html">Relations</a></li>
-    <li><a href="statistics.html">Statistics</a></li>
   </ul>
-
   <div class="navbar-right">
     <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <a href="index.html">Home</a>
   <a href="sims.html">Sims</a>
   <a href="worlds.html">Worlds</a>
-  <a href="lots.html">Lots</a>
-  <a href="families.html">Families</a>
-  <a href="relations.html">Relations</a>
-  <a href="statistics.html">Statistics</a>
 </div>
 
 <div class="detail-page">
 
   <div class="page-header">
-    <p class="page-eyebrow">World Atlas</p>
-    <h1 class="page-title" id="worldTitle">Loading World...</h1>
+    <p class="page-eyebrow">World Profile</p>
+    <h1 class="page-title" id="worldName">Loading World...</h1>
     <div class="divider"></div>
+    <p class="page-description" id="worldSubtitle">Detailed world profile and lots.</p>
     <button type="button" class="detail-back-button">← Back</button>
   </div>
 
-  <div class="world-map">
-    <img id="worldMapImg" src="" alt="World map" loading="lazy" />
-  </div>
-
-  <div class="detail-summary" id="worldDescription"></div>
-
-  <div class="detail-layout detail-layout--single-column">
+  <div class="detail-layout gallery-left">
     <div class="detail-main">
+      <div class="gallery-main">
+        <img id="mainImage" src="" alt="World image" loading="lazy" />
+      </div>
+      <div class="gallery-controls">
+        <button class="gallery-btn" id="prevImage" type="button">‹</button>
+        <button class="gallery-btn" id="nextImage" type="button">›</button>
+      </div>
+      <div class="gallery-thumbs" id="galleryThumbs"></div>
+    </div>
+
+    <div class="detail-aside">
       <div class="detail-panel">
-        <h2>Lots in this World</h2>
-        <div class="lot-grid" id="worldDetails"></div>
-        <div class="empty-state" id="worldLotsEmpty" style="display:none">No lots found for this world.</div>
+        <h2>Details</h2>
+        <div id="worldAttributes" class="detail-attributes"></div>
+      </div>
+      <div class="detail-panel" id="lotsSection">
+        <h2>Lots</h2>
+        <div class="lots-grid" id="lotsGrid"></div>
       </div>
     </div>
   </div>
@@ -88,7 +83,6 @@
 <script src="js/csv.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/details.js"></script>
-<script src="js/lots.js"></script>
 <script src="js/world.js"></script>
 
 <footer class="site-footer">

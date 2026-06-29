@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/png" href="image/webdesign/favicons/favicon.png">
 <title>Statistics — OCJ Save File</title>
-
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/navbar.css" />
 <link rel="stylesheet" href="css/components.css" />
@@ -13,334 +12,113 @@
 </head>
 <body>
 
-<!-- =========================
-     NAVBAR
-========================= -->
 <nav class="navbar">
   <a href="index.html" class="navbar-logo">
     <span class="navbar-logo-gem">♦</span>
-
     <div class="navbar-logo-text">
       <div class="navbar-logo-title">OCJ</div>
       <div class="navbar-logo-sub">Save File</div>
     </div>
   </a>
-
   <ul class="navbar-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="sims.html">Sims</a></li>
     <li><a href="worlds.html">Worlds</a></li>
-    <li><a href="lots.html">Lots</a></li>
-    <li><a href="families.html">Families</a></li>
-    <li><a href="relations.html">Relations</a></li>
-    <li><a href="statistics.html" class="active">Statistics</a></li>
   </ul>
-
   <div class="navbar-right">
-
-    <button
-      class="theme-btn"
-      id="themeBtn"
-      title="Toggle Theme"
-    >
-      ☀
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">☀</button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
     </button>
-
-    <button
-      class="hamburger"
-      id="hamburger"
-      aria-label="Menu"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <a href="index.html">Home</a>
   <a href="sims.html">Sims</a>
-  <a href="pets.html">Pets</a>
   <a href="worlds.html">Worlds</a>
-  <a href="lots.html">Lots</a>
-  <a href="families.html">Families</a>
-  <a href="relations.html">Relations</a>
-  <a href="statistics.html" class="active">Statistics</a>
 </div>
 
-<!-- =========================
-     PAGE
-========================= -->
+<!-- PAGE -->
 <div class="statistics-page">
 
-  <!-- HEADER -->
   <div class="page-header">
-
-    <p class="page-eyebrow">
-      The Numbers
-    </p>
-
-    <h1 class="page-title">
-      Statistics
-    </h1>
-
+    <p class="page-eyebrow">The Numbers</p>
+    <h1 class="page-title">Statistics</h1>
     <div class="divider"></div>
-
     <p class="page-description">
       Explore the demographic, geographic and property
       distribution of the OCJ Save File through dynamic charts.
     </p>
-
   </div>
 
-  <!-- =========================
-       DATASET SELECTOR
-  ========================= -->
+  <!-- DATASET SELECTOR -->
   <section class="stats-dataset-selector">
-
-    <button
-      class="dataset-btn active"
-      data-dataset="sims"
-    >
+    <button class="dataset-btn active" data-dataset="sims">
       <span class="dataset-btn-label">Sims</span>
       <span class="dataset-btn-count" id="countSims">—</span>
     </button>
-
-    <button
-      class="dataset-btn"
-      data-dataset="lots"
-    >
+    <button class="dataset-btn" data-dataset="lots">
       <span class="dataset-btn-label">Lots</span>
       <span class="dataset-btn-count" id="countLots">—</span>
     </button>
-
-    <button
-      class="dataset-btn"
-      data-dataset="worlds"
-    >
+    <button class="dataset-btn" data-dataset="worlds">
       <span class="dataset-btn-label">Worlds</span>
       <span class="dataset-btn-count" id="countWorlds">—</span>
     </button>
-    
-    <button
-      class="dataset-btn"
-      data-dataset="pets"
-    >
+    <button class="dataset-btn" data-dataset="pets">
       <span class="dataset-btn-label">Pets</span>
       <span class="dataset-btn-count" id="countPets">—</span>
     </button>
-
   </section>
 
-  <!-- =========================
-       CONTROLS
-  ========================= -->
+  <!-- CONTROLS -->
   <section class="stats-controls">
 
-    <!-- ROWS -->
     <div class="control-group">
-
-      <label for="rowsSelect">
-        Rows
-      </label>
-
+      <label for="rowsSelect">Rows</label>
       <div class="stats-select-wrap">
-        <select id="rowsSelect">
-          <!-- Generated dynamically from selected dataset -->
-        </select>
+        <select id="rowsSelect"></select>
       </div>
-
     </div>
 
-    <!-- COLUMNS -->
     <div class="control-group">
-
-      <label for="columnsSelect">
-        Columns
-      </label>
-
+      <label for="columnsSelect">Columns</label>
       <div class="stats-select-wrap">
-        <select id="columnsSelect">
-          <!-- Generated dynamically; first option is always "— None —" -->
-        </select>
+        <select id="columnsSelect"></select>
       </div>
-
     </div>
 
-    <!-- CHART TYPE -->
     <div class="control-group">
-
-      <label>
-        Chart Type
-      </label>
-
+      <label>Chart Type</label>
       <div class="chart-type-group">
         <button class="chart-btn active" type="button" data-chart-type="bar">Bar</button>
-        <button class="chart-btn" type="button" data-chart-type="pie" title="Disabled while a Columns field is set — pie charts only show one series.">Pie</button>
+        <button class="chart-btn" type="button" data-chart-type="pie"
+          title="Disabled while a Columns field is set — pie charts only show one series.">Pie</button>
       </div>
-
     </div>
 
-    <!-- TOP N -->
     <div class="control-group">
-
-      <label for="topN">
-        Display
-      </label>
-
+      <label for="topN">Display</label>
       <select id="topN">
-
-        <option value="all">
-          All Values
-        </option>
-
-        <option value="10">
-          Top 10
-        </option>
-
-        <option value="20">
-          Top 20
-        </option>
-
-        <option value="50">
-          Top 50
-        </option>
-
+        <option value="all">All Values</option>
+        <option value="10">Top 10</option>
+        <option value="20">Top 20</option>
+        <option value="50">Top 50</option>
       </select>
-
-    </div>
-
-  </section>
-
-  <!-- =========================
-       KPI SUMMARY
-  ========================= -->
-  <section
-    id="statsKpis"
-    class="stats-kpis"
-  >
-    <!-- kpi-grid injected here -->
-  </section>
-
-  <!-- =========================
-       CHART + DRILL-DOWN
-  ========================= -->
-  <section class="chart-section">
-
-    <div class="stats-dashboard">
-
-      <div class="chart-panel">
-
-        <div class="chart-title">
-          Distribution
-        </div>
-
-        <div
-          id="chartContainer"
-          class="chart-container"
-        >
-
-          <canvas
-            id="statsChart"
-          ></canvas>
-
-        </div>
-
-      </div>
-
-      <div class="stats-summary" id="drilldownPanel">
-
-        <div class="summary-title">
-          Drill-Down
-        </div>
-
-        <div id="drilldownContent">
-          <p class="stats-empty-hint">
-            Click a bar, slice, or table cell to see the matching records.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- =========================
-       PIVOT / DATA TABLE
-  ========================= -->
-  <section class="table-section">
-
-    <div class="pivot-panel">
-
-      <div class="pivot-title">
-        Cross-Tab
-      </div>
-
-      <div
-        id="statsTableWrap"
-        class="stats-table-wrap"
-      >
-        <!-- flat table or cross-tab grid, generated dynamically -->
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- =========================
-       QUICK STATS
-  ========================= -->
-  <section class="quick-stats">
-
-    <div class="section-header">
-
-      <h2>
-        Quick Statistics
-      </h2>
-
-    </div>
-
-    <div
-      id="quickStatsGrid"
-      class="quick-stats-grid"
-    >
-
-      <!--
-
-      Total Sims
-
-      Total Lots
-
-      Total Worlds
-
-      Playable Sims
-
-      Occupied Lots
-
-      etc
-
-      -->
-
     </div>
 
   </section>
 
 </div>
 
-<!-- =========================
-     LOADING
-========================= -->
-<div
-  id="loadingScreen"
-  class="loading-screen"
->
-  Loading Statistics...
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-title">OCJ Save File</p>
+    <p class="footer-sub">Canonical Save Archive</p>
+  </div>
+</footer>
 
 <script src="js/theme.js"></script>
 <script src="js/navbar.js"></script>
@@ -349,22 +127,6 @@
 <script src="js/pivot-classifier.js"></script>
 <script src="js/pivot-engine.js"></script>
 <script src="js/statistics.js"></script>
-
-<footer class="site-footer">
-
-  <div class="footer-inner">
-
-    <p class="footer-title">
-      OCJ Save File
-    </p>
-
-    <p class="footer-sub">
-      Canonical Save Archive
-    </p>
-
-  </div>
-
-</footer>
 
 </body>
 </html>
