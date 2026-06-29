@@ -106,7 +106,10 @@ Copperdale,Hillside Haven,Hillside Haven,Pool,,,,Plumbite Cove,,30x20,Not Starte
 Copperdale,Lasuli Point,Lasuli Point,Cinema,,Drive in cinema,,Plumbite Cove,,20x15,Not Started,,,,,,,Prospero and Juno Usher,,,11,,,,,LOT00066,
 Copperdale,Little Falls Nook,Little Falls Nook,Custom Venue,"Skating Park, Roller not ice",,,Plumbite Cove,,20x20,Not Started,,,,,,,Community,,,12,,,,,LOT00067,
 Del Sol Valley,Vacuous Green,Vacuous Green,Residential,,"trailer park maybe some lower level adult actors here as roomates, not official household","Lucien Faircroft , Cruz Maddox , Ray Holt",Mirage Park,,50x40,Not Started,,,,,,,The Landgraabs,,"A drifter, a stripper, and a dancer  walk into a bar, and end up sharing a valley house. Lucien is here because he has nowhere better to be. Cruz and Ray are here for the industry. When you're at rock bottom, where else is there to go but up?",1,,,,,LOT00068,
-Del Sol Valley,Inner Circle,Eros Pictures,A.W.E studio,,"add vending machine/cafeteria/vendor, add celebrity room",,Mirage Park,,40x30,Not Started,,,,,,,Community,,,2,,,,,LOT00069,
+Del Sol Valley,Inner Circle,Eros Pictures,A.W.E studio,,"add vending machine/cafeteria/vendor, add celebrity room
+scenes:ceo office
+recording studio
+dj",,Mirage Park,,40x30,Not Started,,,,,,,Community,,,2,,,,,LOT00069,
 Del Sol Valley,Upland Place,Upland Place,Residential,,"fancier trailer park, Roomies",Shalini Mehra and Alessia Moretti,Mirage Park,,40x30,Not Started,,,,,,,The Landgraabs,,"Shalini is the kind of fashion icon that the industry builds its entire aesthetic around, a designer and a model and a force of nature who wears her success like it was always obvious. Alessia wants to be a famous actress and has decided to get there on her own terms, not on her father's money. Shalini believes her completely and that belief is worth more than the money anyway.",3,,,,,LOT00070,
 Del Sol Valley,Ward Park,Ward Park,Casino,,,,Starlight Boulevard,,20x20,Not Started,,,,,,,Community,,,4,,,,,LOT00071,
 Del Sol Valley,Orchid a go go,Orchid a go go,Generic,DS Fashion shows,"make not too big, focus on decor and seating, preferrably one floor, add red carpet
@@ -358,7 +361,8 @@ San Myshuno,Landgraab Apartments,Landgraab Apartments,Apartment,VII Landgraab,tr
 San Myshuno,Landgraab Apartments,Landgraab Apartments,Apartment,IX Landgraab,"Feng family, trait great view cannot be removed",Lucian Sinclair,Uptown,,15x18,Not Started,15x18,222,14x18,202,,,City,,"Lucian Sinclair is a legend in the industry, which would be remarkable enough on its own. What people cannot stop talking about is how he has looked exactly the same for as long as anyone can remember. The roles keep coming, the face never changes, and nobody in the business has ever gotten a straight answer about his skincare routine.",14.1,,,,,LOT00287,LOT00286
 San Myshuno,Spire Apartments,Spire Apartments,Apartment,888 Spire Apartments,trait great view cannot be removed,Khlas Weiner,Uptown,,18x3,Not Started,18x3,213,18x3,197,18x3,218,City,,"Khlas is a famous A.W.E. actor, raunchy, rakish, and a spectacular spender who lives lavish and treats the city like a personal playground. He is extremely fun at parties and a nightmare in every other context.",15,,,,,LOT00288,
 San Myshuno,Stargazer Lounge,Starlight Casino,Casino,,turn into casino,,Uptown,,40x30,Not Started,40x30,,,,,,Community,,,16,,,,,LOT00289,
-San Myshuno,Skye Fitness,The Gilded Lily,Strip Club,Strip Club,Redo speakers,,Uptown,"§285,035",30x20,Not Started,,,,,,,Kason Blackwood,,,17,"RSVN vfx , no dancing , nisak , Gilded lily and blazing plumage lot trait
+San Myshuno,Skye Fitness,The Gilded Lily,Strip Club,Strip Club,"Redo speakers
+ADD BOUNCER",,Uptown,"§285,035",30x20,Not Started,,,,,,,Kason Blackwood,,,17,"RSVN vfx , no dancing , nisak , Gilded lily and blazing plumage lot trait
 cclottrait littlemssam , basemantal drugs",,,,LOT00290,
 San Myshuno,Myshuno Meadows,Myshuno Meadows,Park,,,,Uptown,,64x64,Not Started,64x64,,,,,,Community,,,18,,,,,LOT00291,
 San Sequoia,Robles Point,Robles Point,Residential,,,The 0anef1js,Anchorpoint Wharf,,50x40,Not Started,,,,,,,The Duval-Medleys,,"R0vanx is an elder doctor and Senior Pollination Technician raising her toddler S0lar1s in San Sequoia, wife to Axel, who is elsewhere. ",1,,,,,LOT00292,
